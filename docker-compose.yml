@@ -1,0 +1,23 @@
+version: '3.1'
+services:
+
+  teils:
+    build: .
+    ports: 
+      - "8080:8080"
+
+  projektdb:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+    ports:
+      # TODO Portfreigaben in Docker-Compose Konfiguration für Abgabe entfernen,
+      - "5432:5432"
+
+      # TODO Volume Mapping für Abgabe aktivieren
+      #volumes:
+      #- ./data:/var/lib/postgresql/data
+  # ========================================
+
