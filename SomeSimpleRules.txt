@@ -9,4 +9,5 @@ KeyWords for the Commits:
 -Remove
 -Refactor
 
+Classnames should be in German
 
