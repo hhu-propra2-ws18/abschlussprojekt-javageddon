@@ -1,0 +1,12 @@
+IntelliJ > Settings > CodeStyle > Java > Default
+
+Commits only in English
+
+KeyWords for the Commits:
+-Add
+-Update
+-Fix
+-Remove
+-Refactor
+
+
