@@ -1,5 +1,6 @@
 package hhu.propra2.javageddon.teils.dataaccess;
 
+import com.github.javafaker.Faker;
 import hhu.propra2.javageddon.teils.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -24,8 +25,8 @@ public class DatabaseInitializer implements ServletContextInitializer {
         IntStream.range(0,10).mapToObj(value -> {
             final User u = new User();
 
-            u.setName(faker.funnyName().name);
-            u.setEmail(faker.funnyName().name);
+            u.setName(faker.funnyName().name());
+            u.setEmail(faker.funnyName().name());
 
             return u;
         }).collect(Collectors.collectingAndThen(
