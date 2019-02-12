@@ -1,0 +1,17 @@
+= Dokumentation von Javageddon
+
+##Tag 1
+###11.02.2019
+
+* Wir haben Coding Regeln in SomeSimpleRules.txt festgelegt. 
+* Wir werden Postgres als Datenbank benutzen. 
+* Wir haben die grobe Struktur der Website festgelegt. Sie besteht aus der Startseite mit Einloggen und Registrieren zusammen mit einer exemplarischen, abgespeckten Liste von Artikeln. Ueber Eingloggen wird ein existierender Nutzer gebeten seinen Benutzername einzugeben und nach erfolgreichem Login wird ihm die vollstaendige Uebersicht angezeigt. Von dieser Sicht kann der eingeloggte Nutzer sein eigenes Nutzerkonto erreichen, Details von ausgewaehlten Artikeln ansehen, und sich wieder ausloggen.  In der Nutzerkonto sicht kann der Nutzer neue Artikel zum verleihen anlegen, existeriende bearbeiten, und akutelle Anfragen beantworten. 
+* Die Datenbank haben wir auch kurz besprochen. Das Modell besteht aus Benutzer und Artikel die eine n:1 Beziehung haben. Spaeter werden eventuell Entitaeten wie Reservierung und Anfrage noch hinzugefuegt. 
+* Wir haben ein docker-compose der zusaetzlich zu dem Projekt auch nocht eine Postgres Datenbank startet.
+
+
+##Tag 2
+###12.02.2019
+
+* Wir haben uns in 3 Gruppen aufgeteilt mit den Aufgabenbereichen: Dokumetation/Travis/Tests, Datenbank/Objekte, und Webtemplate/Controller. 
+
