@@ -3,8 +3,17 @@ services:
 
   teils:
     build: .
+
+    environment:
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+
     ports: 
       - "8080:8080"
+
+    depends_on:
+      - projektdb
 
   projektdb:
     image: postgres
