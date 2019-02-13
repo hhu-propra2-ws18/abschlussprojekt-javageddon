@@ -44,10 +44,8 @@
                 <td>
                     <figure class="media">
 
-                        <div class="img-wrap"><img th:src="*{artikel.fotos != null}? * {artikel.fotos.get(0)} : '(../fotos/kein-bild-vorhanden.jpg)'" class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px">
-                        </div>
-                        <figcaption class="media-body">
-                            <h4 th:text="${artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
+                       <figcaption class="media-body">
+   <!--                         <h4 th:text="${artikel.titel}" class="title text-truncate">Akkuschrauber</h4>-->
                         </figcaption>
                     </figure>
                 </td>
