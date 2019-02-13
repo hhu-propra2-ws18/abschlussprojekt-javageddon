@@ -1,0 +1,8 @@
+${AnsiColor.RED}
+___________    .__.__           ._.
+\__    ___/___ |__|  |   ______ | |
+  |    |_/ __ \|  |  |  /  ___/ | |
+  |    |\  ___/|  |  |__\___ \   \|
+  |____| \___  >__|____/____  >  __
+             \/             \/   \/
+${AnsiColor.RED} :: Spring Boot${spring-boot.formatted-version} :: ${AnsiColor.DEFAULT}

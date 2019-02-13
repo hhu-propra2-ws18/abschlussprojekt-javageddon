@@ -14,15 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ArtikelController {
 
-    @Value("${baseurl}")
-    private String baseurl;
-
     @Autowired
     private ArtikelRepository alleArtikel;
 
     @GetMapping("/")
     public String artikelListe(Model m){
-        m.addAttribute("baseurl", baseurl);
         m.addAttribute("alleArtikel", alleArtikel.findByAktiv(true));
         return "start";
     }
@@ -30,7 +26,6 @@ public class ArtikelController {
     @GetMapping("/edit/{id}")
     public String editPerson(Model m, @PathVariable("id") int id) {
         Person p = personen.getPerson(id);
-        m.addAttribute("baseurl", baseurl);
         m.addAttribute("person", p);
         return "edit";
     }
@@ -38,11 +33,11 @@ public class ArtikelController {
     @PostMapping("/edit")
     public String changePerson(Model m, Person p, String skillList) {
         personen.merge(p, skillList);
-        return "redirect:" + baseurl;
+        return "redirect:"
     }
 
     @GetMapping("/add")
     public String addPerson() {
-        return "redirect:" + baseurl + "/edit/" + personen.newPerson().getId();
+        return "redirect:" + "/edit/" + personen.newPerson().getId();
     } */
 }
