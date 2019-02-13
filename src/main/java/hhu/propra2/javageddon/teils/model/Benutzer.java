@@ -18,7 +18,7 @@ public class Benutzer {
 
     private String email;
 
-    private List<Artikel> artikelList;
+    private List<Artikel> meineArtikel;
 
 
 
