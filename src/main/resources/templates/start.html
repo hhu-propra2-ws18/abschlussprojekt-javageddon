@@ -43,9 +43,11 @@
             <tr th:each="artikel: ${alleArtikel}">
                 <td>
                     <figure class="media">
-
+<div class="img-wrap">
+    <img th:scr="${(artikel.foto != null) ? '{artikel.foto.get(0)}' : '(../fotos/kein-bild-vorhanden.jpg)'}" class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"/>
+</div>
                        <figcaption class="media-body">
-   <!--                         <h4 th:text="${artikel.titel}" class="title text-truncate">Akkuschrauber</h4>-->
+                            <h4 th:text="${artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
                         </figcaption>
                     </figure>
                 </td>
