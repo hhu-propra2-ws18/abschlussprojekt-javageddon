@@ -33,7 +33,8 @@ dependencies {
 	runtimeOnly('org.postgresql:postgresql')
 
 	compileOnly 'org.projectlombok:lombok'
-	
+    annotationProcessor('org.projectlombok:lombok')
+
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.16'
 	
 }
