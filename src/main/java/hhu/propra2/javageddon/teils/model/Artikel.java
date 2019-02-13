@@ -2,9 +2,7 @@ package hhu.propra2.javageddon.teils.model;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -26,8 +24,10 @@ public class Artikel {
 
     private boolean verfügbar;
 
+    @ElementCollection
     private List<String> foto;
 
+    @ManyToOne
     private Benutzer eigentuemer;
 
     /*
