@@ -1,7 +1,6 @@
 package hhu.propra2.javageddon.teils.model;
 
 import lombok.Data;
-
 import javax.persistence.Embeddable;
 
 @Data
