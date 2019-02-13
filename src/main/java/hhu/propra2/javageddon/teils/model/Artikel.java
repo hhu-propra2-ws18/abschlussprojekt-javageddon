@@ -22,7 +22,7 @@ public class Artikel {
 
     private boolean aktiv;
 
-    private boolean verfügbar;
+    private boolean verfuegbar;
 
     @ElementCollection
     private List<String> foto;
