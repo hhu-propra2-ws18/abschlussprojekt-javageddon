@@ -33,14 +33,4 @@ public class Artikel {
     @Embedded
     private Adresse adresse;
 
-    /*
-    TODO:
-    - Und eine Artikel Adresse
-     */
-
-
-
-
-
-
 }
