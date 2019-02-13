@@ -30,14 +30,7 @@ public class Artikel {
     @ManyToOne
     private Benutzer eigentuemer;
 
-    /*
-    TODO:
-    - Und eine Artikel Adresse
-     */
-
-
-
-
-
+    @Embedded
+    private Adresse adresse;
 
 }
