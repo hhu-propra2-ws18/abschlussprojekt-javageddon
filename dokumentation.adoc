@@ -6,10 +6,18 @@
 * Wir werden Postgres als Datenbank benutzen. 
 * Wir haben die grobe Struktur der Website festgelegt. Sie besteht aus der Startseite mit Einloggen und Registrieren zusammen mit einer exemplarischen, abgespeckten Liste von Artikeln. Ueber Eingloggen wird ein existierender Nutzer gebeten seinen Benutzername einzugeben und nach erfolgreichem Login wird ihm die vollstaendige Uebersicht angezeigt. Von dieser Sicht kann der eingeloggte Nutzer sein eigenes Nutzerkonto erreichen, Details von ausgewaehlten Artikeln ansehen, und sich wieder ausloggen.  In der Nutzerkonto sicht kann der Nutzer neue Artikel zum verleihen anlegen, existeriende bearbeiten, und akutelle Anfragen beantworten. 
 * Die Datenbank haben wir auch kurz besprochen. Das Modell besteht aus Benutzer und Artikel die eine n:1 Beziehung haben. Spaeter werden eventuell Entitaeten wie Reservierung und Anfrage noch hinzugefuegt. 
-* Wir haben ein docker-compose der zusaetzlich zu dem Projekt auch nocht eine Postgres Datenbank startet.
+* Wir haben ein docker-compose der zusaetzlich zu dem Projekt auch noch eine Postgres Datenbank startet.
 
 
 == Tag 2 | 12.02.2019
 
-* Wir haben uns in 3 Gruppen aufgeteilt mit den Aufgabenbereichen: Dokumetation/Travis/Tests, Datenbank/Objekte, und Webtemplate/Controller. 
+* Wir haben uns in 3 Gruppen aufgeteilt mit den Aufgabenbereichen: Dokumentation/Travis/Tests/ER Modell, Datenbank/Objekte, und Webtemplate/Controller.
+* Nur Links auf die Bilder werden in der Datenbank gespeichert, die Bilder selber werden in einem Ordner abgelegt. Wir wollten vermeiden dass die Datenbank durch zu viele Bilder langsam wird. 
+* Es duerfen maximal 10 Bilder pro Artikel hochgeladen werden, damit die Darstellung uebersichtlicht bleibt.
+* Die Dockerfile wurde mit dem wait-for-it.sh versehen um sicherzustellen dass die Datenbank vorher startet.
+* Die Startseite wurde inklusive css und Thymeleaf fertig gemacht.
+
+== Tag 3 | 13.02.2019
+
+* Plan: Travis-CI laeuft ohne Fehler, Volume Mapping fuer die Datenbank, Tests fuer die Implementation von gestern, Spring Security fuer Nutzeranmeldung
 
