@@ -44,29 +44,27 @@
                 <td>
                     <figure class="media">
 
-                        <div class="img-wrap"><img th:src="*{artikel.fotos != null}? * {artikel.fotos.get(0)} : '(../fotos/kein-bild-vorhanden.jpg)'" class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px">
-                        </div>
-                        <figcaption class="media-body">
-                            <h4 th:text="${artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
+                       <figcaption class="media-body">
+   <!--                         <h4 th:text="${artikel.titel}" class="title text-truncate">Akkuschrauber</h4>-->
                         </figcaption>
                     </figure>
                 </td>
 
                 <td>
                 <div class="price-wrap">
-                    <var class="price" th:text="|${artikel.preis} + €|">10€</var>
+                    <var class="price" th:text="|${artikel.kostenTag} €|">10€</var>
                     <small class="text-muted">pro Tag</small>
                 </div>
                 </td>
                 <td>
                     <div class="price-wrap">
-                        <var class="price" th:text="|${artikel.kaution} + €|">100€</var>
+                        <var class="price" th:text="|${artikel.kaution} €|">100€</var>
                     </div>
                 </td>
                 <td>
 
-                <span class="bg-success rounded-circle" th:if="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <span class="bg-danger rounded-circle" th:unless="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span class="bg-success rounded-circle" th:if="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span class="bg-danger rounded-circle" th:unless="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </td>
                  <td class="text-right">
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
