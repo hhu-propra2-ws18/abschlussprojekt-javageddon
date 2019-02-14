@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -37,6 +38,42 @@ public class DatabaseInitializer implements ServletContextInitializer {
         }).collect(Collectors.collectingAndThen(
                 Collectors.toList(),
                 this.benutzer::saveAll));
+
+
+        IntStream.range(0,10).mapToObj(value -> {
+            final Artikel a = new Artikel();
+
+            a.setTitel(faker.gameOfThrones().character());
+            a.setBeschreibung(faker.gameOfThrones().quote());
+            a.setKostenTag(faker.number().numberBetween(1,100));
+            a.setKaution(faker.number().numberBetween(100,300));
+            if(Math.random() < 0.5) {
+                a.setAktiv(true);
+            }else {
+                a.setAktiv(false);
+            }
+            if(Math.random() < 0.5) {
+                a.setVerfuegbar(true);
+            }else {
+                a.setVerfuegbar(false);
+            }
+            ArrayList<String> ftemp = new ArrayList();
+            ftemp.add("Bild1");
+            ftemp.add("Bild2");
+            ftemp.add("Bild3");
+            a.setFoto(ftemp);
+
+            Adresse adtemp = new Adresse();
+            adtemp.setHausnummer(faker.number().digit());
+            adtemp.setOrt(faker.gameOfThrones().city());
+            adtemp.setPlz(faker.number().randomDigit());
+            adtemp.setStrasse(faker.gameOfThrones().house());
+            a.setAdresse(adtemp);
+
+            return a;
+        }).collect(Collectors.collectingAndThen(
+                Collectors.toList(),
+                this.artikel::saveAll));
     }
 }
 
