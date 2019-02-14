@@ -153,20 +153,8 @@ public class TeilsModelTest {
 	@Test
 	public void connectsArtikelAndBenutzer(){
 		fahrrad.setEigentuemer(testRepo.findById(tom.getId()).get());
-		Optional<Benutzer> retrievedBenutzer = testRepo.findById(tom.getId());
-		assertThat(retrievedBenutzer.get().getMeineArtikel().get(0).getId()).isEqualTo(fahrrad.getId());
-	}
-
-	@Test
-	public void connectsBenutzerAndArtikel(){
-		List<Artikel> list1 = new ArrayList<Artikel>();
-		list1.add(fahrrad);
-		tom.setMeineArtikel(list1);
-		testRepo.save(tom);
-		Optional<Artikel> retrievedArtikel = artRepo.findById(fahrrad.getId());
-		assertThat(retrievedArtikel.get().getEigentuemer().getId()).isEqualTo(tom.getId());
-	}
-
-
-	
+		artRepo.save(fahrrad);
+		Optional<Artikel> retrievedAtrikel = artRepo.findById(fahrrad.getId());
+		assertThat(retrievedAtrikel.get().getEigentuemer().getId()).isEqualTo(tom.getId());
+	}	
 }
