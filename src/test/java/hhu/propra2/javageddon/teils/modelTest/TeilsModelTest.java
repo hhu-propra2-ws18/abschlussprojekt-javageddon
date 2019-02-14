@@ -13,12 +13,14 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 
 @RunWith(SpringRunner.class)
+@TestPropertySource(locations = "classpath:application-dev.properties")
 @SpringBootTest
 public class TeilsModelTest {
 
