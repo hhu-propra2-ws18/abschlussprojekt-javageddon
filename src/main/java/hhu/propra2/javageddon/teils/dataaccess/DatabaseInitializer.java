@@ -57,11 +57,6 @@ public class DatabaseInitializer implements ServletContextInitializer {
             }else {
                 a.setVerfuegbar(false);
             }
-            ArrayList<String> ftemp = new ArrayList();
-            ftemp.add("Bild1");
-            ftemp.add("Bild2");
-            ftemp.add("Bild3");
-            a.setFoto(ftemp);
 
             Adresse adtemp = new Adresse();
             adtemp.setHausnummer(faker.number().digit());
