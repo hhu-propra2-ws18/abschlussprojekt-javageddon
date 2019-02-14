@@ -20,4 +20,10 @@
 == Tag 3 | 13.02.2019
 
 * Plan: Travis-CI laeuft ohne Fehler, Volume Mapping fuer die Datenbank, Tests fuer die Implementation von gestern, Spring Security fuer Nutzeranmeldung
+* Wir haben uns entschieden, SpringSecurity nicht umzusetzen, und stattdessen eine Hardcode-Loesung zu implementieren.
+* Das System ist jetzt so konfiguriert, dass man es jetzt testen kann, und die ersten Tests des BenutzerRepository laufen in der IDE durch. Wir muessen noch eine Loesung finden damit der gradle test Befehl auch korrekt durchlaeuft.
+* Die Startseite der Webanwendung laeuft (bis auf die Anzeige der Fotos) und kommuniziert mit der Datenbank.
 
+== Tag 4 | 14.02.2019
+
+* Plan: 1.Fotos auf Startseite 2.Registrierung ermoeglichen 3.gradleTest ans Laufen bekommen 4.weitere Tests schreiben
