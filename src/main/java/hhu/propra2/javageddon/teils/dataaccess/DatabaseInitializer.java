@@ -27,7 +27,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
     public void onStartup(final ServletContext servletContext) throws ServletException {
         final Faker faker = new Faker(Locale.GERMAN);
 
-        IntStream.range(0,10).mapToObj(value -> {
+        IntStream.range(0, 10).mapToObj(value -> {
             final Benutzer b = new Benutzer();
 
             b.setName(faker.funnyName().name());
@@ -37,25 +37,6 @@ public class DatabaseInitializer implements ServletContextInitializer {
         }).collect(Collectors.collectingAndThen(
                 Collectors.toList(),
                 this.benutzer::saveAll));
-
-        IntStream.range(0,10).mapToObj(value -> {
-            final Artikel a = new Artikel();
-
-            a.setTitel(faker.gameOfThrones().character());
-            a.setBeschreibung(faker.gameOfThrones().quote());
-            a.setKostenTag(faker.number().numberBetween(1,100));
-            a.setKaution(faker.number().numberBetween(100,300));
-            a.setAktiv(true);
-            if(Math.random() < 0.5) {
-                a.setVerfuegbar(true);
-            }else {
-                a.setVerfuegbar(false);
-            }
-
-            return a;
-        }).collect(Collectors.collectingAndThen(
-                Collectors.toList(),
-                this.artikel::saveAll));
     }
 }
 
