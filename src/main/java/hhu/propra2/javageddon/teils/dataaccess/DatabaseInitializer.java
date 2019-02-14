@@ -51,8 +51,6 @@ public class DatabaseInitializer implements ServletContextInitializer {
             }else {
                 a.setVerfuegbar(false);
             }
-            a.setEigentuemer(new Benutzer());
-            a.setAdresse(new Adresse());
 
             return a;
         }).collect(Collectors.collectingAndThen(
