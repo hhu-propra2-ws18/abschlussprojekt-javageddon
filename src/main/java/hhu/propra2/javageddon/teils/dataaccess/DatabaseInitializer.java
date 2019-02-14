@@ -47,7 +47,11 @@ public class DatabaseInitializer implements ServletContextInitializer {
             a.setBeschreibung(faker.gameOfThrones().quote());
             a.setKostenTag(faker.number().numberBetween(1,100));
             a.setKaution(faker.number().numberBetween(100,300));
-            a.setAktiv(true);
+            if(Math.random() < 0.5) {
+                a.setAktiv(true);
+            }else {
+                a.setAktiv(false);
+            }
             if(Math.random() < 0.5) {
                 a.setVerfuegbar(true);
             }else {
@@ -65,7 +69,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
             adtemp.setPlz(faker.number().randomDigit());
             adtemp.setStrasse(faker.gameOfThrones().house());
             a.setAdresse(adtemp);
-            
+
             return a;
         }).collect(Collectors.collectingAndThen(
                 Collectors.toList(),
