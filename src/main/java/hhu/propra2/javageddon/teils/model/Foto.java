@@ -1,11 +1,7 @@
 package hhu.propra2.javageddon.teils.model;
 
-import com.sun.javafx.beans.IDProperty;
 import lombok.Data;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -15,4 +11,8 @@ public class Foto {
     private long id;
 
     private String link;
+
+    @OneToOne
+    @JoinColumn(name = "ARTIKEL_FOTO_ID")
+    private Artikel artikel;
 }

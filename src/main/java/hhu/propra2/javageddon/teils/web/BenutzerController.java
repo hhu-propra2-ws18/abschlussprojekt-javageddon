@@ -25,7 +25,6 @@ public class BenutzerController {
 
     @PostMapping("/registrieren")
     public ModelAndView benutzerSubmit(@ModelAttribute Benutzer benutzer){
-        benutzer.setMeineArtikel(new ArrayList<Artikel>());
         alleBenutzer.save(benutzer);
         return new ModelAndView("redirect:benutzer/?" + benutzer.getId());
     }
