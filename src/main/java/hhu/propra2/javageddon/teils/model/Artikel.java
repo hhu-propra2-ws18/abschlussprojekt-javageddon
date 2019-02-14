@@ -30,9 +30,6 @@ public class Artikel {
 
     private boolean verfuegbar;
 
-    @OneToMany
-    private Foto fotos;
-
     @ManyToOne
     private Benutzer eigentuemer;
 
