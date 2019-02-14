@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
+import hhu.propra2.javageddon.teils.model.Artikel;
+import org.apache.commons.lang3.builder.ToStringExclude;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,6 +28,8 @@ public class TeilsModelTest {
 	Benutzer tom = Benutzer.builder().name("Tom").email("tom@tomtom.com").build();
 	Benutzer herbert = Benutzer.builder().name("Herbert").email("her@bert.com").build();
 	Benutzer jimbo = Benutzer.builder().name("Jimbo").email("jjj@j.org").build();
+
+	Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(tom).build();
 	
 	@Before
 	public void testInit() {
@@ -44,6 +48,11 @@ public class TeilsModelTest {
 		assertThat(retrievedBenutzer.isPresent());
 		assertThat(retrievedBenutzer.get().getName()).isEqualTo(tom.getName());
 		assertThat(retrievedBenutzer.get().getEmail()).isEqualTo(tom.getEmail());
+
+	}
+
+	@Test
+	public void retrievesArtikelCorrectly(){
 
 	}
 	
@@ -75,5 +84,7 @@ public class TeilsModelTest {
 		assertThat(!(id2.equals(id3)));
 		assertThat(!(id3.equals(id1)));
 	}
+
+
 	
 }
