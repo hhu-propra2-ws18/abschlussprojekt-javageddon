@@ -1,8 +1,10 @@
 package hhu.propra2.javageddon.teils.web;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
+import hhu.propra2.javageddon.teils.model.Artikel;
+import hhu.propra2.javageddon.teils.model.Benutzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
@@ -22,8 +24,8 @@ public class BenutzerController {
     }
 
     @PostMapping("/registrieren")
-    public ModeAndView benutzerSubmit(@ModelAttribute Benutzer benutzer){
-        benutzer.setMeineArtikel(new List<Artikel>());
+    public ModelAndView benutzerSubmit(@ModelAttribute Benutzer benutzer){
+        benutzer.setMeineArtikel(new ArrayList<Artikel>());
         alleBenutzer.save(benutzer);
         return new ModelAndView("redirect:benutzer/?" + benutzer.getId());
     }
