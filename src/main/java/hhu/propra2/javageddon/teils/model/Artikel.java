@@ -30,9 +30,6 @@ public class Artikel {
 
     private boolean verfuegbar;
 
-    @ElementCollection
-    private List<String> foto;
-
     @ManyToOne
     private Benutzer eigentuemer;
 

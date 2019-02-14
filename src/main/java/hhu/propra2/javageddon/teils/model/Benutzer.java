@@ -25,9 +25,5 @@ public class Benutzer {
 
     private String email;
 
-    @OneToMany
-    private List<Artikel> meineArtikel;
-
-
 
 }
