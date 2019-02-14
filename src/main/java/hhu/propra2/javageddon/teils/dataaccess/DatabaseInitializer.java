@@ -1,6 +1,8 @@
 package hhu.propra2.javageddon.teils.dataaccess;
 
 import com.github.javafaker.Faker;
+import hhu.propra2.javageddon.teils.model.Adresse;
+import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -18,6 +20,9 @@ public class DatabaseInitializer implements ServletContextInitializer {
     @Autowired
     BenutzerRepository benutzer;
 
+    @Autowired
+    ArtikelRepository artikel;
+
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
         final Faker faker = new Faker(Locale.GERMAN);
@@ -32,6 +37,27 @@ public class DatabaseInitializer implements ServletContextInitializer {
         }).collect(Collectors.collectingAndThen(
                 Collectors.toList(),
                 this.benutzer::saveAll));
-    }
 
+        IntStream.range(0,10).mapToObj(value -> {
+            final Artikel a = new Artikel();
+
+            a.setTitel(faker.gameOfThrones().character());
+            a.setBeschreibung(faker.gameOfThrones().quote());
+            a.setKostenTag(faker.number().numberBetween(1,100));
+            a.setKaution(faker.number().numberBetween(100,300));
+            a.setAktiv(true);
+            if(Math.random() < 0.5) {
+                a.setVerfuegbar(true);
+            }else {
+                a.setVerfuegbar(false);
+            }
+            a.setEigentuemer(new Benutzer());
+            a.setAdresse(new Adresse());
+
+            return a;
+        }).collect(Collectors.collectingAndThen(
+                Collectors.toList(),
+                this.artikel::saveAll));
+    }
 }
+
