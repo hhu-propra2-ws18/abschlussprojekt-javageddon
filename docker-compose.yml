@@ -26,7 +26,6 @@ services:
       - "5432:5432"
 
       # TODO Volume Mapping für Abgabe aktivieren
-      volumes:
+    volumes:
       - ./data:/var/lib/postgresql/data
-  # ========================================
 
