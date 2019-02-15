@@ -31,14 +31,17 @@ public class UploadController {
 
         try {
              if(files.length < 11) {        //TODO Make it Variable
-                 for(int i = 0; i < files.length; i++){
-//                     System.out.println(files[i].getContentType());
-                     if(files[i].getContentType() != "image/jpeg");{
+                 for(int i = 0; i < files.length; i++) {
+                     System.out.println(files[i].getContentType());     //TODO Check Contentype
+                 }
+                     //if(files[i].getContentType() asserEquals("image/jpeg"));{
+/*                     if(files[i].);{
                          model.addAttribute("message", "No JPG!");
                          model.addAttribute("files", fileNames);
                          return "fotos_upload";
                      }
-                 }
+                     */
+
                  fileNames = Arrays.asList(files)
                          .stream()
                          .map(file -> {
