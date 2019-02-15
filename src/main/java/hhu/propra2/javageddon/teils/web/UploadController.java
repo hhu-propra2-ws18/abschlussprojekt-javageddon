@@ -32,7 +32,12 @@ public class UploadController {
         try {
              if(files.length < 11) {        //TODO Make it Variable
                  for(int i = 0; i < files.length; i++){
-                     System.out.println(files[i].getContentType());
+//                     System.out.println(files[i].getContentType());
+                     if(files[i].getContentType() != "images/jpeg");{
+                         model.addAttribute("message", "No JPG!");
+                         model.addAttribute("files", fileNames);
+                         return "fotos_upload";
+                     }
                  }
                  fileNames = Arrays.asList(files)
                          .stream()
