@@ -97,4 +97,14 @@ public class FotoRepoTest {
         assertThat(fotoList.get(0).getId()).isEqualTo(bild1.getId());
     }
 
+    @Test
+    public void twoFotosAreFoundByArtikel(){
+        bild2 = fotoRepo.save(bild2);
+        pic3 = fotoRepo.save(pic3);
+        List<Foto> fotoList = fotoRepo.findByArtikel(hamster);
+        assertThat(fotoList.size()).isEqualTo(2);
+        assertThat(fotoList.get(0).getId()).isNotEqualTo(pic3.getId());
+        assertThat(fotoList.get(1).getId()).isNotEqualTo(pic3.getId());
+    }
+
 }
