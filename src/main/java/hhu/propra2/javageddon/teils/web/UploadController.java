@@ -30,7 +30,10 @@ public class UploadController {
         List<String> fileNames = null;
 
         try {
-             if(files.length < 2) {
+             if(files.length < 11) {        //TODO Make it Variable
+                 for(int i = 0; i < files.length; i++){
+                     System.out.println(files[i].getContentType());
+                 }
                  fileNames = Arrays.asList(files)
                          .stream()
                          .map(file -> {
@@ -45,7 +48,7 @@ public class UploadController {
                  model.addAttribute("files", fileNames);
                     }
         } catch (Exception e) {
-            model.addAttribute("message", "Fail!");
+            model.addAttribute("message", "Something went wrong!");
             model.addAttribute("files", fileNames);
         }
 
