@@ -69,8 +69,7 @@ public class ArtikelRepoTest {
         hamster = artRepo.save(hamster);
         kochtopf = artRepo.save(kochtopf);
         List<Artikel> inaktiveArtikel = artRepo.findByAktiv(false);
-        assertThat(inaktiveArtikel.size()).isEqualTo(1);
-        assertThat(inaktiveArtikel.get(0).getId()).isEqualTo(hamster.getId());
+        assertThat(inaktiveArtikel).containsExactly(hamster);
 
     }
 
@@ -79,9 +78,7 @@ public class ArtikelRepoTest {
         hamster = artRepo.save(hamster);
         kochtopf = artRepo.save(kochtopf);
         List<Artikel> aktiveArtikel = artRepo.findByAktiv(true);
-        assertThat(aktiveArtikel.size()).isEqualTo(2);
-        assertThat(aktiveArtikel.get(0).getId()).isNotEqualTo(hamster.getId());
-        assertThat(aktiveArtikel.get(1).getId()).isNotEqualTo(hamster.getId());
+        assertThat(aktiveArtikel).containsExactlyInAnyOrder(fahrrad, kochtopf);
     }
 
     ////////////////////////////////////TESTS FOR UPDATING OBJECTS////////////////////////////////////////////
@@ -96,7 +93,7 @@ public class ArtikelRepoTest {
         Optional<Artikel> retrievedArtikel = artRepo.findById(fahrrad.getId());
         assertThat(retrievedArtikel.isPresent());
         assertThat(retrievedArtikel.get().getTitel()).isEqualTo("megahammerfahrrad");
-        assertThat(retrievedArtikel.get().getAdresse().getOrt()).isEqualTo(ad2.getOrt());
+        assertThat(retrievedArtikel.get().getAdresse()).isEqualTo(ad2);
     }
 
     ////////////////////////TESTS FOR RETRIEVEAL OF SEVERAL DIFFERENT OBJECTS////////////////////////////////////////////
@@ -126,7 +123,7 @@ public class ArtikelRepoTest {
         fahrrad.setEigentuemer(benRepo.findById(tom.getId()).get());
         artRepo.save(fahrrad);
         Optional<Artikel> retrievedAtrikel = artRepo.findById(fahrrad.getId());
-        assertThat(retrievedAtrikel.get().getEigentuemer().getId()).isEqualTo(tom.getId());
+        assertThat(retrievedAtrikel.get().getEigentuemer()).isEqualTo(tom);
     }
 }
 
