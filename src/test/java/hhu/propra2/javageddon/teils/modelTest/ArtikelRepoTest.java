@@ -85,7 +85,7 @@ public class ArtikelRepoTest {
         Optional<Artikel> retrievedArtikel = artRepo.findById(fahrrad.getId());
         assertThat(retrievedArtikel.isPresent());
         assertThat(retrievedArtikel.get().getTitel()).isEqualTo("megahammerfahrrad");
-        assertThat(!(retrievedArtikel.get().getAdresse().getOrt()).equals("berlin"));
+        assertThat(retrievedArtikel.get().getAdresse().getOrt()).isEqualTo(ad2.getOrt()); 
     }
 
     ////////////////////////TESTS FOR RETRIEVEAL OF SEVERAL DIFFERENT OBJECTS////////////////////////////////////////////
