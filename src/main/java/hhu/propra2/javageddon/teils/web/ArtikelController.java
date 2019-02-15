@@ -6,6 +6,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -39,8 +40,8 @@ public class ArtikelController {
         Diese Methode greift auf das Dateisystem des Dockercontainers zu und liefert das angefragte Bild aus.
      */
     @ResponseBody
-    @RequestMapping(value = "/fotos/{id}", method = RequestMethod.GET)
-    public FileSystemResource getImageAsResource(@PathVariable("id") String id) {
+    @RequestMapping(value = "/fotos/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public Resource getImageAsResource(@PathVariable("id") String id) {
         return new FileSystemResource("fotos/" + id + ".jpg");
     }
 
