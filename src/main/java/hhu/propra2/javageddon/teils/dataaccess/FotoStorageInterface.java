@@ -8,8 +8,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FotoStorageInterface {
     public void store(MultipartFile file);
-    public Resource loadFile(String filename);
-    public void deleteAll();
-    public void init();
-    public Stream<Path> loadFiles();
+//    public Resource loadFile(String filename);
+//    public void deleteAll();
+//    public void init();
+//    public Stream<Path> loadFiles();
 }

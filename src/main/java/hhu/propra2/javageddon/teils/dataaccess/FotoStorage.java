@@ -30,7 +30,7 @@ public class FotoStorage implements FotoStorageInterface{
             throw new RuntimeException("FAIL! -> message = " + e.getMessage());
         }
     }
-
+/*
     @Override
     public Resource loadFile(String filename) {
         try {
@@ -71,4 +71,6 @@ public class FotoStorage implements FotoStorageInterface{
             throw new RuntimeException("\"Failed to read stored file");
         }
     }
+
+    */
 }
