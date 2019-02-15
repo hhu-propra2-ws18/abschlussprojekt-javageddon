@@ -11,6 +11,9 @@ services:
 
     ports: 
       - "8080:8080"
+    #Volumemapping für das Foto Verzeichnis
+    volumes:
+      - ./src/main/resources/fotos:/app/fotos
 
     depends_on:
       - projektdb
