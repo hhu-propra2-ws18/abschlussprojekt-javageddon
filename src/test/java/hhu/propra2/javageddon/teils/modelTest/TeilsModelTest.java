@@ -2,7 +2,6 @@ package hhu.propra2.javageddon.teils.modelTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,10 +36,10 @@ public class TeilsModelTest {
 	Benutzer tom = Benutzer.builder().name("Tom").email("tom@tomtom.com").build();
 	Benutzer herbert = Benutzer.builder().name("Herbert").email("her@bert.com").build();
 	Benutzer jimbo = Benutzer.builder().name("Jimbo").email("jjj@j.org").build();
-	Adresse ad1 = Adresse.builder().ort("koeln").plz(4000).build();
+	Adresse ad1 = Adresse.builder().hausnummer("5e").strasse("Hauptstrasse").ort("koeln").plz(4000).build();
 	Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).adresse(ad1).build();
-	Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).build();
-	Artikel kochtopf =  Artikel.builder().titel("kochtopf").aktiv(true).build();
+	Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).adresse(ad1).build();
+	Artikel kochtopf =  Artikel.builder().titel("kochtopf").adresse(ad1).aktiv(true).build();
 
 	////////////////////////////////////PREPARATIONS////////////////////////////////////////////////
 
@@ -52,7 +51,7 @@ public class TeilsModelTest {
 	
 	@After
 	public void testDelete(){
-		
+		artRepo.deleteAll();
 		testRepo.deleteAll();
 	}
 
