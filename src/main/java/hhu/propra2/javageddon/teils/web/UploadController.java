@@ -22,7 +22,7 @@ public class UploadController {
 
     @GetMapping("/upload")
     public String index() {
-        return "uploadform";
+        return "fotos_upload";
     }
 
     @PostMapping("/upload")
@@ -45,7 +45,7 @@ public class UploadController {
             model.addAttribute("files", fileNames);
         }
 
-        return "uploadform";
+        return "fotos_upload";
     }
 
 }
