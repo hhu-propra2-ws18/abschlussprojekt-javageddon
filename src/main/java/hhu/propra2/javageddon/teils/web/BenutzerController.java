@@ -42,7 +42,6 @@ public class BenutzerController {
             m.addAttribute("benutzer",benutzer);
             return "benutzer_registrieren";
         }else {
-            benutzer.setMeineArtikel(new ArrayList<Artikel>());
             alleBenutzer.save(benutzer);
             return "redirect:benutzer/?" + benutzer.getId();
         }
