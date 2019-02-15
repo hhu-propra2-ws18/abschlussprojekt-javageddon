@@ -17,10 +17,6 @@ public class TeilsApplicationTests {
 	public void contextLoads() {
 	}
 
-	@Test
-	public void thisTestHaveToFail(){
-		assertThat(false).isEqualTo(true);
-	}
 
 }
 
