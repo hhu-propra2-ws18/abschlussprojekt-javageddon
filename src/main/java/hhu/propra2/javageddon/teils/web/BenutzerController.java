@@ -24,8 +24,26 @@ public class BenutzerController {
     }
 
     @PostMapping("/registrieren")
-    public ModelAndView benutzerSubmit(@ModelAttribute Benutzer benutzer){
-        alleBenutzer.save(benutzer);
-        return new ModelAndView("redirect:benutzer/?" + benutzer.getId());
+    public String benutzerSubmit(@ModelAttribute Benutzer benutzer, Model m){
+        boolean pruefMail = alleBenutzer.existsByEmail(benutzer.getEmail());
+        boolean pruefName = alleBenutzer.existsByName(benutzer.getName());
+
+        if(pruefMail && pruefName){
+            m.addAttribute("existingEmailError", true);
+            m.addAttribute("existingNameError", true);
+            m.addAttribute("benutzer",benutzer);
+            return "benutzer_registrieren";
+        }else if(pruefMail){
+            m.addAttribute("existingEmailError", true);
+            m.addAttribute("benutzer",benutzer);
+            return "benutzer_registrieren";
+        }else if(pruefName){
+            m.addAttribute("existingNameError", true);
+            m.addAttribute("benutzer",benutzer);
+            return "benutzer_registrieren";
+        }else {
+            alleBenutzer.save(benutzer);
+            return "redirect:benutzer/?" + benutzer.getId();
+        }
     }
 }

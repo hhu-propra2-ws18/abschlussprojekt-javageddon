@@ -20,17 +20,19 @@
                         <a href="/" class="float-right btn btn-outline-primary">Zurück zur Übersicht</a>
                         <h4 class="card-title mb-4 mt-1">Registrieren</h4>
 
-                        <form method="post" th:action="/registrieren}">
+                        <form th:action="@{/registrieren}" method="post">
 
                             <input type="hidden" value="1" name="id" th:value="${benutzer.id}">
 
                                 <div class="form-group">
                                     <label for="name">Benutzername</label>
-                                    <input class="form-control" placeholder="Benutzername" type="text" th:value="${benutzer.name}"/>
+                                    <input name="name" class="form-control" placeholder="Benutzername" type="text" th:value="${benutzer.name}"/>
+                                    <p th:if="${existingNameError}" class="error" style="color:red">Benutzername existiert bereits!</p>
                                 </div> <!-- form-group// -->
                                 <div class="form-group">
-                                    <label>E-Mail</label>
-                                    <input class="form-control" placeholder="text@example.com" type="email" th:value="${benutzer.email}"/>
+                                    <label for="email">E-Mail</label>
+                                    <input name="email" class="form-control" placeholder="text@example.com" type="email" th:value="${benutzer.email}"/>
+                                    <p th:if="${existingEmailError}" class="error" style="color:red">E-Mail existiert bereits!</p>
                                 </div> <!-- form-group// -->
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-primary btn-block"> Registrieren  </button>
@@ -39,7 +41,6 @@
                         </form>
                     </article>
                 </div> <!-- card.// -->
-
             </aside>
         </div>
     </div>

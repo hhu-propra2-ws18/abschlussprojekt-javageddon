@@ -4,77 +4,79 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Optional;
 
-import hhu.propra2.javageddon.teils.model.Artikel;
-import org.apache.commons.lang3.builder.ToStringExclude;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 
 @RunWith(SpringRunner.class)
+@TestPropertySource(locations = "classpath:application-dev.properties")
 @SpringBootTest
-public class TeilsModelTest {
+public class BenutzerRepoTest {
+
+	////////////////REQUIRED OBJECTS/////////////////////////////////////////////////////
 
 	@Autowired
-	BenutzerRepository testRepo;
+	BenutzerRepository benRepo;
 	
 	Benutzer tom = Benutzer.builder().name("Tom").email("tom@tomtom.com").build();
 	Benutzer herbert = Benutzer.builder().name("Herbert").email("her@bert.com").build();
 	Benutzer jimbo = Benutzer.builder().name("Jimbo").email("jjj@j.org").build();
-
-	Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(tom).build();
 	
+	////////////////////////////////////PREPARATIONS////////////////////////////////////////////////
+
 	@Before
 	public void testInit() {
-		tom = testRepo.save(tom);		
+		tom = benRepo.save(tom);
 	}
 	
 	@After
 	public void testDelete(){
-		
-		testRepo.deleteAll();
+		benRepo.deleteAll();
 	}
-	
+
+	/////////////////////////////TESTS FOR RETRIEVAL OF OBJECTS///////////////////////////////////////////////////
+
 	@Test
 	public void retrievesBenutzerCorrectly() {
-		Optional<Benutzer> retrievedBenutzer = testRepo.findById(tom.getId());
+		Optional<Benutzer> retrievedBenutzer = benRepo.findById(tom.getId());
 		assertThat(retrievedBenutzer.isPresent());
 		assertThat(retrievedBenutzer.get().getName()).isEqualTo(tom.getName());
 		assertThat(retrievedBenutzer.get().getEmail()).isEqualTo(tom.getEmail());
 
 	}
 
-	@Test
-	public void retrievesArtikelCorrectly(){
+	////////////////////////////////////TESTS FOR UPDATING OBJECTS////////////////////////////////////////////
 
-	}
-	
 	@Test
 	public void updatesBenutzerCorrectly(){
 		tom.setEmail("hello@hello.com");
 		tom.setName("Thomas");
-		testRepo.save(tom);
-		Optional<Benutzer> retrievedBenutzer = testRepo.findById(tom.getId());
+		benRepo.save(tom);
+		Optional<Benutzer> retrievedBenutzer = benRepo.findById(tom.getId());
 		assertThat(retrievedBenutzer.isPresent());
 		assertThat(retrievedBenutzer.get().getName()).isEqualTo("Thomas");
 		assertThat(retrievedBenutzer.get().getEmail()).isEqualTo("hello@hello.com");
 		
 	}
-	
+
+
+	////////////////////////TESTS FOR RETRIEVEAL OF SEVERAL DIFFERENT OBJECTS////////////////////////////////////////////
+
 	@Test
-	public void savesAndRetrievesSeveralPersonsWithDifferentIds(){
-		herbert = testRepo.save(herbert);
-		jimbo = testRepo.save(jimbo);
-		Optional<Benutzer> retrievedBenutzer = testRepo.findById(tom.getId());
-		Optional<Benutzer> retrievedBenutzer2 = testRepo.findById(herbert.getId());
-		Optional<Benutzer> retrievedBenutzer3 = testRepo.findById(jimbo.getId());
+	public void savesAndRetrievesSeveralUsersWithDifferentIds(){
+		herbert = benRepo.save(herbert);
+		jimbo = benRepo.save(jimbo);
+		Optional<Benutzer> retrievedBenutzer = benRepo.findById(tom.getId());
+		Optional<Benutzer> retrievedBenutzer2 = benRepo.findById(herbert.getId());
+		Optional<Benutzer> retrievedBenutzer3 = benRepo.findById(jimbo.getId());
 		
 		Long id1 = retrievedBenutzer.get().getId();
 		Long id2 = retrievedBenutzer2.get().getId();
@@ -85,6 +87,4 @@ public class TeilsModelTest {
 		assertThat(!(id3.equals(id1)));
 	}
 
-
-	
 }
