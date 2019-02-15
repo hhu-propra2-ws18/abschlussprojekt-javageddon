@@ -37,9 +37,13 @@ public class UploadController {
                         return file.getOriginalFilename();
                     })
                     .collect(Collectors.toList());
-
-            model.addAttribute("message", "Files uploaded successfully!");
-            model.addAttribute("files", fileNames);
+                    if(fileNames.size() < 1) {
+                        model.addAttribute("message", "Files uploaded successfully!");
+                        model.addAttribute("files", fileNames);
+                    } else{
+                        model.addAttribute("message", "Zu viele Files!");
+                        model.addAttribute("files", fileNames);
+                    }
         } catch (Exception e) {
             model.addAttribute("message", "Fail!");
             model.addAttribute("files", fileNames);
