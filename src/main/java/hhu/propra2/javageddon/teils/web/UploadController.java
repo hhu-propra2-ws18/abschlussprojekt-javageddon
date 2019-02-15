@@ -20,12 +20,12 @@ public class UploadController {
     @Autowired
     FotoStorage fotoStorage;
 
-    @GetMapping("/")
+    @GetMapping("/upload")
     public String index() {
         return "uploadform";
     }
 
-    @PostMapping("/")
+    @PostMapping("/upload")
     public String uploadMultipartFile(@RequestParam("files") MultipartFile[] files, Model model) {
         List<String> fileNames = null;
 
