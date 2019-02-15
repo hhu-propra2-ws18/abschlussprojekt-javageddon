@@ -58,7 +58,7 @@ public class FotoRepoTest {
         Optional<Foto> retrievedFoto = fotoRepo.findById(bild1.getId());
         assertThat(retrievedFoto.isPresent());
         assertThat(retrievedFoto.get().getLink()).isEqualTo(bild1.getLink());
-        assertThat(retrievedFoto.get().getArtikel().getId()).isEqualTo(hamster.getId());
+        assertThat(retrievedFoto.get().getArtikel()).isEqualTo(hamster);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class FotoRepoTest {
         Optional<Foto> retrievedFoto = fotoRepo.findById(bild1.getId());
         assertThat(retrievedFoto.isPresent());
         assertThat(retrievedFoto.get().getLink()).isEqualTo("abcdefg");
-        assertThat(retrievedFoto.get().getArtikel().getId()).isEqualTo(fahrrad.getId());
+        assertThat(retrievedFoto.get().getArtikel()).isEqualTo(fahrrad);
 
     }
 
@@ -93,8 +93,7 @@ public class FotoRepoTest {
     @Test
     public void oneFotoIsFoundByArtikel(){
         List<Foto> fotoList = fotoRepo.findByArtikel(hamster);
-        assertThat(fotoList.size()).isEqualTo(1);
-        assertThat(fotoList.get(0).getId()).isEqualTo(bild1.getId());
+        assertThat(fotoList).containsExactly(bild1);
     }
 
     @Test
@@ -102,9 +101,7 @@ public class FotoRepoTest {
         bild2 = fotoRepo.save(bild2);
         pic3 = fotoRepo.save(pic3);
         List<Foto> fotoList = fotoRepo.findByArtikel(hamster);
-        assertThat(fotoList.size()).isEqualTo(2);
-        assertThat(fotoList.get(0).getId()).isNotEqualTo(pic3.getId());
-        assertThat(fotoList.get(1).getId()).isNotEqualTo(pic3.getId());
+        assertThat(fotoList).containsExactlyInAnyOrder(bild1, bild2);
     }
 
 }
