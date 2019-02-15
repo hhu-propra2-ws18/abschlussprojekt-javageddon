@@ -24,6 +24,15 @@
 * Das System ist jetzt so konfiguriert, dass man es jetzt testen kann, und die ersten Tests des BenutzerRepository laufen in der IDE durch. Wir muessen noch eine Loesung finden damit der gradle test Befehl auch korrekt durchlaeuft.
 * Die Startseite der Webanwendung laeuft (bis auf die Anzeige der Fotos) und kommuniziert mit der Datenbank.
 
+
 == Tag 4 | 14.02.2019
 
 * Plan: 1.Fotos auf Startseite 2.Registrierung ermoeglichen 3.gradleTest ans Laufen bekommen 4.weitere Tests schreiben
+* Registrieren der Benutzer mit validierten Feldern (d.h. keine Duplikate in der Benutzername/Email) funktioniert
+* Das Problem mit gradle test geloest und im testing branch sind alle test ordentlich durchgelaufen.
+* Es wurde weiter an den Fotos gearbeitet, das akutelle Problem ist dass die Bilder nicht aktualisiert werden waerend die Anwendung laeuft.
+
+== Tag 5 | 15.02.2019
+
+* Plan: 1.Die Probleme bei den Fotos loesen 2. Saemtliche branches zurueck in den master mergen 3. Tests wo moeglich schreiben.
+* Der testing branch wurde in den master zurueck gemerged.
