@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 public class ArtikelController {
 
@@ -29,6 +31,14 @@ public class ArtikelController {
     @RequestMapping(value = "/fotos/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public Resource getImageAsResource(@PathVariable("id") String id) {
         return new FileSystemResource("fotos/" + id + ".jpg");
+    }
+
+    @GetMapping("/artikel/{id}")
+    public String detailAnsicht(Model m, @PathVariable Long id) {
+
+        m.addAttribute("artikel", alleArtikel.findById(id));
+
+        return "artikel_details";
     }
 
 /*
