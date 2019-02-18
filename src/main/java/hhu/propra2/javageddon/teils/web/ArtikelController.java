@@ -20,6 +20,7 @@ public class ArtikelController {
 
     @Autowired
     private ArtikelRepository alleArtikel;
+    @Autowired
     private BenutzerRepository alleBenutzer;
 
     @GetMapping("/")
@@ -48,7 +49,7 @@ public class ArtikelController {
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
         m.addAttribute("artikel", alleArtikel.findById(id));
-        m.addAttribute("eigentuemer", alleBenutzer.findById(alleArtikel.findById(id).getEigentuemer().getId()));
+        m.addAttribute("eigentuemer", alleBenutzer.findById(alleArtikel.findById(id).getEigentuemer().getId());
         return "artikel_details";
     }
 
