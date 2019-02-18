@@ -39,10 +39,10 @@ public class UploadController {
                              return file.getOriginalFilename();
                          })
                          .collect(Collectors.toList());
-                 model.addAttribute("message", "Files uploaded successfully!");
+                 model.addAttribute("message", "Fotos uploaded successfully!");
                  model.addAttribute("files", fileNames);
              } else{
-                 model.addAttribute("message", "Zu viele Files!");
+                 model.addAttribute("message", "Zu viele Fotos!");
                  model.addAttribute("files", fileNames);
                     }
         } catch (Exception e) {
