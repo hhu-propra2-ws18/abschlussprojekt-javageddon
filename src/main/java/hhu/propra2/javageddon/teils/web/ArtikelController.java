@@ -44,7 +44,6 @@ public class ArtikelController {
     }
 */
     @RequestMapping(value = "/details", method = GET)
-    @ResponseBody
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
         m.addAttribute("artikel", alleArtikel.findById(id));
         return "artikel_details";
