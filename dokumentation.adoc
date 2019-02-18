@@ -39,3 +39,11 @@
 * Wir haben weitere Tests fuer all Repos geschreiben und bemerkt dass wir anstatt Controller Tests lieber die Logik in Services auslagern um das testen zu erleichtern.
 * Die Registrierung von neuen Nutzern funktioniert jetzt fehlerfrei (fehlende Fehlermeldung von Tag 4 funktioniert jetzt).
 * Der Fotoordnerzustand ist gemappt und aus der Anwendung zugreifbar.
+
+== Tag 6 | 18.02.2019
+
+* Wir haben Services fuer die Artikel und Benutzer Repos eingefuegt und den Controller fuer Benutzer entsprechend angepasst (der Artikel Controller ist noch in Bearbeitung).
+* Da Fotos eindeutig ueber die ID gespeichert und identifiziert werden, haben wir uns entschieden die Klassen rund um Foto (inkl. Tests) zu entfernen und einfach die Fotos als Liste von Strings im Artikel zu speichern.
+* Die Fotoanzeige auf der Startseite funktioniert.
+* Fotouploading funktionert auch.
+* Es wurde an der Detail Ansicht fuer die Artikel gearbeitet aber es bestehen wieterhin noch Probleme.   
