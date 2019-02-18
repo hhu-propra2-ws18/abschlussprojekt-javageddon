@@ -69,7 +69,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
             adtemp.setOrt(faker.gameOfThrones().city());
             adtemp.setPlz(faker.number().randomDigit());
             adtemp.setStrasse(faker.gameOfThrones().house());
-            a.setAdresse(adtemp);
+            a.setStandort(adtemp);
 
             return a;
         }).collect(Collectors.collectingAndThen(
