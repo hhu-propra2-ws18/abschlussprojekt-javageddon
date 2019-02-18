@@ -5,7 +5,6 @@ package hhu.propra2.javageddon.teils.dataaccess;
         import java.nio.file.Paths;
         import java.nio.file.StandardCopyOption;
 
-        import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.stereotype.Service;
         import org.springframework.web.multipart.MultipartFile;
 
@@ -15,8 +14,6 @@ public class FotoStorage implements FotoStorageInterface{
     private final Path rootLocation = Paths.get("fotos");
     private int index = 0;
 
-    @Autowired
-    FotoRepository fotoRepository;
 
     @Override
     public void store(MultipartFile file){
