@@ -1,6 +1,8 @@
 package hhu.propra2.javageddon.teils.web;
 
+import antlr.collections.AST;
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
+import hhu.propra2.javageddon.teils.dataaccess.FotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
