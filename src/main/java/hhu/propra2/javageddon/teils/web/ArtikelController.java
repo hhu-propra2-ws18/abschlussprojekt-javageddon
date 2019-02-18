@@ -1,6 +1,7 @@
 package hhu.propra2.javageddon.teils.web;
 
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
+import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -19,6 +20,7 @@ public class ArtikelController {
 
     @Autowired
     private ArtikelRepository alleArtikel;
+    private BenutzerRepository alleBenutzer;
 
     @GetMapping("/")
     public String artikelListe(Model m){
@@ -46,7 +48,7 @@ public class ArtikelController {
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
         m.addAttribute("artikel", alleArtikel.findById(id));
-        m.addAttribute("eigentuemer", alleArtikel.findById(id).getEigentuemer());
+        m.addAttribute("eigentuemer", alleBenutzer.findById(alleArtikel.findById(id).getEigentuemer().getId()));
         return "artikel_details";
     }
 

@@ -2,7 +2,6 @@ package hhu.propra2.javageddon.teils.dataaccess;
 
 import hhu.propra2.javageddon.teils.model.Artikel;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
