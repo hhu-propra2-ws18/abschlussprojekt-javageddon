@@ -23,7 +23,7 @@ public class FotoStorage implements FotoStorageInterface{
     @Override
     public void store(MultipartFile file){
         try {
-            String newName = "" + index;
+            String newName = "" + index + ".jpg";
             Files.copy(file.getInputStream(), this.rootLocation.resolve(newName), StandardCopyOption.REPLACE_EXISTING);
             //Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
             index++;
