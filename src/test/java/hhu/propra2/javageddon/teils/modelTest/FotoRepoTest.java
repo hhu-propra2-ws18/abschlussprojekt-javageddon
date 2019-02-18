@@ -1,11 +1,8 @@
 package hhu.propra2.javageddon.teils.modelTest;
 
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
-import hhu.propra2.javageddon.teils.dataaccess.FotoRepository;
 import hhu.propra2.javageddon.teils.model.Adresse;
 import hhu.propra2.javageddon.teils.model.Artikel;
-import hhu.propra2.javageddon.teils.model.Benutzer;
-import hhu.propra2.javageddon.teils.model.Foto;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

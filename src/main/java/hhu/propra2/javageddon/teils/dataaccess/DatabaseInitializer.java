@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -28,6 +29,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
     public void onStartup(final ServletContext servletContext) throws ServletException {
         final Faker faker = new Faker(Locale.GERMAN);
 
+
         IntStream.range(0, 10).mapToObj(value -> {
             final Benutzer b = new Benutzer();
 
@@ -42,6 +44,10 @@ public class DatabaseInitializer implements ServletContextInitializer {
 
         IntStream.range(0,10).mapToObj(value -> {
             final Artikel a = new Artikel();
+
+            ArrayList fotos = new ArrayList<String>();
+            //fotos.add("test");
+            a.setFotos(fotos);
 
             a.setTitel(faker.gameOfThrones().character());
             a.setBeschreibung(faker.gameOfThrones().quote());
