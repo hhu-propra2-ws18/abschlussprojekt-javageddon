@@ -4,6 +4,7 @@ package hhu.propra2.javageddon.teils.dataaccess;
         import java.nio.file.Path;
         import java.nio.file.Paths;
         import java.nio.file.StandardCopyOption;
+        import java.util.List;
 
         import hhu.propra2.javageddon.teils.model.Foto;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class FotoStorage implements FotoStorageInterface{
             long nextId = 0;
             String newName = "";
             if(fotoRepository.findTopById() != null) {
-                Foto last = fotoRepository.findTopById();
-                nextId = last.getId() + 1;
+                List<Foto> fotos = fotoRepository.findTopById();
+                nextId = fotos.get(fotos.size()).getId() + 1;
                 newName += nextId;
             }else {
                 newName += "0";

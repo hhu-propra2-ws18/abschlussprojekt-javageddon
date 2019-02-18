@@ -10,9 +10,6 @@ public class Foto {
     @GeneratedValue
     private long id;
 
-    private String link;
-
-    @OneToOne
-    @JoinColumn(name = "ARTIKEL_FOTO_ID")
+    @ManyToOne
     private Artikel artikel;
 }
