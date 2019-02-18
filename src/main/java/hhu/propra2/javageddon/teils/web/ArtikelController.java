@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 @Controller
 public class ArtikelController {
 
@@ -28,16 +30,23 @@ public class ArtikelController {
         Diese Methode greift auf das Dateisystem des Dockercontainers zu und liefert das angefragte Bild aus.
      */
     @ResponseBody
-    @RequestMapping(value = "/fotos/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    @RequestMapping(value = "/fotos/{id}", method = GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public Resource getImageAsResource(@PathVariable("id") String id) {
         return new FileSystemResource("fotos/" + id + ".jpg");
     }
-
-    @GetMapping("/details?id={id}")
+/*
+    @GetMapping("/artikel/{id}")
     public String detailAnsicht(Model m, @PathVariable Long id) {
 
         m.addAttribute("artikel", alleArtikel.findById(id));
 
+        return "artikel_details";
+    }
+*/
+    @RequestMapping(value = "/details", method = GET)
+    @ResponseBody
+    public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
+        m.addAttribute("artikel", alleArtikel.findById(id));
         return "artikel_details";
     }
 
