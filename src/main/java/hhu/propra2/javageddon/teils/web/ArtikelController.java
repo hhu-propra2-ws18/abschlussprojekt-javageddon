@@ -33,7 +33,7 @@ public class ArtikelController {
         return new FileSystemResource("fotos/" + id + ".jpg");
     }
 
-    @GetMapping("/artikel/{id}")
+    @GetMapping("/details?id={id}")
     public String detailAnsicht(Model m, @PathVariable Long id) {
 
         m.addAttribute("artikel", alleArtikel.findById(id));
