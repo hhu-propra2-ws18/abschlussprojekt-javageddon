@@ -38,4 +38,5 @@ public class Artikel {
     @Embedded
     private Adresse standort;
 
+
 }

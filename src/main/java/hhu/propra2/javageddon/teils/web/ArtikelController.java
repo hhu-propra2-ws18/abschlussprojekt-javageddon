@@ -1,7 +1,6 @@
 package hhu.propra2.javageddon.teils.web;
 
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
-import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -30,8 +27,8 @@ public class ArtikelController {
     }
 
     /*
-        Diese Methode greift auf das Dateisystem des Dockercontainers zu und liefert das angefragte Bild aus.
-     */
+    Diese Methode greift auf das Dateisystem des Dockercontainers zu und liefert das angefragte Bild aus.
+    */
     @ResponseBody
     @RequestMapping(value = "/fotos/{id}", method = GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public Resource getImageAsResource(@PathVariable("id") String id) {

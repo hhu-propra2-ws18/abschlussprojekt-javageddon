@@ -9,4 +9,5 @@ public interface ArtikelRepository extends CrudRepository<Artikel,Long> {
 
     List<Artikel> findByAktiv(boolean b);
     Artikel findById(long i);
+
 }
