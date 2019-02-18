@@ -2,6 +2,8 @@ package hhu.propra2.javageddon.teils.web;
 
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
+import hhu.propra2.javageddon.teils.model.Artikel;
+import hhu.propra2.javageddon.teils.model.Benutzer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -20,8 +22,6 @@ public class ArtikelController {
 
     @Autowired
     private ArtikelRepository alleArtikel;
-    @Autowired
-    private BenutzerRepository alleBenutzer;
 
     @GetMapping("/")
     public String artikelListe(Model m){
@@ -37,19 +37,15 @@ public class ArtikelController {
     public Resource getImageAsResource(@PathVariable("id") String id) {
         return new FileSystemResource("fotos/" + id + ".jpg");
     }
-/*
-    @GetMapping("/artikel/{id}")
-    public String detailAnsicht(Model m, @PathVariable Long id) {
 
-        m.addAttribute("artikel", alleArtikel.findById(id));
-
-        return "artikel_details";
-    }
-*/
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
-        m.addAttribute("artikel", alleArtikel.findById(id));
-        m.addAttribute("eigentuemer", alleArtikel.findById(id).getEigentuemer());
+        Artikel artikel = alleArtikel.findById(id);
+        Benutzer eigentuemer = artikel.getEigentuemer();
+
+        m.addAttribute("artikel", artikel);
+        m.addAttribute("eigentuemer", eigentuemer);
+
         return "artikel_details";
     }
 
