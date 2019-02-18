@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.ArrayList;
 
 @Data
 @Builder
@@ -29,6 +29,8 @@ public class Artikel {
     private boolean aktiv;
 
     private boolean verfuegbar;
+
+    private ArrayList<String> fotos;
 
     @ManyToOne
     private Benutzer eigentuemer;
