@@ -22,9 +22,14 @@ public class FotoStorage implements FotoStorageInterface{
     public void store(MultipartFile file){
         try {
             long nextId = 0;
-            Foto last = fotoRepository.findTopById();
-            nextId = last.getId() + 1;
-            String newName = "" + nextId;
+            String newName = "";
+            if(fotoRepository.findTopById() != null) {
+                Foto last = fotoRepository.findTopById();
+                nextId = last.getId() + 1;
+                newName += nextId;
+            }else {
+                newName += "0";
+            }
             Files.copy(file.getInputStream(), this.rootLocation.resolve(newName), StandardCopyOption.REPLACE_EXISTING);
             //Files.copy(file.getInputStream(), this.rootLocation.resolve(file.getOriginalFilename()), StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
