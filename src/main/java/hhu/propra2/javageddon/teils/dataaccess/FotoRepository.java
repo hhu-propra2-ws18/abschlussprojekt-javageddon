@@ -9,6 +9,4 @@ import java.util.List;
 public interface FotoRepository extends CrudRepository<Foto,Long> {
 
     List<Foto> findByArtikel(Artikel a);
-
-    List<Foto> findTopById();
 }
