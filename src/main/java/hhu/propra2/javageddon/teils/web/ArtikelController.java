@@ -1,18 +1,17 @@
 package hhu.propra2.javageddon.teils.web;
 
-import java.util.List;
-import java.util.Optional;
-
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
-import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class ArtikelController {
+
 
     @Autowired
     private ArtikelRepository alleArtikel;
@@ -22,6 +21,16 @@ public class ArtikelController {
         m.addAttribute("alleArtikel", alleArtikel.findByAktiv(true));
         return "start";
     }
+
+    /*
+        Diese Methode greift auf das Dateisystem des Dockercontainers zu und liefert das angefragte Bild aus.
+     */
+    @ResponseBody
+    @RequestMapping(value = "/fotos/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
+    public Resource getImageAsResource(@PathVariable("id") String id) {
+        return new FileSystemResource("fotos/" + id + ".jpg");
+    }
+
 /*
     @GetMapping("/edit/{id}")
     public String editPerson(Model m, @PathVariable("id") int id) {
