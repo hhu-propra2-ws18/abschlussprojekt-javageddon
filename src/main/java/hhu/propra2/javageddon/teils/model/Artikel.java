@@ -36,6 +36,6 @@ public class Artikel {
     private Benutzer eigentuemer;
 
     @Embedded
-    private Adresse adresse;
+    private Adresse standort;
 
 }
