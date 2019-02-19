@@ -20,7 +20,15 @@
                         <a href="/" class="float-right btn btn-outline-primary">Zurück zur Übersicht</a>
                         <h4 class="card-title mb-4 mt-1">Login</h4>
 
-                        <form th:action="@{/benutzer_anmelden}" method="post">
+                            <div th:if="${param.error}">
+                                Invalid username and password.
+                            </div>
+
+                            <div th:if="${param.logout}">
+                                You have been logged out.
+                            </div>
+
+                            <form th:action="@{/benutzer_anmelden}" method="post">
 
                             <div><label> User Name : <input type="text" name="username"/> </label></div>
                             <div><label> Password: <input type="password" name="password"/> </label></div>
