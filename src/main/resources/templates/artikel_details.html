@@ -58,7 +58,7 @@
 
                     <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${(eigentuemer != null) ? eigentuemer.name : 'NA'}">Jon Doe</span></p>
 
-                    <p><span style="font-weight: bold;">Standort: </span><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
+                    <p><span style="font-weight: bold;">Standort: </span><span th:text="${artikel.standort.strHsrAusgabe() <br> artikel.standort.plzOrtAusgabe()}">Düsseldorf Uni</span></p>
                     <!--
                     <p><span style="font-weight: bold;">Verfügbar ab: </span><span th:text="${reservierung.toString()}">16.02.2019</span></p>
                     -->
