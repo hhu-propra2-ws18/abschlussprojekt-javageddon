@@ -67,6 +67,32 @@ public class BenutzerRepoTest {
 		
 	}
 
+	/////////////////////////TESTS FOR REPOSITORY METHODS///////////////////////////////////////////////////////////////
+
+	@Test
+	public void existsByName(){
+		boolean checkTom = benRepo.existsByName(tom.getName());
+		assertThat(checkTom).isEqualTo(true);
+	}
+
+	@Test
+	public void doesNotExistByName(){
+		boolean checkHerbert = benRepo.existsByName(herbert.getName());
+		assertThat(checkHerbert).isEqualTo(false);
+	}
+
+	@Test
+	public void existsByEmail(){
+		boolean checkTom = benRepo.existsByEmail(tom.getEmail());
+		assertThat(checkTom).isEqualTo(true);
+	}
+
+	@Test
+	public void doesNotExistByEmail(){
+		boolean checkHerbert = benRepo.existsByEmail(herbert.getEmail());
+		assertThat(checkHerbert).isEqualTo(false);
+	}
+
 
 	////////////////////////TESTS FOR RETRIEVEAL OF SEVERAL DIFFERENT OBJECTS////////////////////////////////////////////
 
