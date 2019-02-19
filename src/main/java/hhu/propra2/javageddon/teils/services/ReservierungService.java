@@ -17,6 +17,10 @@ public class ReservierungService {
         this.alleReservierungen = reservierungen;
     }
 
+    public Reservierung addReservierung(Reservierung r) {
+        return alleReservierungen.save(r);
+    }
+
     public List<Reservierung> findCurrentByArtikel(Artikel a){
         List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikel(a);
         LocalDate currentDay = LocalDate.now();
