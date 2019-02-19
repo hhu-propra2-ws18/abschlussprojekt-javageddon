@@ -53,15 +53,10 @@ public class ArtikelRepoTest {
 
     /////////////////////////////TESTS FOR RETRIEVAL OF OBJECTS///////////////////////////////////////////////////
 
-
     @Test
-    public void retrievesArtikelCorrectly(){
-
-        Optional<Artikel> retrievedArtikel = artRepo.findById(fahrrad.getId());
-        assertThat(retrievedArtikel.isPresent());
-        assertThat(retrievedArtikel.get().getTitel()).isEqualTo(fahrrad.getTitel());
-        assertThat(retrievedArtikel.get().isAktiv());
-
+    public void retrievesArtikelById(){
+        Artikel retrievedArtikel = artRepo.findById(fahrrad.getId());
+        assertThat(retrievedArtikel).isEqualTo(fahrrad);
     }
 
     @Test
@@ -90,10 +85,8 @@ public class ArtikelRepoTest {
         fahrrad.setTitel("megahammerfahrrad");
         fahrrad.setStandort(ad2);
         artRepo.save(fahrrad);
-        Optional<Artikel> retrievedArtikel = artRepo.findById(fahrrad.getId());
-        assertThat(retrievedArtikel.isPresent());
-        assertThat(retrievedArtikel.get().getTitel()).isEqualTo("megahammerfahrrad");
-        assertThat(retrievedArtikel.get().getStandort()).isEqualTo(ad2);
+        Artikel retrievedArtikel = artRepo.findById(fahrrad.getId());
+        assertThat(retrievedArtikel).isEqualTo(fahrrad);
     }
 
     ////////////////////////TESTS FOR RETRIEVEAL OF SEVERAL DIFFERENT OBJECTS////////////////////////////////////////////
@@ -102,13 +95,13 @@ public class ArtikelRepoTest {
     public void savesAndRetrievesSeveralArticlesWithDifferentIDs(){
         hamster = artRepo.save(hamster);
         kochtopf = artRepo.save(kochtopf);
-        Optional<Artikel> retrievedArtikel = artRepo.findById(fahrrad.getId());
-        Optional<Artikel> retrievedArtikel2 = artRepo.findById(hamster.getId());
-        Optional<Artikel> retrievedArtikel3 = artRepo.findById(kochtopf.getId());
+        Artikel retrievedArtikel = artRepo.findById(fahrrad.getId());
+        Artikel retrievedArtikel2 = artRepo.findById(hamster.getId());
+        Artikel retrievedArtikel3 = artRepo.findById(kochtopf.getId());
 
-        Long id1 = retrievedArtikel.get().getId();
-        Long id2 = retrievedArtikel2.get().getId();
-        Long id3 = retrievedArtikel3.get().getId();
+        Long id1 = retrievedArtikel.getId();
+        Long id2 = retrievedArtikel2.getId();
+        Long id3 = retrievedArtikel3.getId();
 
         assertThat(!(id1.equals(id2)));
         assertThat(!(id2.equals(id3)));
@@ -122,8 +115,8 @@ public class ArtikelRepoTest {
         tom = benRepo.save(tom);
         fahrrad.setEigentuemer(benRepo.findById(tom.getId()).get());
         artRepo.save(fahrrad);
-        Optional<Artikel> retrievedAtrikel = artRepo.findById(fahrrad.getId());
-        assertThat(retrievedAtrikel.get().getEigentuemer()).isEqualTo(tom);
+        Artikel retrievedAtrikel = artRepo.findById(fahrrad.getId());
+        assertThat(retrievedAtrikel.getEigentuemer()).isEqualTo(tom);
     }
 }
 
