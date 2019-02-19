@@ -16,4 +16,8 @@ public class ArtikelService {
 	public List<Artikel> findAllAktivArtikel() {
 		return alleArtikel.findByAktiv(true);
 	}
+	
+	public Artikel findArtikelById(long id) {
+		return alleArtikel.findById(id);
+	}
 }
