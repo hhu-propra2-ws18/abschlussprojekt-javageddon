@@ -16,6 +16,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    UserDetailsService userDetailsService = new MyUserDetailsService();
+
     @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
@@ -38,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
     }
 
+    /*
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
@@ -50,4 +53,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return new InMemoryUserDetailsManager(user);
     }
+    */
 }
