@@ -45,9 +45,9 @@ public class DatabaseInitializer implements ServletContextInitializer {
         IntStream.range(0,10).mapToObj(value -> {
             final Artikel a = new Artikel();
 
-            List<Benutzer> alleBenutzer = benutzer.getAll();
+            List<Benutzer> alleBenutzer = benutzer.getAllByIdIsNotNull();
 
-            a.setEigentuemer(alleBenutzer.get(0));
+            a.setEigentuemer(alleBenutzer.get(1));
 
             ArrayList fotos = new ArrayList<String>();
             //fotos.add("test");

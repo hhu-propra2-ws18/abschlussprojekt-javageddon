@@ -8,7 +8,7 @@ public interface BenutzerRepository extends CrudRepository<Benutzer,Long> {
 
     List<Benutzer> findByEmail(String email);
 
-    List<Benutzer> getAll();
+    List<Benutzer> getAllByIdIsNotNull();
 
     boolean existsByEmail(String email);
     boolean existsByName(String name);
