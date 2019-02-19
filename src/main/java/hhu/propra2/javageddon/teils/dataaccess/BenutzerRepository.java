@@ -6,6 +6,9 @@ import java.util.List;
 
 public interface BenutzerRepository extends CrudRepository<Benutzer,Long> {
 
+
+    List<Benutzer> getAllByIdIsNotNull();
+
     boolean existsByEmail(String email);
     boolean existsByName(String name);
 }

@@ -45,8 +45,16 @@ public class DatabaseInitializer implements ServletContextInitializer {
         IntStream.range(0,10).mapToObj(value -> {
             final Artikel a = new Artikel();
 
+            List<Benutzer> alleBenutzer = benutzer.getAllByIdIsNotNull();
+
+            int anzahlBenutzer = alleBenutzer.size();
+            int zufaelligerBenutzer = (int) (Math.random()*anzahlBenutzer);
+
+            a.setEigentuemer(alleBenutzer.get(zufaelligerBenutzer));
+
             ArrayList fotos = new ArrayList<String>();
-            //fotos.add("test");
+            fotos.add("test");
+            fotos.add("001");
             a.setFotos(fotos);
 
             a.setTitel(faker.gameOfThrones().character());
@@ -65,11 +73,11 @@ public class DatabaseInitializer implements ServletContextInitializer {
             }
 
             Adresse adtemp = new Adresse();
-            adtemp.setHausnummer(faker.number().digit());
+            adtemp.setHausnummer("" + ((int)(Math.random() * 100)));
             adtemp.setOrt(faker.gameOfThrones().city());
-            adtemp.setPlz(faker.number().randomDigit());
+            adtemp.setPlz((int)(Math.random() * 10000));
             adtemp.setStrasse(faker.gameOfThrones().house());
-            a.setAdresse(adtemp);
+            a.setStandort(adtemp);
 
             return a;
         }).collect(Collectors.collectingAndThen(

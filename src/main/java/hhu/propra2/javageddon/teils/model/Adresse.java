@@ -21,4 +21,9 @@ public class Adresse {
     private String ort;
 
     private int plz;
+
+    public String adressAusgabe(){
+        String ausgabe = strasse + " " + hausnummer + ", " + plz + " " + ort;
+        return ausgabe;
+    }
 }
