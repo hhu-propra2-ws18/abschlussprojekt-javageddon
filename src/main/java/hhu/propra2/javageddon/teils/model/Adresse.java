@@ -22,12 +22,7 @@ public class Adresse {
 
     private int plz;
 
-    public String strHsrAusgabe(){
-        String ausgabe = strasse + " " + hausnummer + ", " + plz + " " + ort;
-        return ausgabe;
-    }
-
-    public String plzOrtAusgabe(){
+    public String adressAusgabe(){
         String ausgabe = strasse + " " + hausnummer + ", " + plz + " " + ort;
         return ausgabe;
     }
