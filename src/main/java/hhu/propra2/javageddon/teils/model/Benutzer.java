@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,13 +21,18 @@ public class Benutzer {
     @GeneratedValue
     private Long id;
 
-   @Column(nullable = false,unique = true)
+    @NotNull
+    @NotEmpty
     private String name;
     
     @NotNull
     @NotEmpty
     private String email;
-
     private String password;
 
+
+
+    public String getPassword() {
+        return password;
+    }
 }
