@@ -72,9 +72,9 @@ public class DatabaseInitializer implements ServletContextInitializer {
             }
 
             Adresse adtemp = new Adresse();
-            adtemp.setHausnummer(faker.number().digit());
+            adtemp.setHausnummer("" + ((int)(Math.random() * 10)));
             adtemp.setOrt(faker.gameOfThrones().city());
-            adtemp.setPlz(faker.number().randomDigit());
+            adtemp.setPlz((int)(Math.random() * 10000));
             adtemp.setStrasse(faker.gameOfThrones().house());
             a.setStandort(adtemp);
 
