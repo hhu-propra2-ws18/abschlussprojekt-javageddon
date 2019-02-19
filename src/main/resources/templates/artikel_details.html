@@ -49,13 +49,17 @@
                         </div>
                     </section>
                     <p class="product-description" th:text="${artikel.beschreibung}">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>
-                    <p><span style="font-weight: bold;">Preis pro Tag: </span><span th:text="${artikel.kostenProTag}">10 €</span></p>
+                    <p><span style="font-weight: bold;">Preis pro Tag: </span><span th:text="${artikel.kostenTag}">10 €</span></p>
                     <p><span style="font-weight: bold;">Kaution: </span><span th:text="${artikel.kaution}">100 €</span></p>
-                    <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${artikel.eingentuemer.getName()}">Jon Doe</span></p>
+
+                    <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${(eigentuemer != null) ? eigentuemer.name : 'NA'}">Jon Doe</span></p>
+
                     <p><span style="font-weight: bold;">Standort: </span><span th:text="${artikel.standort.toString()}">Düsseldorf Uni</span></p>
+                    <!--
                     <p><span style="font-weight: bold;">Verfügbar ab: </span><span th:text="${reservierung.toString()}">16.02.2019</span></p>
+                    -->
                     <div class="action">
-                        <a href="/reservieren"class="btn btn-primary btn-md" href="/login">Reservieren</a>
+                        <a href="/reservieren"class="btn btn-primary btn-md" >Reservieren</a>
                         <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
                     </div>
                 </div>
