@@ -29,11 +29,4 @@ public class Benutzer {
     @NotEmpty
     private String email;
 
-    @NotNull
-    @NotEmpty
-    private String rolle;
-
-    @NotNull
-    @NotEmpty
-    private String passwort;
 }
