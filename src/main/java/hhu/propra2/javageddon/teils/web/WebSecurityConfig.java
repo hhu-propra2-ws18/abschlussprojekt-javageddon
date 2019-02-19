@@ -19,18 +19,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     MyUserDetailsService userDetailsService;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-        // Setting Service to find User in the database.
-        // And Setting PassswordEncoder
-        auth.userDetailsService(userDetailsService);
-
-    }
-
-    @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
         auth.inMemoryAuthentication().withUser("user").password("user").roles("USER");
+        auth.userDetailsService(userDetailsService);
     }
 
 
