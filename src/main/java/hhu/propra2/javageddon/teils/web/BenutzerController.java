@@ -21,6 +21,11 @@ public class BenutzerController {
     @Autowired
     private BenutzerService alleBenutzer;
 
+    @GetMapping("7benutzer_anmelden")
+    public String login(){
+        return "benutzer_anmelden";
+    }
+
     @GetMapping("/registrieren")
     public String neuerBenutzer(Model m){
         m.addAttribute("benutzer", new Benutzer());
