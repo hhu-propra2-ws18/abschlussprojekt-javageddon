@@ -23,7 +23,7 @@ public class Adresse {
     private int plz;
 
     public String adressAusgabe(){
-        String ausgabe = strasse + " " + hausnummer + "\n" + plz + " " + ort;
+        String ausgabe = strasse + " " + hausnummer + ", " + plz + " " + ort;
         return ausgabe;
     }
 }
