@@ -23,6 +23,8 @@
                 <div class="btn float-right" role="group">
                     <a class="btn btn-primary btn-md" href="/login">Login</a>
                     <a class="btn btn-secondary btn-md" href="/registrieren">Registrieren</a>
+                    <form th:action="@{/logout}" method="post">
+                        <input type="submit" value="Sign Out"/>
                 </div>
             </div>
         </section>
