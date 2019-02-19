@@ -10,6 +10,8 @@ public interface BenutzerRepository extends CrudRepository<Benutzer,Long> {
 
     List<Benutzer> getAllByIdIsNotNull();
 
+    int countDistinctById();
+
     boolean existsByEmail(String email);
     boolean existsByName(String name);
 }

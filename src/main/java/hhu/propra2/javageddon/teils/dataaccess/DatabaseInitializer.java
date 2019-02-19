@@ -47,7 +47,10 @@ public class DatabaseInitializer implements ServletContextInitializer {
 
             List<Benutzer> alleBenutzer = benutzer.getAllByIdIsNotNull();
 
-            a.setEigentuemer(alleBenutzer.get(1));
+            int anzahlBenutzer = benutzer.countDistinctById();
+            int zufaelligerBenutzer = (int) Math.random()*anzahlBenutzer;
+
+            a.setEigentuemer(alleBenutzer.get(zufaelligerBenutzer));
 
             ArrayList fotos = new ArrayList<String>();
             //fotos.add("test");
