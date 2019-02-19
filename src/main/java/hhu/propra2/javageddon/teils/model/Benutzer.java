@@ -28,4 +28,12 @@ public class Benutzer {
     @NotNull
     @NotEmpty
     private String email;
+
+    @NotNull
+    @NotEmpty
+    private String rolle;
+
+    @NotNull
+    @NotEmpty
+    private String passwort;
 }
