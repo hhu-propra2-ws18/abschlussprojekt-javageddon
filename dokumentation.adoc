@@ -46,4 +46,9 @@
 * Da Fotos eindeutig ueber die ID gespeichert und identifiziert werden, haben wir uns entschieden die Klassen rund um Foto (inkl. Tests) zu entfernen und einfach die Fotos als Liste von Strings im Artikel zu speichern.
 * Die Fotoanzeige auf der Startseite funktioniert.
 * Fotouploading funktionert auch.
-* Es wurde an der Detail Ansicht fuer die Artikel gearbeitet aber es bestehen wieterhin noch Probleme.   
+* Es wurde an der Detail Ansicht fuer die Artikel gearbeitet aber es bestehen wieterhin noch Probleme.
+
+== Tag 7 | 19.02.2019   
+
+* Weitere Services rund um Artikel und Reservierung erstellt, samt Tests dafuer.
+* Wir haben uns umenstchieden und werden Spring Security doch implementieren.
