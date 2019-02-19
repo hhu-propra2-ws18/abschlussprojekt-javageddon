@@ -58,7 +58,7 @@
                     <p class="product-description" th:text="${artikel.beschreibung}">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>
                     <p><span style="font-weight: bold;">Preis pro Tag: </span><span th:text="${artikel.kostenTag + '€'}">10 €</span></p>
                     <p><span style="font-weight: bold;">Kaution: </span><span th:text="${artikel.kaution + '€'}">100 €</span></p>
-                    <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${(eigentuemer != null) ? eigentuemer.name : 'NA'}">Jon Doe</span></p>
+                    <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${(artikel.eigentuemer != null) ? artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
                     <p><span style="font-weight: bold;">Standort: </span><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
                     <!-- TODO Wird aktualisiert wenn die Entität Reservierung implementiert ist.
                     <p><span style="font-weight: bold;">Verfügbar ab: </span><span th:text="${reservierung.toString()}">16.02.2019</span></p>

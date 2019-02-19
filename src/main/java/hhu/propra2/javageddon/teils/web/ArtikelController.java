@@ -38,11 +38,7 @@ public class ArtikelController {
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
         Artikel artikel = alleArtikel.findById(id);
-        Benutzer eigentuemer = artikel.getEigentuemer();
-
         m.addAttribute("artikel", artikel);
-        m.addAttribute("eigentuemer", eigentuemer);
-
         return "artikel_details";
     }
 
