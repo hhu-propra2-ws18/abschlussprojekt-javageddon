@@ -38,9 +38,9 @@ public class ReservierungRepoTest {
     Benutzer hans = Benutzer.builder().name("Hans").email("hans@tomtom.com").build();
     Benutzer heidi = Benutzer.builder().name("Heidi").email("heidi@heidi.com").build();
     Adresse ad1 = Adresse.builder().hausnummer("5e").strasse("Hauptstrasse").ort("koeln").plz(4000).build();
-    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).adresse(ad1).eigentuemer(hans).build();
-    Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).adresse(ad1).eigentuemer(hans).build();
-    Artikel kochtopf =  Artikel.builder().titel("kochtopf").adresse(ad1).aktiv(true).eigentuemer(heidi).build();
+    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).standort(ad1).eigentuemer(hans).build();
+    Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).standort(ad1).eigentuemer(hans).build();
+    Artikel kochtopf =  Artikel.builder().titel("kochtopf").standort(ad1).aktiv(true).eigentuemer(heidi).build();
     Reservierung r1 = Reservierung.builder().leihender(heidi).artikel(hamster).build();
     Reservierung r2 = Reservierung.builder().leihender(hans).artikel(kochtopf).build();
     Reservierung r3 = Reservierung.builder().leihender(heidi).artikel(hamster).build();

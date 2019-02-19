@@ -35,9 +35,9 @@ public class ArtikelRepoTest {
 
     Benutzer tom = Benutzer.builder().name("Tom").email("tom@tomtom.com").build();
     Adresse ad1 = Adresse.builder().hausnummer("5e").strasse("Hauptstrasse").ort("koeln").plz(4000).build();
-    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).adresse(ad1).build();
-    Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).adresse(ad1).build();
-    Artikel kochtopf =  Artikel.builder().titel("kochtopf").adresse(ad1).aktiv(true).build();
+    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).standort(ad1).build();
+    Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).standort(ad1).build();
+    Artikel kochtopf =  Artikel.builder().titel("kochtopf").standort(ad1).aktiv(true).build();
 
     ////////////////////////////////////PREPARATIONS////////////////////////////////////////////////
 
@@ -88,12 +88,12 @@ public class ArtikelRepoTest {
     public void updatesArtikelCorrectly(){
         Adresse ad2 = Adresse.builder().ort("berlin").plz(5000).build();
         fahrrad.setTitel("megahammerfahrrad");
-        fahrrad.setAdresse(ad2);
+        fahrrad.setStandort(ad2);
         artRepo.save(fahrrad);
         Optional<Artikel> retrievedArtikel = artRepo.findById(fahrrad.getId());
         assertThat(retrievedArtikel.isPresent());
         assertThat(retrievedArtikel.get().getTitel()).isEqualTo("megahammerfahrrad");
-        assertThat(retrievedArtikel.get().getAdresse()).isEqualTo(ad2);
+        assertThat(retrievedArtikel.get().getStandort()).isEqualTo(ad2);
     }
 
     ////////////////////////TESTS FOR RETRIEVEAL OF SEVERAL DIFFERENT OBJECTS////////////////////////////////////////////
