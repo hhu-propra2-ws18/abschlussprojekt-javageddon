@@ -53,7 +53,8 @@ public class DatabaseInitializer implements ServletContextInitializer {
             a.setEigentuemer(alleBenutzer.get(zufaelligerBenutzer));
 
             ArrayList fotos = new ArrayList<String>();
-            //fotos.add("test");
+            fotos.add("test");
+            fotos.add("001");
             a.setFotos(fotos);
 
             a.setTitel(faker.gameOfThrones().character());
