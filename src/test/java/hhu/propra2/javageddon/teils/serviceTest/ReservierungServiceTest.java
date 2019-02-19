@@ -65,10 +65,10 @@ public class ReservierungServiceTest {
         artRepo.deleteAll();
         benRepo.deleteAll();
     }
-    
+
     @Test
     public void selectsOnlyCurrentReservierungen() {
-        List<Reservierung> aktuelleReservierungen = rService.findCurrentByArtikel(hamster);
+        List<Reservierung> aktuelleReservierungen = rService.findCurrentReservierungByArtikel(hamster);
         assertThat(aktuelleReservierungen).containsExactlyInAnyOrder(currentRes, futureRes);
     }
 }

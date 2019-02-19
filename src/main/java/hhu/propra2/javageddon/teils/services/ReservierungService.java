@@ -2,6 +2,7 @@ package hhu.propra2.javageddon.teils.services;
 
 import hhu.propra2.javageddon.teils.dataaccess.ReservierungRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
+import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Reservierung;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,19 @@ public class ReservierungService {
         return alleReservierungen.save(r);
     }
 
-    public List<Reservierung> findCurrentByArtikel(Artikel a){
+    public List<Reservierung> findReservierungByArtikel(Artikel a){
+        return alleReservierungen.findByArtikel(a);
+    }
+
+    public List<Reservierung> findReservierungByLeihender(Benutzer b){
+        return alleReservierungen.findByLeihender(b);
+    }
+
+    public List<Reservierung> findReservierungByArtikelAndLeihender(Artikel a, Benutzer b){
+        return alleReservierungen.findByArtikelAndLeihender(a,b);
+    }
+
+    public List<Reservierung> findCurrentReservierungByArtikel(Artikel a){
         List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikel(a);
         LocalDate currentDay = LocalDate.now();
         for (Reservierung res : artikelReservierungen) {
