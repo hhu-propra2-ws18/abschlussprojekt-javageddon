@@ -48,7 +48,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
             List<Benutzer> alleBenutzer = benutzer.getAllByIdIsNotNull();
 
             int anzahlBenutzer = alleBenutzer.size();
-            int zufaelligerBenutzer = (int) Math.random()*anzahlBenutzer;
+            int zufaelligerBenutzer = (int) (Math.random()*anzahlBenutzer);
 
             a.setEigentuemer(alleBenutzer.get(zufaelligerBenutzer));
 
