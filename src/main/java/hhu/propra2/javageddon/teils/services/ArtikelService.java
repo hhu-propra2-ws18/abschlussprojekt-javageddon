@@ -4,7 +4,9 @@ import java.util.List;
 
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ArtikelService {
 
 	private ArtikelRepository alleArtikel;
