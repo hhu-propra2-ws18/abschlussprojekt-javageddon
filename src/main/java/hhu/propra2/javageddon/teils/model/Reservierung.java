@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -18,9 +19,9 @@ public class Reservierung {
     @GeneratedValue
     private long id;
 
-    private Date start;
+    private LocalDate start;
 
-    private Date ende;
+    private LocalDate ende;
 
     @ManyToOne
     @JoinColumn(name = "RESERVIERUNG_BENUTZER_ID")
