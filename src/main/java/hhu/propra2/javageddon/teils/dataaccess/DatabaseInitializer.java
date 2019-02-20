@@ -4,12 +4,16 @@ import com.github.javafaker.Faker;
 import hhu.propra2.javageddon.teils.model.Adresse;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
+import hhu.propra2.javageddon.teils.model.Reservierung;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -24,6 +28,9 @@ public class DatabaseInitializer implements ServletContextInitializer {
 
     @Autowired
     ArtikelRepository artikel;
+    
+    @Autowired
+    ReservierungRepository reservierung;
 
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
@@ -52,9 +59,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
 
             a.setEigentuemer(alleBenutzer.get(zufaelligerBenutzer));
 
-            ArrayList fotos = new ArrayList<String>();
-            fotos.add("test");
-            fotos.add("001");
+            ArrayList<String> fotos = new ArrayList<String>();
             a.setFotos(fotos);
 
             a.setTitel(faker.gameOfThrones().character());
@@ -83,6 +88,45 @@ public class DatabaseInitializer implements ServletContextInitializer {
         }).collect(Collectors.collectingAndThen(
                 Collectors.toList(),
                 this.artikel::saveAll));
+    
+	    IntStream.range(0,10).mapToObj(value -> {
+	        final Reservierung r = new Reservierung();
+	
+	        List<Benutzer> alleBenutzer = benutzer.getAllByIdIsNotNull();
+	        List<Artikel> alleArtikel = (List<Artikel>) artikel.findAll();
+	
+	        int anzahlBenutzer = alleBenutzer.size();
+	        int zufaelligerBenutzer = (int) (Math.random()*anzahlBenutzer);
+	        
+	        int anzahlArtikel = alleArtikel.size();
+	        int zufaelligerArtikel = (int) (Math.random()*anzahlArtikel);
+	
+	        r.setLeihender(alleBenutzer.get(zufaelligerBenutzer));
+	        r.setArtikel(alleArtikel.get(zufaelligerArtikel));
+	
+	        LocalDate startDay = LocalDate.of(
+	        		faker.number().numberBetween(2000,2020),
+	        		faker.number().numberBetween(1,12),
+	        		faker.number().numberBetween(1,30)
+	        );
+	        r.setStart(startDay);
+	        r.setEnde(startDay.plusDays(faker.number().numberBetween(2, 10)));
+	        if(Math.random() < 0.5) {
+	            r.setBearbeitet(true);
+	        }else {
+	            r.setBearbeitet(false);
+	        }
+	        if(Math.random() < 0.5) {
+	            r.setAkzeptiert(true);
+	        }else {
+	            r.setAkzeptiert(false);
+	        }
+	
+	
+	        return r;
+	    }).collect(Collectors.collectingAndThen(
+	            Collectors.toList(),
+	            this.reservierung::saveAll));
     }
 }
 
