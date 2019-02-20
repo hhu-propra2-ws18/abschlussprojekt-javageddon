@@ -55,12 +55,13 @@ public class BenutzerController {
             return "redirect:benutzer?=" + benutzer.getId();
         }
     }
-    //Still need to addAttributes for Reservierungen
+    
     @RequestMapping(value = "/benutzer", method = GET)
     public String benutzerProfil( Model m, @RequestParam("id") long id) {
     	m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
     	m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
     	m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
+    	m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemer(alleBenutzer.findBenutzerById(id)));
     	return "profil_ansicht";
     }
 }
