@@ -4,6 +4,8 @@ import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
+import hhu.propra2.javageddon.teils.services.ArtikelService;
+import hhu.propra2.javageddon.teils.services.BenutzerService;
 import hhu.propra2.javageddon.teils.model.Adresse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -22,14 +24,14 @@ public class ArtikelController {
 
 
     @Autowired
-    private ArtikelRepository alleArtikel;
+    private ArtikelService alleArtikel;
 
     @Autowired
-    private BenutzerRepository alleBenutzer;
+    private BenutzerService alleBenutzer;
 
     @GetMapping("/")
     public String artikelListe(Model m){
-        m.addAttribute("alleArtikel", alleArtikel.findByAktiv(true));
+        m.addAttribute("alleArtikel", alleArtikel.findAllAktivArtikel());
         return "start";
     }
 
@@ -44,7 +46,7 @@ public class ArtikelController {
 
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
-        Artikel artikel = alleArtikel.findById(id);
+        Artikel artikel = alleArtikel.findArtikelById(id);
         m.addAttribute("artikel", artikel);
         return "artikel_details";
     }
@@ -60,8 +62,8 @@ public class ArtikelController {
     public String erstelleArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Adresse adresse){
         artikel.setStandort(adresse);
         artikel.setFotos(new ArrayList<String>());
-        artikel.setEigentuemer(alleBenutzer.findById(1)); // TODO EINGELOGGTER USER
-        alleArtikel.save(artikel);
+        artikel.setEigentuemer(alleBenutzer.findBenutzerById(1)); // TODO EINGELOGGTER USER
+        alleArtikel.addArtikel(artikel);
         return "redirect:/fotoupload/" + artikel.getId();
     }
 

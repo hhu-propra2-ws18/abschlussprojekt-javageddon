@@ -18,6 +18,10 @@ public class BenutzerService {
 		alleBenutzer.save(b);
 	}
 	
+	public Benutzer findBenutzerById(long id) {
+		return alleBenutzer.findById(id);
+	}
+	
 	public boolean isDuplicateName(Benutzer b) {
 		return alleBenutzer.existsByName(b.getName());
 	}
