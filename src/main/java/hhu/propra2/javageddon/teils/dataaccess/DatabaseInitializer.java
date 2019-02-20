@@ -35,6 +35,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
 
             b.setName(faker.funnyName().name());
             b.setEmail(faker.funnyName().name());
+            b.setRolle("ROLE_USER");
 
             return b;
         }).collect(Collectors.collectingAndThen(
@@ -45,7 +46,15 @@ public class DatabaseInitializer implements ServletContextInitializer {
         testnutzer.setName("marvin");
         testnutzer.setPassword("istDerBeste");
         testnutzer.setEmail("test@dunervst.com");
+        testnutzer.setRolle("ROLE_USER");
         benutzer.save(testnutzer);
+
+        final Benutzer testnutzerAD = new Benutzer();
+        testnutzerAD.setName("flo");
+        testnutzerAD.setPassword("istAdmin");
+        testnutzerAD.setEmail("test@marvinnervt.com");
+        testnutzerAD.setRolle("ROLE_ADMIN");
+        benutzer.save(testnutzerAD);
 
 
         IntStream.range(0,10).mapToObj(value -> {

@@ -1,4 +1,4 @@
-package hhu.propra2.javageddon.teils.web;
+﻿package hhu.propra2.javageddon.teils.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,16 +26,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery(
                         "select name,password, true from benutzer where name=?")
                 .authoritiesByUsernameQuery(
-                        "select name, 'ROLE_USER' from benutzer where name=?");
+                        "select name, rolle from benutzer where name=?");
         //TODO NutzerRolle ordentlich implementieren
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/registrieren","/fotos/*","/favicon.ico").permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

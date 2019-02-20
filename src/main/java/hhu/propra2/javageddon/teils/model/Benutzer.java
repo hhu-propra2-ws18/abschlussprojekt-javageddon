@@ -30,7 +30,9 @@ public class Benutzer {
     private String email;
     private String password;
 
-
+    @NotNull
+    @NotEmpty
+    private String rolle;
 
     public String getPassword() {
         return password;
