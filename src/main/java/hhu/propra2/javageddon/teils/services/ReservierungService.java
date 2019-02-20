@@ -7,7 +7,10 @@ import hhu.propra2.javageddon.teils.model.Reservierung;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservierungService {
@@ -34,7 +37,7 @@ public class ReservierungService {
         return alleReservierungen.findByArtikelAndLeihender(a,b);
     }
 
-    public List<Reservierung> findCurrentReservierungByArtikel(Artikel a){
+    public List<Reservierung> findCurrentReservierungByArtikelOrderedByDate(Artikel a){
         List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikel(a);
         LocalDate currentDay = LocalDate.now();
         for (Reservierung res : artikelReservierungen) {
@@ -42,7 +45,10 @@ public class ReservierungService {
                 artikelReservierungen.remove(res);
             }
         }
-        return  artikelReservierungen;
+        return  artikelReservierungen
+        		.stream()
+        		.sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
+        		.collect(Collectors.toList());
     }
 
 }
