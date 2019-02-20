@@ -35,6 +35,8 @@ public class BenutzerController {
             
         m.addAttribute("nameRequired", alleBenutzer.isEmptyName(benutzer));
         m.addAttribute("emailRequired", alleBenutzer.isEmptyEmail(benutzer));
+
+        m.addAttribute("passwortRequired", alleBenutzer.isEmptyPasswort(benutzer));
         
         m.addAttribute("benutzer",benutzer);
 
