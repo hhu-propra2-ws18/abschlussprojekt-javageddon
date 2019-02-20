@@ -2,13 +2,17 @@ package hhu.propra2.javageddon.teils.web;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.FotoStorage;
+import hhu.propra2.javageddon.teils.model.Artikel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,14 +24,18 @@ public class UploadController {
     @Autowired
     FotoStorage fotoStorage;
 
-    @GetMapping("/upload")
+    @Autowired
+    private ArtikelRepository alleArtikel;
+
+    @GetMapping("/fotoupload/{id}")
     public String index() {
         return "fotos_upload";
     }
 
-    @PostMapping("/upload")
-    public String uploadMultipartFile(@RequestParam("files") MultipartFile[] files, Model model) {
+    @PostMapping("/fotoupload/{id}")
+    public String uploadMultipartFile(@RequestParam("files") MultipartFile[] files, Model model, @PathVariable long id) {
         List<String> fileNames = null;
+        ArrayList<String> renamedFiles = new ArrayList<String>();
 
         try {
              if(files.length < 11) {        //TODO Make it Variable
@@ -35,7 +43,8 @@ public class UploadController {
                  fileNames = Arrays.asList(files)
                          .stream()
                          .map(file -> {
-                             fotoStorage.store(file);
+                             String newName = fotoStorage.store(file);
+                             renamedFiles.add(newName);
                              return file.getOriginalFilename();
                          })
                          .collect(Collectors.toList());
@@ -50,7 +59,11 @@ public class UploadController {
             model.addAttribute("files", fileNames);
         }
 
-        return "fotos_upload";
+        Artikel artikel = alleArtikel.findById(id);
+        artikel.setFotos(renamedFiles);
+        alleArtikel.save(artikel);
+
+        return "redirect:/details/?id=" + id;
     }
 
 }
