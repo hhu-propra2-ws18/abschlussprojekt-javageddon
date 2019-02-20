@@ -27,16 +27,11 @@
                     <a th:if="${#httpServletRequest.isUserInRole('USER')}"
                        class="btn btn-primary btn-md" href="/logout">Logout</a>
 
-                    <!--
+                    <a th:unless="${#httpServletRequest.isUserInRole('USER')}"
+                       class="btn btn-primary btn-md" href="/registrieren">Registrieren</a>
+
                     <a th:if="${#httpServletRequest.isUserInRole('USER')}"
-                        <form th:action="@{/logout}" method="post">
-                            <button class="btn btn-primary btn-md" type="submit" value="Sign Out"/>
-                        </form>
-                    -->
-
-                    <a class="btn btn-secondary btn-md" href="/registrieren">Registrieren</a>
-                    </div>
-
+                       class="btn btn-warning btn-md" href="/profil_ansicht">Mein Profil</a>
 
                 </div>
             </div>

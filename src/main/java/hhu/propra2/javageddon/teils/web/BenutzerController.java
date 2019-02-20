@@ -70,5 +70,10 @@ public class BenutzerController {
     	m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
     	m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemer(alleBenutzer.findBenutzerById(id)));
     	return "profil_ansicht";
+	}
+    	
+    @GetMapping("/profil_ansicht")
+    public String benutzerAnsicht(){
+        return "profil_ansicht";
     }
 }
