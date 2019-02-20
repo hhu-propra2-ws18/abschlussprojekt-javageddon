@@ -61,7 +61,6 @@ public class ReservierungRepoTest {
 
     @After
     public void testDelete(){
-
         resRepo.deleteAll();
         artRepo.deleteAll();
         benRepo.deleteAll();
@@ -119,6 +118,15 @@ public class ReservierungRepoTest {
         assertThat(fahrradReservierungen).isEmpty();
     }
 
+    @Test
+    public void findReservierungByArtikelEigentuemer() {
+    	r2 = resRepo.save(r2);
+        r3 = resRepo.save(r3);
+        r4 = resRepo.save(r4);
+        List<Reservierung> hansArtikelReservierung = resRepo.findByArtikelEigentuemer(hans);
+        System.out.println(hansArtikelReservierung);
+        assertThat(hansArtikelReservierung).containsExactlyInAnyOrder(r1,r3,r4);
+    }
 
 
 }
