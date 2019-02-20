@@ -55,8 +55,8 @@ public class BenutzerController {
         return "benutzer_anmelden";
     }
 
-    @GetMapping("/benutzer_ansicht")
+    @GetMapping("/profil_ansicht")
     public String benutzerAnsicht(){
-        return "benutzer_ansicht";
+        return "profil_ansicht";
     }
 }
