@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery(
                         "select name,password, true from benutzer where name=?")
                 .authoritiesByUsernameQuery(
-                        "select name, 'ROLE_USER' from benutzer where name=?");
+                        "select name, select rolle from benutzer where name=?");
         //TODO NutzerRolle ordentlich implementieren
     }
 

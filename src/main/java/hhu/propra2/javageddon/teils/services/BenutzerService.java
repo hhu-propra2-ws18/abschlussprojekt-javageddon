@@ -15,6 +15,7 @@ public class BenutzerService {
 	}
 	
 	public void addBenutzer(Benutzer b) {
+		b.setRolle("ROLE_USER");
 		alleBenutzer.save(b);
 	}
 	
