@@ -28,4 +28,16 @@ public class ReservierungTest {
         String correctString = "13.11.2018";
         assertThat(res2.printReservierungsDauer()).isEqualTo(correctString);
     }
+    
+    @Test
+    public void printsStartCorrectly() {
+        String correctString = "13.11.2018";
+        assertThat(res.printFormattedStart()).isEqualTo(correctString);
+    }
+    
+    @Test
+    public void printsEndeCorrectly() {
+        String correctString = "24.12.2018";
+        assertThat(res.printFormattedEnde()).isEqualTo(correctString);
+    }
 }

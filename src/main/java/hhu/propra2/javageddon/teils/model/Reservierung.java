@@ -44,4 +44,14 @@ public class Reservierung {
         String formattedDates = start.format(formatter) + " - " + ende.format(formatter);
         return formattedDates;
     }
+    
+    public String printFormattedStart() {
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    	return start.format(formatter);
+    }
+    
+    public String printFormattedEnde() {
+    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    	return ende.format(formatter);
+    }
 }
