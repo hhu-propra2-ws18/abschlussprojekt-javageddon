@@ -1,12 +1,16 @@
 package hhu.propra2.javageddon.teils.web;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 import java.util.*;
 import javax.validation.Valid;
 
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
+import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
+import hhu.propra2.javageddon.teils.services.ReservierungService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -20,6 +24,11 @@ public class BenutzerController {
 
     @Autowired
     private BenutzerService alleBenutzer;
+    
+    @Autowired
+    private ArtikelService alleArtikel;
+    
+    @Autowired ReservierungService alleReservierungen;
 
     @GetMapping("/registrieren")
     public String neuerBenutzer(Model m){
@@ -45,13 +54,21 @@ public class BenutzerController {
         }
         else {
             alleBenutzer.addBenutzer(benutzer);
-            return "redirect:benutzer/?" + benutzer.getId();
+            return "redirect:benutzer?=" + benutzer.getId();
         }
     }
-
 
     @GetMapping("/benutzer_anmelden")
     public String login(){
         return "benutzer_anmelden";
+    }
+    
+    @RequestMapping(value = "/benutzer", method = GET)
+    public String benutzerProfil( Model m, @RequestParam("id") long id) {
+    	m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
+    	m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
+    	m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
+    	m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemer(alleBenutzer.findBenutzerById(id)));
+    	return "profil_ansicht";
     }
 }
