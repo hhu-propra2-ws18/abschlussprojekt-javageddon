@@ -30,7 +30,7 @@ public class BenutzerService {
 		return b.getName().equals("");
 	}
 
-	public boolean isEmptyPasswort(Benutzer b) { return b.getPassword().equals("");	}
+	public boolean isEmptyPassword(Benutzer b) { return b.getPassword().equals("");	}
 
 	public boolean isEmptyEmail(Benutzer b) {
 		return b.getEmail().equals("");
