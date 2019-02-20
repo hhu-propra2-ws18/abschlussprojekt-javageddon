@@ -46,12 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
     }
-
-    @Bean
-    public CommonsMultipartResolver filterMultipartResolver(){
-        return new CommonsMultipartResolver();
-    }
-
+    
     @Bean
     @Override
     public JdbcUserDetailsManager userDetailsService() {
