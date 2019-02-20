@@ -49,6 +49,13 @@ public class DatabaseInitializer implements ServletContextInitializer {
         testnutzer.setRolle("ROLE_USER");
         benutzer.save(testnutzer);
 
+        final Benutzer testnutzerAD = new Benutzer();
+        testnutzerAD.setName("flo");
+        testnutzerAD.setPassword("istAdmin");
+        testnutzerAD.setEmail("test@marvinnervt.com");
+        testnutzerAD.setRolle("ROLE_ADMIN");
+        benutzer.save(testnutzerAD);
+
 
         IntStream.range(0,10).mapToObj(value -> {
             final Artikel a = new Artikel();
