@@ -113,7 +113,7 @@ public class ArtikelRepoTest {
     @Test
     public void connectsArtikelAndBenutzer(){
         tom = benRepo.save(tom);
-        fahrrad.setEigentuemer(benRepo.findById(tom.getId()).get());
+        fahrrad.setEigentuemer(benRepo.findById(tom.getId()));
         artRepo.save(fahrrad);
         Artikel retrievedAtrikel = artRepo.findById(fahrrad.getId());
         assertThat(retrievedAtrikel.getEigentuemer()).isEqualTo(tom);

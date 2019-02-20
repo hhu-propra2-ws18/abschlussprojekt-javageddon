@@ -46,10 +46,8 @@ public class BenutzerRepoTest {
 
 	@Test
 	public void retrievesBenutzerCorrectly() {
-		Optional<Benutzer> retrievedBenutzer = benRepo.findById(tom.getId());
-		assertThat(retrievedBenutzer.isPresent());
-		assertThat(retrievedBenutzer.get().getName()).isEqualTo(tom.getName());
-		assertThat(retrievedBenutzer.get().getEmail()).isEqualTo(tom.getEmail());
+		Benutzer retrievedBenutzer = benRepo.findById(tom.getId());
+		assertThat(retrievedBenutzer).isEqualTo(tom);
 
 	}
 
@@ -60,10 +58,8 @@ public class BenutzerRepoTest {
 		tom.setEmail("hello@hello.com");
 		tom.setName("Thomas");
 		benRepo.save(tom);
-		Optional<Benutzer> retrievedBenutzer = benRepo.findById(tom.getId());
-		assertThat(retrievedBenutzer.isPresent());
-		assertThat(retrievedBenutzer.get().getName()).isEqualTo("Thomas");
-		assertThat(retrievedBenutzer.get().getEmail()).isEqualTo("hello@hello.com");
+		Benutzer retrievedBenutzer = benRepo.findById(tom.getId());
+		assertThat(retrievedBenutzer).isEqualTo(tom);
 		
 	}
 
@@ -100,13 +96,13 @@ public class BenutzerRepoTest {
 	public void savesAndRetrievesSeveralUsersWithDifferentIds(){
 		herbert = benRepo.save(herbert);
 		jimbo = benRepo.save(jimbo);
-		Optional<Benutzer> retrievedBenutzer = benRepo.findById(tom.getId());
-		Optional<Benutzer> retrievedBenutzer2 = benRepo.findById(herbert.getId());
-		Optional<Benutzer> retrievedBenutzer3 = benRepo.findById(jimbo.getId());
+		Benutzer retrievedBenutzer = benRepo.findById(tom.getId());
+		Benutzer retrievedBenutzer2 = benRepo.findById(herbert.getId());
+		Benutzer retrievedBenutzer3 = benRepo.findById(jimbo.getId());
 		
-		Long id1 = retrievedBenutzer.get().getId();
-		Long id2 = retrievedBenutzer2.get().getId();
-		Long id3 = retrievedBenutzer3.get().getId();
+		Long id1 = retrievedBenutzer.getId();
+		Long id2 = retrievedBenutzer2.getId();
+		Long id3 = retrievedBenutzer3.getId();
 		
 		assertThat(!(id1.equals(id2)));
 		assertThat(!(id2.equals(id3)));
