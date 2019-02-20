@@ -35,6 +35,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
 
             b.setName(faker.funnyName().name());
             b.setEmail(faker.funnyName().name());
+            b.setRolle("ROLE_USER");
 
             return b;
         }).collect(Collectors.collectingAndThen(
