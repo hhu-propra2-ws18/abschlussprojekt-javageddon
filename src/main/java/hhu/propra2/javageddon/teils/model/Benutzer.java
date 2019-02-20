@@ -32,7 +32,8 @@ public class Benutzer {
 
     @NotNull
     @NotEmpty
-    private String rolle;
+    @Builder.Default
+    private String rolle = "ROLE_USER";
 
     public String getPassword() {
         return password;
