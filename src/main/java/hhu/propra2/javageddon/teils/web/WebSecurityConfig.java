@@ -29,15 +29,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //TODO NutzerRolle ordentlich implementieren
     }
 
+    @Autowired
+    public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication().withUser("bill").password("abc123").roles("USER");
+        auth.inMemoryAuthentication().withUser("admin").password("root123").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("dba").password("root123").roles("ADMIN","DBA");
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/registrieren","/fotos/*").permitAll()
+                .antMatchers("/","/registrieren","/fotos/*").permitAll()
                 .anyRequest().authenticated()
-                .antMatchers("/").hasRole("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/admin").access("hasRole('ADMIN')")
                 .and()
                 .formLogin()
                 .loginPage("/benutzer_anmelden")
