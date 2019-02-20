@@ -41,6 +41,12 @@ public class DatabaseInitializer implements ServletContextInitializer {
                 Collectors.toList(),
                 this.benutzer::saveAll));
 
+        final Benutzer testnutzer = new Benutzer();
+        testnutzer.setName("marvin");
+        testnutzer.setPassword("istDerBeste");
+        testnutzer.setEmail("test@dunervst.com");
+        benutzer.save(testnutzer);
+
 
         IntStream.range(0,10).mapToObj(value -> {
             final Artikel a = new Artikel();

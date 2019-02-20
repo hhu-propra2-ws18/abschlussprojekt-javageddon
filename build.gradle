@@ -32,9 +32,15 @@ dependencies {
 	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly('org.postgresql:postgresql')
 	compile('com.h2database:h2')
+	compile("org.springframework.boot:spring-boot-starter-security")
+	
 	compileOnly 'org.projectlombok:lombok'
     annotationProcessor('org.projectlombok:lombok')
 
+	testCompile("org.springframework.security:spring-security-test")
+
 	compile group: 'com.github.javafaker', name: 'javafaker', version: '0.16'
-	
+	compile group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '2.1.2.RELEASE'
+
+
 }

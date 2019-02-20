@@ -35,6 +35,8 @@ public class BenutzerController {
             
         m.addAttribute("nameRequired", alleBenutzer.isEmptyName(benutzer));
         m.addAttribute("emailRequired", alleBenutzer.isEmptyEmail(benutzer));
+
+        m.addAttribute("passwordRequired", alleBenutzer.isEmptyPassword(benutzer));
         
         m.addAttribute("benutzer",benutzer);
 
@@ -45,5 +47,11 @@ public class BenutzerController {
             alleBenutzer.addBenutzer(benutzer);
             return "redirect:benutzer/?" + benutzer.getId();
         }
+    }
+
+
+    @GetMapping("/benutzer_anmelden")
+    public String login(){
+        return "benutzer_anmelden";
     }
 }

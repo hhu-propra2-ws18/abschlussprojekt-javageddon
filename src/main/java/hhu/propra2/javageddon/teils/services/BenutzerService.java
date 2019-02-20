@@ -29,8 +29,9 @@ public class BenutzerService {
 	public boolean isEmptyName(Benutzer b) {
 		return b.getName().equals("");
 	}
-	
-	
+
+	public boolean isEmptyPassword(Benutzer b) { return b.getPassword().equals("");	}
+
 	public boolean isEmptyEmail(Benutzer b) {
 		return b.getEmail().equals("");
 	}

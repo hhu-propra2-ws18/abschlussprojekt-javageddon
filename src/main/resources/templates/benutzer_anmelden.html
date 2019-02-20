@@ -20,22 +20,21 @@
                         <a href="/" class="float-right btn btn-outline-primary">Zurück zur Übersicht</a>
                         <h4 class="card-title mb-4 mt-1">Login</h4>
 
-                        <form method="post" th:action="{/anmelden}">
 
-                            <input type="hidden" value="1" name="id" th:value="${benutzer.id}">
+                        <div th:if="${param.error}" class="alert alert-danger">
+                            <strong>Fehler!</strong> Benutzername und/oder Passwort sind falsch/ungültig!
+                        </div>
 
-                            <div class="form-group">
-                                <label>Benutzername</label>
-                                <input class="form-control" placeholder="Benutzername" type="text" th:value="${benutzer.name}"/>
-                            </div> <!-- form-group// -->
-                            <div class="form-group">
-                                <label>E-Mail</label>
-                                <input class="form-control" placeholder="text@example.com" type="email" th:value="${benutzer.email}"/>
-                            </div> <!-- form-group// -->
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block"> Anmelden  </button>
-                            </div> <!-- form-group// -->
-                            </input>
+                        <div th:if="${param.logout}" class="alert alert-info">
+                            <strong>Info:</strong> Sie wurden erfolgreich ausgeloggt!
+                        </div>
+
+                            <form th:action="@{/benutzer_anmelden}" method="post">
+
+                            <div><label> User Name : <input type="text" name="username"/> </label></div>
+                            <div><label> Password: <input type="password" name="password"/> </label></div>
+                            <div><input type="submit" value="Sign In"/></div>
+
                         </form>
                     </article>
                 </div> <!-- card.// -->
