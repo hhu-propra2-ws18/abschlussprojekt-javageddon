@@ -68,7 +68,7 @@ public class ReservierungServiceTest {
 
     @Test
     public void selectsOnlyCurrentReservierungen() {
-        List<Reservierung> aktuelleReservierungen = rService.findCurrentReservierungByArtikel(hamster);
-        assertThat(aktuelleReservierungen).containsExactlyInAnyOrder(currentRes, futureRes);
+        List<Reservierung> aktuelleReservierungen = rService.findCurrentReservierungByArtikelOrderedByDate(hamster);
+        assertThat(aktuelleReservierungen).containsExactly(currentRes, futureRes);
     }
 }
