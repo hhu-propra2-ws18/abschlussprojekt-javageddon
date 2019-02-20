@@ -27,6 +27,10 @@ public class ArtikelService {
 		return alleArtikel.findById(id);
 	}
 	
+	public List<Artikel> findArtikelByEigentuemer(Benutzer eigentuemer) {
+		return alleArtikel.findByEigentuemer(eigentuemer);
+	}
+	
 	public Artikel addArtikel(Artikel a) {
 		return alleArtikel.save(a);
 	}

@@ -35,20 +35,22 @@ public class ArtikelRepoTest {
 
     Benutzer tom = Benutzer.builder().name("Tom").email("tom@tomtom.com").build();
     Adresse ad1 = Adresse.builder().hausnummer("5e").strasse("Hauptstrasse").ort("koeln").plz(4000).build();
-    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).standort(ad1).build();
-    Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).standort(ad1).build();
+    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(tom).standort(ad1).build();
+    Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).eigentuemer(tom).standort(ad1).build();
     Artikel kochtopf =  Artikel.builder().titel("kochtopf").standort(ad1).aktiv(true).build();
 
     ////////////////////////////////////PREPARATIONS////////////////////////////////////////////////
 
     @Before
     public void testInit() {
+        tom = benRepo.save(tom);
         fahrrad = artRepo.save(fahrrad);
     }
 
     @After
     public void testDelete(){
         artRepo.deleteAll();
+        benRepo.deleteAll();
     }
 
     /////////////////////////////TESTS FOR RETRIEVAL OF OBJECTS///////////////////////////////////////////////////
@@ -74,6 +76,14 @@ public class ArtikelRepoTest {
         kochtopf = artRepo.save(kochtopf);
         List<Artikel> aktiveArtikel = artRepo.findByAktiv(true);
         assertThat(aktiveArtikel).containsExactlyInAnyOrder(fahrrad, kochtopf);
+    }
+    
+    @Test
+    public void findArticlesByEigentuemer(){
+        hamster = artRepo.save(hamster);
+        kochtopf = artRepo.save(kochtopf);
+        List<Artikel> aktiveArtikel = artRepo.findByEigentuemer(tom);
+        assertThat(aktiveArtikel).containsExactlyInAnyOrder(fahrrad, hamster);
     }
 
     ////////////////////////////////////TESTS FOR UPDATING OBJECTS////////////////////////////////////////////
@@ -112,7 +122,6 @@ public class ArtikelRepoTest {
 
     @Test
     public void connectsArtikelAndBenutzer(){
-        tom = benRepo.save(tom);
         fahrrad.setEigentuemer(benRepo.findById(tom.getId()));
         artRepo.save(fahrrad);
         Artikel retrievedAtrikel = artRepo.findById(fahrrad.getId());
