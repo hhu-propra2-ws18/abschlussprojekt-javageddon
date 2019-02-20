@@ -52,3 +52,6 @@
 
 * Weitere Services rund um Artikel und Reservierung erstellt, samt Tests dafuer.
 * Wir haben uns umenstchieden und werden Spring Security doch implementieren.
+* Die Spring Security Implementation laeuft bis auf gehashte Passwoerter.
+* Die Detailansicht von Artikeln funtioniert bis auf Reservierungsanzeige.
+* Artikel koennen (inkl. Fotos hochladen) erstellt werden.
