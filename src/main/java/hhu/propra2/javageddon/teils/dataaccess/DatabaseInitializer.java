@@ -46,6 +46,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
         testnutzer.setName("marvin");
         testnutzer.setPassword("istDerBeste");
         testnutzer.setEmail("test@dunervst.com");
+        testnutzer.setRolle("ROLE_USER");
         benutzer.save(testnutzer);
 
 
