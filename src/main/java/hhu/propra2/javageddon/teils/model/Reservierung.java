@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Data
@@ -34,4 +35,13 @@ public class Reservierung {
     private Boolean bearbeitet;
 
     private Boolean akzeptiert;
+
+    public String printReservierungsDauer(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        if (start.isEqual(ende)) {
+            return start.format(formatter);
+        }
+        String formattedDates = start.format(formatter) + " - " + ende.format(formatter);
+        return formattedDates;
+    }
 }
