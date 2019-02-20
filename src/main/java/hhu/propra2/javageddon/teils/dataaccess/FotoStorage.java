@@ -16,11 +16,12 @@ public class FotoStorage implements FotoStorageInterface{
 
 
     @Override
-    public void store(MultipartFile file){
+    public String store(MultipartFile file){
         try {
-            String newName = "" + index + ".jpg";
+            String newName = "" + index;
             Files.copy(file.getInputStream(), this.rootLocation.resolve(newName), StandardCopyOption.REPLACE_EXISTING);
             index++;
+            return newName;
         } catch (Exception e) {
             throw new RuntimeException("FAIL! -> message = " + e.getMessage());
         }

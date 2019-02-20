@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 public class Benutzer {
     @Id
     @GeneratedValue
-    private Long id;
+    private long id;
 
     @NotNull
     @NotEmpty
