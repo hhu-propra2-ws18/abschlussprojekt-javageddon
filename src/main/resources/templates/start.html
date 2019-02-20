@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -20,11 +20,24 @@
                 <h1>Artikel Übersicht</h1>
             </div>
             <div class="col-md-4">
-                <div class="btn float-right" role="group">
-                    <a class="btn btn-primary btn-md" href="/login">Login</a>
+                <a class="btn float-right" role="group">
+                    <a th:unless="${#httpServletRequest.isUserInRole('USER')}"
+                       class="btn btn-primary btn-md" href="/login">Login</a>
+
+                    <a th:if="${#httpServletRequest.isUserInRole('USER')}"
+                       class="btn btn-primary btn-md" href="/logout">Logout</a>
+
+                    <!--
+                    <a th:if="${#httpServletRequest.isUserInRole('USER')}"
+                        <form th:action="@{/logout}" method="post">
+                            <button class="btn btn-primary btn-md" type="submit" value="Sign Out"/>
+                        </form>
+                    -->
+
                     <a class="btn btn-secondary btn-md" href="/registrieren">Registrieren</a>
-                    <form th:action="@{/logout}" method="post">
-                        <input type="submit" value="Sign Out"/>
+                    </div>
+
+
                 </div>
             </div>
         </section>
