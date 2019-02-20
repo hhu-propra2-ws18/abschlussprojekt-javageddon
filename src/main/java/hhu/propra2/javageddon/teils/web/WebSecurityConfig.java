@@ -34,7 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/registrieren","/fotos/*").hasRole("ROLE_USER")
+                .antMatchers("/", "/registrieren","/fotos/*").hasRole("USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
