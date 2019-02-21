@@ -68,7 +68,7 @@ public class ArtikelController {
 
         artikel.setStandort(adresse);
         artikel.setFotos(new ArrayList<String>());
-        artikel.setEigentuemer(alleBenutzer.findBenutzerById(id)); // TODO EINGELOGGTER USER
+        artikel.setEigentuemer(alleBenutzer.findBenutzerById(id));
         alleArtikel.addArtikel(artikel);
         return "redirect:/fotoupload/" + artikel.getId();
     }
