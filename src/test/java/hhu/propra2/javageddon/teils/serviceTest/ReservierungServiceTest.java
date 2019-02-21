@@ -44,7 +44,7 @@ public class ReservierungServiceTest {
     Benutzer heidi = Benutzer.builder().name("Harald").email("har@tom.de").build();
     Adresse ad = Adresse.builder().hausnummer("5").strasse("Hauptstrasse").ort("berlin").plz(4004).build();
     Artikel hamster = Artikel.builder().titel("Hamster").eigentuemer(heidi).standort(ad).build();
-
+    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(heidi).standort(ad).build();
 
     Reservierung currentRes = Reservierung.builder().start(currentDay).ende(currentDay).artikel(hamster).build();
     Reservierung futureRes = Reservierung.builder().start(futureDay).ende(futureDay).artikel(hamster).build();
@@ -71,6 +71,15 @@ public class ReservierungServiceTest {
     public void selectsOnlyCurrentReservierungen() {
         List<Reservierung> aktuelleReservierungen = rService.findCurrentReservierungByArtikelOrderedByDate(hamster);
         assertThat(aktuelleReservierungen).containsExactly(currentRes, futureRes);
+    }
+
+    @Test
+    public void selectsZeroReservierungen() {
+        fahrrad = artRepo.save(fahrrad);
+        List<Reservierung> aktuelleReservierungen = rService.findCurrentReservierungByArtikelOrderedByDate(fahrrad);
+        assertThat(aktuelleReservierungen).isNotNull();
+        assertThat(aktuelleReservierungen).isInstanceOf(List.class);
+        assertThat(aktuelleReservierungen).isEmpty();
     }
 
     @Test
