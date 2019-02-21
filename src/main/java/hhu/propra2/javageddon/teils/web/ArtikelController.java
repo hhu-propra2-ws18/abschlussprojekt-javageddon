@@ -67,6 +67,13 @@ public class ArtikelController {
         return "redirect:/fotoupload/" + artikel.getId();
     }
 
+    @RequestMapping(value = "/artikel_reservieren", method = GET)
+    public String artikelReservieren(@ModelAttribute Benutzer benutzer, Model m, @RequestParam("id") long id){
+        Artikel artikel = alleArtikel.findArtikelById(id);
+        m.addAttribute("artikel", artikel);
+        return "artikel_reservieren";
+    }
+
 /*
     @GetMapping("/edit/{id}")
     public String editPerson(Model m, @PathVariable("id") int id) {
