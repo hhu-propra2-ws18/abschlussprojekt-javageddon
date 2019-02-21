@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -60,9 +62,13 @@ public class ArtikelController {
 
     @PostMapping("/artikel_erstellen")
     public String erstelleArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Adresse adresse){
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        Long id = alleBenutzer.getIdByName(username);
+
         artikel.setStandort(adresse);
         artikel.setFotos(new ArrayList<String>());
-        artikel.setEigentuemer(alleBenutzer.findBenutzerById(1)); // TODO EINGELOGGTER USER
+        artikel.setEigentuemer(alleBenutzer.findBenutzerById(id)); // TODO EINGELOGGTER USER
         alleArtikel.addArtikel(artikel);
         return "redirect:/fotoupload/" + artikel.getId();
     }
