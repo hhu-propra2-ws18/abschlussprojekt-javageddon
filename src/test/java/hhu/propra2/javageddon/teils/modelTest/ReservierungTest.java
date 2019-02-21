@@ -40,4 +40,26 @@ public class ReservierungTest {
         String correctString = "24.12.2018";
         assertThat(res.printFormattedEnde()).isEqualTo(correctString);
     }
+
+    @Test
+    public void dayisAtStart() {
+        assertThat(res.isBetween(start)).isEqualTo(true);
+    }
+
+    @Test
+    public void dayisAtEnd() {
+        assertThat(res.isBetween(ende)).isEqualTo(true);
+    }
+
+    @Test
+    public void dayisBetween() {
+        LocalDate checkDay = LocalDate.of(2018, 11,20);
+        assertThat(res.isBetween(checkDay)).isEqualTo(true);
+    }
+
+    @Test
+    public void dayisNotBetween() {
+        LocalDate checkDay = LocalDate.of(2019, 11,20);
+        assertThat(res.isBetween(checkDay)).isEqualTo(false);
+    }
 }
