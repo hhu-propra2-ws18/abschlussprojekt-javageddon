@@ -37,8 +37,8 @@ public class ReservierungService {
         return alleReservierungen.findByArtikelAndLeihender(a,b);
     }
     
-    public List<Reservierung> findReservierungByArtikelEigentuemer(Benutzer b) {
-    	return alleReservierungen.findByArtikelEigentuemer(b);
+    public List<Reservierung> findReservierungByArtikelEigentuemerAndNichtBearbeitet(Benutzer b) {
+    	return alleReservierungen.findByArtikelEigentuemerAndBearbeitet(b, false);
     }
 
     public List<Reservierung> findCurrentReservierungByArtikelOrderedByDate(Artikel a){

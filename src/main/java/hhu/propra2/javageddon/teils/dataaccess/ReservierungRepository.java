@@ -12,6 +12,6 @@ public interface ReservierungRepository extends CrudRepository<Reservierung, Lon
     List<Reservierung> findByArtikel(Artikel a);
     List<Reservierung> findByLeihender(Benutzer b);
     List<Reservierung> findByArtikelAndLeihender(Artikel a, Benutzer b);
-    List<Reservierung> findByArtikelEigentuemer(Benutzer b);
+    List<Reservierung> findByArtikelEigentuemerAndBearbeitet(Benutzer b, boolean tf);
 
 }
