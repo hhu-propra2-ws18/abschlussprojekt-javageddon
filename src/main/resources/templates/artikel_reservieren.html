@@ -63,11 +63,11 @@
                     <!-- TODO Wird aktualisiert wenn die Entität Reservierung implementiert ist.
                     <p><span style="font-weight: bold;">Verfügbar ab: </span><span th:text="${reservierung.toString()}">16.02.2019</span></p>
                     -->
-                    <form>
+                    <form th:object="${reservierung}">
                         Start Datum deiner Reservierung:
-                        <input type="date" id="startDate" name="datum"><br>
+                        <input type="date" id="startDate" name="datum" th:field="*{start}"><br>
                         End Datum deine Reservierung:
-                        <input type="date" id="endDate" name="datum"><br>
+                        <input type="date" id="endDate" name="datum" th:field="*{ende}"><br>
 
                     </form>
                     <div class="action">

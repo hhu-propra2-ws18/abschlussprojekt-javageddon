@@ -81,7 +81,7 @@ public class ArtikelController {
     }
 
     @PostMapping("/reservieren")
-    public String reserviereArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Adresse adresse, @ModelAttribute Reservierung reservierung, @ModelAttribute LocalDate localDate){
+    public String reserviereArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Reservierung reservierung, @ModelAttribute LocalDate localDate){
         reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
         alleReservierungen.addReservierung(reservierung);
         return "artikel_reservieren";
