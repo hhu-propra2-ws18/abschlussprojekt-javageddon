@@ -52,10 +52,10 @@ public class BenutzerController {
         if(alleBenutzer.hasIncorrectInput(benutzer)) {
         	return "benutzer_registrieren";
         }
-        else {
-            alleBenutzer.addBenutzer(benutzer);
-            return "redirect:benutzer?=" + benutzer.getId();
-        }
+
+        alleBenutzer.addBenutzer(benutzer);
+        return "redirect:benutzer?=" + benutzer.getId();
+
     }
 
     @GetMapping("/benutzer_anmelden")
