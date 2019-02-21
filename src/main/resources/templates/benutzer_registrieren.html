@@ -22,7 +22,7 @@
 
                         <form th:action="@{/registrieren}" method="post" th:object="${benutzer}">
 
-                            <input type="hidden" value="1" name="id" th:value="${id}">
+                            <input type="hidden" value="1" name="id" th:value="${benutzer.id}">
 
                                 <div class="form-group">
                                     <label for="name">Benutzername</label>
