@@ -54,7 +54,7 @@ public class BenutzerController {
         }
         else {
             alleBenutzer.addBenutzer(benutzer);
-            return "redirect:benutzer?=" + benutzer.getId();
+            return "/"; // "redirect:benutzer?=" + benutzer.getId();
         }
     }
 
