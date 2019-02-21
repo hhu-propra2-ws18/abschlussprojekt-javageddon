@@ -2,6 +2,7 @@ package hhu.propra2.javageddon.teils.web;
 
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
+import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Reservierung;
@@ -37,9 +38,13 @@ public class ArtikelController {
     @Autowired
     private ReservierungService alleReservierungen;
 
+    @Autowired
+    private BeschwerdeRepository alleBeschwerden;
+
     @GetMapping("/")
     public String artikelListe(Model m){
         m.addAttribute("alleArtikel", alleArtikel.findAllAktivArtikel());
+        m.addAttribute("anzahlBeschwerden", alleBeschwerden.count());
         return "start";
     }
 
