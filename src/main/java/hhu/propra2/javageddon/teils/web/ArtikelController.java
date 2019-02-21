@@ -15,6 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -81,7 +82,7 @@ public class ArtikelController {
     }
 
     @PostMapping("/reservieren")
-    public String reserviereArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Reservierung reservierung, @ModelAttribute LocalDate localDate){
+    public String reserviereArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Reservierung reservierung, @ModelAttribute LocalDate localDate, BindingResult bindingResult){
         reservierung.setArtikel(artikel);
         reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
         reservierung.setBearbeitet(false);
