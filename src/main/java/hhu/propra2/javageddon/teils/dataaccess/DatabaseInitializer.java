@@ -32,6 +32,9 @@ public class DatabaseInitializer implements ServletContextInitializer {
     @Autowired
     ReservierungRepository reservierung;
 
+    @Autowired
+    BeschwerdeRepository beschwerden;
+
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
         final Faker faker = new Faker(Locale.GERMAN);

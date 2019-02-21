@@ -27,4 +27,6 @@ public class Beschwerde {
 
     @ManyToOne
     private Benutzer hatRecht;
+
+    private boolean bearbeitet;
 }
