@@ -1,26 +1,15 @@
 package hhu.propra2.javageddon.teils.web;
 
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-
-import java.util.*;
-import javax.servlet.ServletRequest;
-import javax.validation.Valid;
-
-import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
-import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.validation.BindingResult;
 
 @Controller
 public class BenutzerController {

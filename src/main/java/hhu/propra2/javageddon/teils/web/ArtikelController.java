@@ -67,22 +67,4 @@ public class ArtikelController {
         return "redirect:/fotoupload/" + artikel.getId();
     }
 
-/*
-    @GetMapping("/edit/{id}")
-    public String editPerson(Model m, @PathVariable("id") int id) {
-        Person p = personen.getPerson(id);
-        m.addAttribute("person", p);
-        return "edit";
-    }
-
-    @PostMapping("/edit")
-    public String changePerson(Model m, Person p, String skillList) {
-        personen.merge(p, skillList);
-        return "redirect:"
-    }
-
-    @GetMapping("/add")
-    public String addPerson() {
-        return "redirect:" + "/edit/" + personen.newPerson().getId();
-    } */
 }
