@@ -15,10 +15,6 @@ public class BenutzerService {
 	}
 	
 	public void addBenutzer(Benutzer b) {
-		System.out.println(b.getId());
-		System.out.println(b.getName());
-		System.out.println(b.getEmail());
-		System.out.println(b.getPassword());
 		b.setRolle("ROLE_USER");
 		alleBenutzer.save(b);
 	}
@@ -46,10 +42,11 @@ public class BenutzerService {
 	}
 	
 	public boolean hasIncorrectInput(Benutzer b) {
-		if (isDuplicateEmail(b) || isDuplicateName(b) || 
-				isEmptyEmail(b) || isEmptyName(b) || isEmptyPassword(b)) {
-			return true;
-		}
-		return false;
-	}
+        return isDuplicateEmail(b) || isDuplicateName(b) ||
+                isEmptyEmail(b) || isEmptyName(b);
+    }
+
+    public Long getIdByName(String username) {
+	    return alleBenutzer.findByName(username).getId();
+    }
 }
