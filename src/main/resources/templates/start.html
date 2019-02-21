@@ -16,12 +16,19 @@
 
     <div class="container-fluid">
         <section class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <h1>Artikel Übersicht</h1>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
 
                 <a class="btn float-right" role="group">
+
+                    <a th:if="${#httpServletRequest.isUserInRole('USER') || #httpServletRequest.isUserInRole('ADMIN')}"
+                       class="btn btn-success btn-md" href="/artikel_erstellen">Artikel anlegen</a>
+
+                    <a th:if="${#httpServletRequest.isUserInRole('ADMIN')}"
+                       class="btn btn-danger btn-md" href="/admin_clearing">Clearing</a>
+
                     <a th:unless="${#httpServletRequest.isUserInRole('USER') || #httpServletRequest.isUserInRole('ADMIN')}"
                        class="btn btn-primary btn-md" href="/login">Login</a>
 
@@ -33,6 +40,8 @@
 
                     <a th:if="${#httpServletRequest.isUserInRole('USER') || #httpServletRequest.isUserInRole('ADMIN')}"
                        class="btn btn-warning btn-md" href="/profil_ansicht">Mein Profil</a>
+
+
                 </a>
             </div>
         </section>
