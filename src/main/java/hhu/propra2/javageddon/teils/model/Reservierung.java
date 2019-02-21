@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,8 +21,10 @@ public class Reservierung {
     @GeneratedValue
     private long id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate start;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate ende;
 
     @ManyToOne
