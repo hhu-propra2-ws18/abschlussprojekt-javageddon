@@ -58,7 +58,8 @@ public class BenutzerController {
         	return "benutzer_registrieren";
         }else {
             alleBenutzer.addBenutzer(benutzer);
-            return "redirect:benutzer?=" + benutzer.getId();
+            //return "redirect:benutzer?=" + benutzer.getId();
+            return "redirect:profil_ansicht";
         }
     }
 
@@ -67,15 +68,7 @@ public class BenutzerController {
         return "benutzer_anmelden";
     }
     
-    @RequestMapping(value = "/benutzer", method = GET)
-    public String benutzerProfil( Model m, @RequestParam("id") long id) {
-    	m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
-    	m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
-    	m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
-    	m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemerAndNichtBearbeitet(alleBenutzer.findBenutzerById(id)));
-    	return "profil_ansicht";
-	}
-    	
+
     @GetMapping("/profil_ansicht")
     public String benutzerAnsicht(Model m){
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -84,7 +77,7 @@ public class BenutzerController {
         m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
         m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
-        m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemer(alleBenutzer.findBenutzerById(id)));
+        m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemerAndNichtBearbeitet(alleBenutzer.findBenutzerById(id)));
         return "profil_ansicht";
     }
 }
