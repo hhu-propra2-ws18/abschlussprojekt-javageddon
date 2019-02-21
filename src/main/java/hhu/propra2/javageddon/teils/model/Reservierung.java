@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -32,7 +33,8 @@ public class Reservierung {
     @JoinColumn(name = "RESERVIERUNG_ARTIKEL_ID")
     private Artikel artikel;
 
-    private Boolean bearbeitet;
+    @Builder.Default
+    private Boolean bearbeitet = false;
 
     private Boolean akzeptiert;
 
@@ -53,5 +55,11 @@ public class Reservierung {
     public String printFormattedEnde() {
     	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     	return ende.format(formatter);
+    }
+
+    public boolean isBetween(LocalDate checkDay) {
+        if (!checkDay.isBefore(start) && !checkDay.isAfter(ende)) {
+                return true; }
+        return false;
     }
 }
