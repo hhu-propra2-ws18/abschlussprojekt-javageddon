@@ -7,6 +7,7 @@ import hhu.propra2.javageddon.teils.model.Reservierung;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collector;
@@ -43,16 +44,19 @@ public class ReservierungService {
 
     public List<Reservierung> findCurrentReservierungByArtikelOrderedByDate(Artikel a){
         List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikel(a);
+        List<Reservierung> vergangeneReservierungen = new ArrayList<Reservierung>();
         LocalDate currentDay = LocalDate.now();
         for (Reservierung res : artikelReservierungen) {
             if (res.getEnde().isBefore(currentDay)) {
-                artikelReservierungen.remove(res);
+                vergangeneReservierungen.add(res);
             }
         }
-        return  artikelReservierungen
-        		.stream()
-        		.sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
-        		.collect(Collectors.toList());
+        artikelReservierungen.removeAll(vergangeneReservierungen);
+
+        return artikelReservierungen
+                .stream()
+                .sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
+                .collect(Collectors.toList());
     }
 
     public boolean isAllowedReservierungsDate(Artikel a, LocalDate startAntrag, LocalDate endeAntrag) {

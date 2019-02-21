@@ -55,8 +55,8 @@ public class ArtikelController {
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
         Artikel artikel = alleArtikel.findArtikelById(id);
-    /*    List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
-        m.addAttribute("alleReservierungen", artikelReservierungen);*/
+        List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
+        m.addAttribute("alleReservierungen", artikelReservierungen);
         m.addAttribute("artikel", artikel);
         return "artikel_details";
     }

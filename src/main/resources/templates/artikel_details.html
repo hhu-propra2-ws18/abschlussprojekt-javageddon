@@ -60,9 +60,10 @@
                     <p><span style="font-weight: bold;">Kaution: </span><span th:text="${artikel.kaution + '€'}">100 €</span></p>
                     <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${(artikel.eigentuemer != null) ? artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
                     <p><span style="font-weight: bold;">Standort: </span><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
-                    <!-- TODO Wird aktualisiert wenn die Entität Reservierung implementiert ist.
-                    <p><span style="font-weight: bold;">Verfügbar ab: </span><span th:text="${reservierung.toString()}">16.02.2019</span></p>
-                    -->
+                    <p><span style="font-weight: bold;">bereits vorhandene Reservierungen: </span></p>
+                    <ul th:each="reservierung: ${alleReservierungen}">
+                        <li th:text="${reservierung.printReservierungsDauer()}">16.07.2019 - 20.07.2019</li>
+                    </ul>
                     <div class="action">
                         <a href="/reservieren"class="btn btn-primary btn-md" >Reservieren</a>
                         <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
