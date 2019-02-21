@@ -4,9 +4,11 @@ import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
+import hhu.propra2.javageddon.teils.model.Reservierung;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
 import hhu.propra2.javageddon.teils.model.Adresse;
+import hhu.propra2.javageddon.teils.services.ReservierungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -28,6 +31,9 @@ public class ArtikelController {
 
     @Autowired
     private BenutzerService alleBenutzer;
+
+    @Autowired
+    private ReservierungService alleReservierungen;
 
     @GetMapping("/")
     public String artikelListe(Model m){
@@ -71,6 +77,13 @@ public class ArtikelController {
     public String artikelReservieren(@ModelAttribute Benutzer benutzer, Model m, @RequestParam("id") long id){
         Artikel artikel = alleArtikel.findArtikelById(id);
         m.addAttribute("artikel", artikel);
+        return "artikel_reservieren";
+    }
+
+    @PostMapping("/reservieren")
+    public String reserviereArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Adresse adresse, @ModelAttribute Reservierung reservierung, @ModelAttribute LocalDate localDate){
+        reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
+        alleReservierungen.addReservierung(reservierung);
         return "artikel_reservieren";
     }
 
