@@ -43,20 +43,20 @@ public class BenutzerController {
     @PostMapping("/registrieren")
     public String benutzerSubmit(@ModelAttribute Benutzer benutzer, Model m){
 
+        System.out.println("Enters");
         m.addAttribute("existingEmailError", alleBenutzer.isDuplicateEmail(benutzer));
         m.addAttribute("existingNameError", alleBenutzer.isDuplicateName(benutzer));
-            
+        System.out.println("Exists");
         m.addAttribute("nameRequired", alleBenutzer.isEmptyName(benutzer));
         m.addAttribute("emailRequired", alleBenutzer.isEmptyEmail(benutzer));
-
+        System.out.println("required");
         m.addAttribute("passwordRequired", alleBenutzer.isEmptyPassword(benutzer));
-        
+        System.out.println("password");
         m.addAttribute("benutzer",benutzer);
-
+        System.out.println("benutzer");
         if(alleBenutzer.hasIncorrectInput(benutzer)) {
         	return "benutzer_registrieren";
-        }
-        else {
+        }else {
             alleBenutzer.addBenutzer(benutzer);
             return "redirect:benutzer?=" + benutzer.getId();
         }
@@ -72,7 +72,7 @@ public class BenutzerController {
     	m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
     	m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
     	m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
-    	m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemer(alleBenutzer.findBenutzerById(id)));
+    	m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemerAndNichtBearbeitet(alleBenutzer.findBenutzerById(id)));
     	return "profil_ansicht";
 	}
     	

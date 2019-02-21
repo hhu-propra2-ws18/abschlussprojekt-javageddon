@@ -42,11 +42,10 @@ public class BenutzerService {
 	}
 	
 	public boolean hasIncorrectInput(Benutzer b) {
-		return isDuplicateEmail(b) || isDuplicateName(b) ||
-				isEmptyEmail(b) || isEmptyName(b);
-	}
-
-	public Long getIdByName(String username) {
-		return alleBenutzer.findByName(username).getId();
+		if (isDuplicateEmail(b) || isDuplicateName(b) || 
+				isEmptyEmail(b) || isEmptyName(b)) {
+			return true;
+		}
+		return false;
 	}
 }
