@@ -3,6 +3,7 @@ package hhu.propra2.javageddon.teils.web;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.util.*;
+import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
@@ -13,6 +14,8 @@ import hhu.propra2.javageddon.teils.services.BenutzerService;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +32,7 @@ public class BenutzerController {
     private ArtikelService alleArtikel;
     
     @Autowired ReservierungService alleReservierungen;
+
 
     @GetMapping("/registrieren")
     public String neuerBenutzer(Model m){
@@ -73,7 +77,14 @@ public class BenutzerController {
 	}
     	
     @GetMapping("/profil_ansicht")
-    public String benutzerAnsicht(){
+    public String benutzerAnsicht(Model m){
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        Long id = alleBenutzer.getIdByName(username);
+        m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
+        m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
+        m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
+        m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemer(alleBenutzer.findBenutzerById(id)));
         return "profil_ansicht";
     }
 }
