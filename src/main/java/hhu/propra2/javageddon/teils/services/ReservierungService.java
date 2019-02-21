@@ -55,4 +55,23 @@ public class ReservierungService {
         		.collect(Collectors.toList());
     }
 
+    public boolean isAllowedReservierungsDate(Artikel a, LocalDate startAntrag, LocalDate endeAntrag) {
+        if (startAntrag.isBefore(LocalDate.now())) {
+            return false;
+        }
+        if (endeAntrag.isBefore(startAntrag)) {
+            return false;
+        }
+        Reservierung testDate = Reservierung.builder().start(startAntrag).ende(endeAntrag).build();
+        List<Reservierung> artikelReservierung = alleReservierungen.findByArtikel(a);
+        for (Reservierung res : artikelReservierung) {
+            if (res.isBetween(startAntrag) || res.isBetween(endeAntrag)
+                    || testDate.isBetween(res.getStart())
+                    || testDate.isBetween(res.getEnde())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
