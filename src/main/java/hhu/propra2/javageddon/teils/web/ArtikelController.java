@@ -82,8 +82,11 @@ public class ArtikelController {
 
     @PostMapping("/reservieren")
     public String reserviereArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Reservierung reservierung, @ModelAttribute LocalDate localDate){
+        reservierung.setArtikel(artikel);
         reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
-        alleReservierungen.addReservierung(reservierung);
+        reservierung.setBearbeitet(false);
+        reservierung.setAkzeptiert(false);
+        reservierung = alleReservierungen.addReservierung(reservierung);
         return "artikel_reservieren";
     }
 
