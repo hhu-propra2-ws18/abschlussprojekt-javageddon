@@ -35,12 +35,15 @@
             <div class="wrapper row">
                 <div class="preview col-md-6">
 
-                    <div class="gallery" th:each = "foto: ${artikel.fotos}"} >
+                    <img th:if="${artikel.fotos.isEmpty()}" th:src="'../fotos/kein-bild-vorhanden'"
+                         class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"
+                    />
+
+                    <div class="gallery" th:unless="${artikel.fotos.isEmpty()}" th:each = "foto: ${artikel.fotos}" >
                         <a target="_blank" th:href= "@{'../fotos/' + ${foto}}">
                             <img th:src="@{'../fotos/' + ${foto}}" alt="FOTO" width="300" height="200">
                         </a>
                     </div>
-
 
                 </div>
                 <div class="details col-md-6">
@@ -60,10 +63,15 @@
                     <p><span style="font-weight: bold;">Kaution: </span><span th:text="${artikel.kaution + '€'}">100 €</span></p>
                     <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${(artikel.eigentuemer != null) ? artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
                     <p><span style="font-weight: bold;">Standort: </span><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
-                    <p><span style="font-weight: bold;">bereits vorhandene Reservierungen: </span></p>
-                    <ul th:each="reservierung: ${alleReservierungen}">
-                        <li th:text="${reservierung.printReservierungsDauer()}">16.07.2019 - 20.07.2019</li>
-                    </ul>
+
+                    <p><span style="font-weight: bold;">Reservierungen: </span>
+                    <span th:if="${alleReservierungen.isEmpty()}">Keine Reservierung vorhanden</span>
+                    <span th:unless="${alleReservierungen.isEmpty()}">
+                        <ul th:each="reservierung: ${alleReservierungen}">
+                            <li th:text="${reservierung.printReservierungsDauer()}"></li>
+                        </ul>
+                    </span></p>
+
                     <div class="action">
                         <a href="/reservieren"class="btn btn-primary btn-md" >Reservieren</a>
                         <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
