@@ -1,4 +1,4 @@
-﻿package hhu.propra2.javageddon.teils.web;
+package hhu.propra2.javageddon.teils.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

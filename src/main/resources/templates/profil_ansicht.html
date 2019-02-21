@@ -97,7 +97,7 @@
 
 
 
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:50px">
         <section class="row">
             <div class="col-md-8">
                 <h3>Deine Reservierungen</h3>
@@ -118,32 +118,32 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="artikel: ${alleArtikel}">
+            <tr th:each="reservierung: ${alleReservierungen}">
                 <td>
                     <figure class="media">
 
                         <div class="img-wrap">
 
-                            <img th:src="${(artikel.fotos.isEmpty() == false ) ? '../fotos/' + artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
+                            <img th:src="${(reservierung.artikel.fotos.isEmpty() == false ) ? '../fotos/' + artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
                                  class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"
                             />
 
                         </div>
 
                         <figcaption class="media-body">
-                            <h4 th:text="${artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
+                            <h4 th:text="${reservierung.artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
                         </figcaption>
                     </figure>
                 </td>
 
                 <td>
                     <div class="date-wrap">
-                        <var class="date" th:text="|${reservierung.start} €|">1.1.2019</var>
+                        <var class="date" th:text="|${reservierung.printFormattedStart()}|">1.1.2019</var>
                     </div>
                 </td>
                 <td>
                     <div class="date-wrap">
-                        <var class="date" th:text="|${reservierung.ende} €|">31.12.2019</var>
+                        <var class="date" th:text="|${reservierung.printFormattedEnde()}|">31.12.2019</var>
                     </div>
                 </td>
                 <td>
@@ -157,7 +157,75 @@
                 </td>
                 <td class="text-right">
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
-                    <a th:href="@{'/details?id=' + ${artikel.id}}"
+                    <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
+                       href="/details?id=id" class="btn btn-outline-danger">Details</a>
+                </td>
+            </tbody>
+        </table>
+    </div>
+    
+    
+    <div class="container-fluid" style="margin-top:50px">
+        <section class="row">
+            <div class="col-md-8">
+                <h3>Deine Anfragen</h3>
+            </div>
+        </section>
+    </div>
+
+    <div class="card">
+        <table class="table table-hover shopping-cart-wrap">
+            <thead class="text-muted">
+            <tr>
+                <th scope="col">Artikel</th>
+                <th scope="col" width="160">Start</th>
+                <th scope="col" width="160">Ende</th>
+                <th scope="col" width="100">Bearbeitet</th>
+                <th scope="col" width="100">Akzeptiert</th>
+                <th scope="col" width="200"> </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="reservierung: ${alleAnfragen}">
+                <td>
+                    <figure class="media">
+
+                        <div class="img-wrap">
+
+                            <img th:src="${(reservierung.artikel.fotos.isEmpty() == false ) ? '../fotos/' + artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
+                                 class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"
+                            />
+
+                        </div>
+
+                        <figcaption class="media-body">
+                            <h4 th:text="${reservierung.artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
+                        </figcaption>
+                    </figure>
+                </td>
+
+                <td>
+                    <div class="date-wrap">
+                        <var class="date" th:text="|${reservierung.printFormattedStart()}|">1.1.2019</var>
+                    </div>
+                </td>
+                <td>
+                    <div class="date-wrap">
+                        <var class="date" th:text="|${reservierung.printFormattedEnde()}|">31.12.2019</var>
+                    </div>
+                </td>
+                <td>
+                    <span class="bg-success rounded-circle" th:if="${reservierung.bearbeitet}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="bg-danger rounded-circle" th:unless="${reservierung.bearbeitet}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </td>
+
+                <td>
+                    <span class="bg-success rounded-circle" th:if="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <span class="bg-danger rounded-circle" th:unless="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </td>
+                <td class="text-right">
+                    <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
+                    <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
                        href="/details?id=id" class="btn btn-outline-danger">Details</a>
                 </td>
             </tbody>
@@ -165,7 +233,6 @@
     </div>
 </div>
 
-</div>
 
 
 </body>
