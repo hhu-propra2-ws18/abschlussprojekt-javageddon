@@ -3,12 +3,9 @@ package hhu.propra2.javageddon.teils.web;
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
-import hhu.propra2.javageddon.teils.model.Artikel;
-import hhu.propra2.javageddon.teils.model.Benutzer;
-import hhu.propra2.javageddon.teils.model.Reservierung;
+import hhu.propra2.javageddon.teils.model.*;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
-import hhu.propra2.javageddon.teils.model.Adresse;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -84,6 +81,25 @@ public class ArtikelController {
         artikel.setEigentuemer(alleBenutzer.findBenutzerById(id));
         alleArtikel.addArtikel(artikel);
         return "redirect:/fotoupload/" + artikel.getId();
+    }
+
+    @RequestMapping(value = "/beschweren", method = GET)
+    public String artikelReservieren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
+        m.addAttribute("reservierung",reservierung);
+        return "artikel_reservieren";
+    }
+
+    @PostMapping("/beschweren")
+    public String reserviereArtikel(@ModelAttribute Reservierung reservierung){
+        Beschwerde beschwerde = new Beschwerde();
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        Long id = alleBenutzer.getIdByName(username);
+        beschwerde.setReservierung(reservierung);
+        beschwerde.setBearbeitet(false);
+        beschwerde.setNutzer(reservierung.getLeihender());
+        
+        return "redirect:/";
     }
 
 }
