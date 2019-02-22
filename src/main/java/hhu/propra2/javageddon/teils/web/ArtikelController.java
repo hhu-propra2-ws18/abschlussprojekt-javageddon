@@ -76,20 +76,20 @@ public class ArtikelController {
 
     @RequestMapping(value = "/reservieren", method = GET)
     public String artikelReservieren(@ModelAttribute Benutzer benutzer, Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
+        Artikel artikel = alleArtikel.findArtikelById(id);
         reservierung.setStart(LocalDate.now());
         reservierung.setEnde(LocalDate.now());
-        Artikel artikel = alleArtikel.findArtikelById(id);
+        reservierung.setLeihender(benutzer);
+        reservierung.setArtikel(artikel);
+        reservierung.setBearbeitet(false);
+        reservierung.setAkzeptiert(false);
         m.addAttribute("artikel", artikel);
         return "artikel_reservieren";
     }
 
     @PostMapping("/reservieren")
-    public String reserviereArtikel(Reservierung reservierung, @RequestParam("id") long id){
-        reservierung.setArtikel(alleArtikel.findArtikelById(id));
-        reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
-        reservierung.setBearbeitet(false);
-        reservierung.setAkzeptiert(false);
-        reservierung = alleReservierungen.addReservierung(reservierung);
+    public String reserviereArtikel(@ModelAttribute Reservierung reservierung, @RequestParam("id") long id){
+        alleReservierungen.addReservierung(reservierung);
         return "redirect:/";
     }
 
