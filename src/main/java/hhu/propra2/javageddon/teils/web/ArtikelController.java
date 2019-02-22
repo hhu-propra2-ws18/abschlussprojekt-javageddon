@@ -75,12 +75,12 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/reservieren", method = GET)
-    public String artikelReservieren(Benutzer benutzer, Model m, @RequestParam("id") long id){
+    public String artikelReservieren(Model m, @RequestParam("id") long id){
         Reservierung reservierung = new Reservierung();
         Artikel artikel = alleArtikel.findArtikelById(id);
         reservierung.setStart(LocalDate.now());
         reservierung.setEnde(LocalDate.now());
-        reservierung.setLeihender(benutzer);
+        reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
         reservierung.setArtikel(artikel);
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
