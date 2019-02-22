@@ -64,11 +64,11 @@
                     <p><span style="font-weight: bold;">Verfügbar ab: </span><span th:text="${reservierung.toString()}">16.02.2019</span></p>
                     -->
                     <form th:object="${reservierung}">
-                        <input type="hidden" th:field="${artikel.id}">
+                        <input type="hidden" th:value="${artikel.id}">
                         Start Datum deiner Reservierung:
-                        <input type="date" th:field="*{start}"><br>
+                        <input type="date" th:value="*{start}"><br>
                         End Datum deine Reservierung:
-                        <input type="date" th:field="*{ende}"><br>
+                        <input type="date" th:value="*{ende}"><br>
 
                     <div class="action">
                         <button type="submit" class="btn btn-primary btn-block"> Anfrage Senden </button>
