@@ -29,4 +29,16 @@ public class Beschwerde {
     private Benutzer hatRecht;
 
     private boolean bearbeitet;
+
+    private String getArtikelName(){
+        return reservierung.getArtikel().getTitel();
+    }
+
+    private String getEigentuemer(){
+        return reservierung.getArtikel().getEigentuemer().getName();
+    }
+
+    private String getLeiher(){
+        return reservierung.getLeihender().getName();
+    }
 }

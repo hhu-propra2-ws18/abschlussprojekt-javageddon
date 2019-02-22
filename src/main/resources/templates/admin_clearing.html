@@ -35,6 +35,8 @@
                 <th scope="col" width="100">Nutzer</th>
                 <th scope="col" width="100">Beschwerde</th>
                 <th scope="col" width="200">Entscheidung</th>
+                <th scope="col" width="200">Senden</th>
+
             </tr>
             </thead>
             <tbody>
@@ -45,16 +47,29 @@
                     </div>
                 </td>
                 <td>
-                    <!--
-                    <var th:text="${beschwerde.getArtikelName()}"></spanth:text>Artikel um den es geht!</var>
-                    -->
+                    <var th:text="${beschwerde.reservierung.artikel.titel}"></spanth:text>Artikel um den es geht!</var>
                 </td>
                 <td>
-                    <var th:text="${beschwerde.nutzer}"></spanth:text>Nutzer der die Beschwerde einreicht</var>
+                    <var th:text="${beschwerde.nutzer.name}"></spanth:text>Nutzer der die Beschwerde einreicht</var>
                 </td>
                 <td>
                     <var th:text="${beschwerde.kommentar}"></spanth:text>Hier steht der Beschwerdetext!</var>
                 </td>
+
+                <td>
+                    <div class="form-group">
+                        <label for="sel1">Wer hat Recht?:</label>
+                        <select class="form-control" id="sel1">
+                            <option th:text="${beschwerde.reservierung.artikel.eigentuemer.name}">Nutzer 1</optionth:text>
+                            <option th:text="${beschwerde.reservierung.leihender.name}">Nutzer 2</optionth:text>
+                        </select>
+                    </div>
+                </td>
+
+                <td>
+                    <a href="" class="btn btn-outline-primary">Senden</a>
+                </td>
+
             </tr>
             </tbody>
         </table>
