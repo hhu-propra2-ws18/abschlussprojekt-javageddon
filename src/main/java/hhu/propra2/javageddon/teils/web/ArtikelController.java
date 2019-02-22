@@ -110,7 +110,7 @@ public class ArtikelController {
             alleReservierungen.addReservierung(reservierung);
             return "redirect:/";
         }else {
-            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&?error=true";
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
         }
     }
 }
