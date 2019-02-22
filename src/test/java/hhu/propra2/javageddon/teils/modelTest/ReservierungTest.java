@@ -67,4 +67,9 @@ public class ReservierungTest {
     public void durationOneDay() {
         assertThat(res2.calculateReservierungsLength()).isEqualTo(1);
     }
+
+    @Test
+    public void duration42Day() {
+        assertThat(res.calculateReservierungsLength()).isEqualTo(42);
+    }
 }
