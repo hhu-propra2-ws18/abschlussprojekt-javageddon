@@ -63,7 +63,7 @@
                     <!-- TODO Wird aktualisiert wenn die Entität Reservierung implementiert ist.
                     <p><span style="font-weight: bold;">Verfügbar ab: </span><span th:text="${reservierung.toString()}">16.02.2019</span></p>
                     -->
-                    <form th:object="${reservierung}" th:action="@{'/reservieren?id=' + ${artikel.id}}">
+                    <form th:object="${reservierung}" th:action="@{/reservieren}" method="post">
                         <input type="hidden" th:value="${artikel.id}">
                         Start Datum deiner Reservierung:
                         <input type="date" th:value="*{start}"><br>
