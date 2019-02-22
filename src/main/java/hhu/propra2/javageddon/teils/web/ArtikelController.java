@@ -84,7 +84,7 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/reservieren", method = GET)
-    public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", required = false) boolean error){
+    public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "false", required = false) boolean error){
         Reservierung reservierung = new Reservierung();
         Artikel artikel = alleArtikel.findArtikelById(id);
         reservierung.setStart(LocalDate.now());
