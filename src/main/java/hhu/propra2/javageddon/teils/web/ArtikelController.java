@@ -91,6 +91,8 @@ public class ArtikelController {
         reservierung.setEnde(LocalDate.now());
         m.addAttribute("artikel", artikel);
         m.addAttribute("reservierung",reservierung);
+        List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
+        m.addAttribute("alleReservierungen", artikelReservierungen);
         return "artikel_reservieren";
     }
 
