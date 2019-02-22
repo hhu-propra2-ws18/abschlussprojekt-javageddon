@@ -192,7 +192,7 @@
 
                         <div class="img-wrap">
 
-                            <img th:src="${(reservierung.artikel.fotos.isEmpty() == false ) ? '../fotos/' + artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
+                            <img th:src="${(reservierung.artikel.fotos.isEmpty() == false ) ? '../fotos/' + reservierung.artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
                                  class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"
                             />
 
