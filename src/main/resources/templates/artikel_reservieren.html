@@ -66,9 +66,9 @@
                     <form th:object="${reservierung}" th:action="@{/reservieren}" method="post">
                         <input type="hidden" th:value="${artikel.id}">
                         Start Datum deiner Reservierung:
-                        <input type="date" th:value="*{start}"><br>
+                        <input type="date" th:field="*{start}"><br>
                         End Datum deine Reservierung:
-                        <input type="date" th:value="*{ende}"><br>
+                        <input type="date" th:field="*{ende}"><br>
 
                     <div class="action">
                         <button type="submit" class="btn btn-primary btn-block"> Anfrage Senden </button>
