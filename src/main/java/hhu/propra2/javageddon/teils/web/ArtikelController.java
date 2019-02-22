@@ -83,13 +83,13 @@ public class ArtikelController {
         return "redirect:/fotoupload/" + artikel.getId();
     }
 
-    @RequestMapping(value = "/beschweren", method = GET)
+    @RequestMapping(value = "/beschwerde", method = GET)
     public String artikelReservieren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
         m.addAttribute("reservierung",reservierung);
-        return "artikel_reservieren";
+        return "artikel_beschwerde";
     }
 
-    @PostMapping("/beschweren")
+    @PostMapping("/beschwerde")
     public String reserviereArtikel(@ModelAttribute Reservierung reservierung){
         Beschwerde beschwerde = new Beschwerde();
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -98,7 +98,7 @@ public class ArtikelController {
         beschwerde.setReservierung(reservierung);
         beschwerde.setBearbeitet(false);
         beschwerde.setNutzer(reservierung.getLeihender());
-        
+
         return "redirect:/";
     }
 
