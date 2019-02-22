@@ -69,12 +69,17 @@
                         </ul>
                     </span></p>
 
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        <strong>Fehler!</strong> Reseveriungszeitraum ungültig!
+                    </div>
+
                     <form th:object="${reservierung}" th:action="@{/reservieren}" method="post">
                         <input type="hidden" th:field="${artikel.id}">
                         Start Datum deiner Reservierung:
                         <input type="date" th:field="*{start}"><br><br>
                         End Datum deine Reservierung:
                         <input type="date" th:field="*{ende}"><br><br>
+
 
                     <div class="action" style="margin-top: 10px">
                         <button type="submit" class="btn btn-primary"> Anfrage Senden </button>

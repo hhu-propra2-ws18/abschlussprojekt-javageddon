@@ -105,7 +105,11 @@ public class ArtikelController {
         reservierung.setAkzeptiert(false);
         reservierung.setArtikel(alleArtikel.findArtikelById(artikel.getId()));
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
-        alleReservierungen.addReservierung(reservierung);
-        return "redirect:/";
+        if(alleReservierungen.isAllowedReservierungsDate(reservierung.getArtikel(), reservierung.getStart(), reservierung.getEnde())){
+            alleReservierungen.addReservierung(reservierung);
+            return "redirect:/";
+        }else {
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId();
+        }
     }
 }
