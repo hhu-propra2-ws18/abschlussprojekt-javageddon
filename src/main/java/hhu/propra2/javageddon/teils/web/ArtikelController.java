@@ -89,7 +89,7 @@ public class ArtikelController {
         reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
-        alleReservierungen.addReservierung(reservierung);
+        reservierung = alleReservierungen.addReservierung(reservierung);
         return "redirect:/";
     }
 
