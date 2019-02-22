@@ -80,10 +80,7 @@ public class ArtikelController {
         Artikel artikel = alleArtikel.findArtikelById(id);
         reservierung.setStart(LocalDate.now());
         reservierung.setEnde(LocalDate.now());
-        reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
         reservierung.setArtikel(artikel);
-        reservierung.setBearbeitet(false);
-        reservierung.setAkzeptiert(false);
         m.addAttribute("artikel", artikel);
         m.addAttribute("reservierung",reservierung);
         return "artikel_reservieren";
@@ -91,6 +88,9 @@ public class ArtikelController {
 
     @PostMapping("/reservieren")
     public String reserviereArtikel(@ModelAttribute Reservierung reservierung){
+        reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
+        reservierung.setBearbeitet(false);
+        reservierung.setAkzeptiert(false);
         alleReservierungen.addReservierung(reservierung);
         return "redirect:/";
     }
