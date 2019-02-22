@@ -84,14 +84,14 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/beschwerde", method = GET)
-    public String artikelReservieren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung, @ModelAttribute Artikel artikel){
+    public String artikelBeschweren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung, @ModelAttribute Artikel artikel){
         m.addAttribute("reservierung",reservierung);
         m.addAttribute("artikel", artikel);
         return "artikel_beschwerde";
     }
 
     @PostMapping("/beschwerde")
-    public String reserviereArtikel(@ModelAttribute Reservierung reservierung){
+    public String beschwereArtikel(@ModelAttribute Reservierung reservierung){
         Beschwerde beschwerde = new Beschwerde();
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
