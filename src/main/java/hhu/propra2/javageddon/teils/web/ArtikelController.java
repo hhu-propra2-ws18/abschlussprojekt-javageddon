@@ -75,7 +75,9 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/reservieren", method = GET)
-    public String artikelReservieren(@ModelAttribute Benutzer benutzer, Model m, @RequestParam("id") long id){
+    public String artikelReservieren(@ModelAttribute Benutzer benutzer, Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
+        reservierung.setStart(LocalDate.now());
+        reservierung.setEnde(LocalDate.now());
         Artikel artikel = alleArtikel.findArtikelById(id);
         m.addAttribute("artikel", artikel);
         return "artikel_reservieren";
@@ -88,7 +90,7 @@ public class ArtikelController {
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
         alleReservierungen.addReservierung(reservierung);
-        return "start";
+        return "redirect:/";
     }
 
 /*
