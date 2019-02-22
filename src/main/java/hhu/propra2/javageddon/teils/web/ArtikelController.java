@@ -87,8 +87,8 @@ public class ArtikelController {
         reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
-        reservierung = alleReservierungen.addReservierung(reservierung);
-        return "artikel_reservieren";
+        alleReservierungen.addReservierung(reservierung);
+        return "start";
     }
 
 /*
