@@ -119,8 +119,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
 	        r.setLeihender(alleBenutzer.get(zufaelligerBenutzer));
 	        r.setArtikel(alleArtikel.get(zufaelligerArtikel));
 
-            LocalDate startDay = LocalDate.now();
-            startDay.plusDays(faker.number().numberBetween(-30,30));
+            LocalDate startDay = LocalDate.now().plusDays(faker.number().numberBetween(-30,30));
             r.setStart(startDay);
             r.setEnde(startDay.plusDays(faker.number().numberBetween(2, 22)));
             if(Math.random() < 0.5) {

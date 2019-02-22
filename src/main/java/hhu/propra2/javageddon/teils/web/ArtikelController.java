@@ -17,8 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,4 +83,34 @@ public class ArtikelController {
         return "redirect:/fotoupload/" + artikel.getId();
     }
 
+    @RequestMapping(value = "/reservieren", method = GET)
+    public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "false", required = false) boolean error){
+        Reservierung reservierung = new Reservierung();
+        Artikel artikel = alleArtikel.findArtikelById(id);
+        reservierung.setStart(LocalDate.now());
+        reservierung.setEnde(LocalDate.now());
+        m.addAttribute("artikel", artikel);
+        m.addAttribute("reservierung",reservierung);
+        List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
+        m.addAttribute("alleReservierungen", artikelReservierungen);
+        m.addAttribute("error", error);
+        return "artikel_reservieren";
+    }
+
+    @PostMapping("/reservieren")
+    public String reserviereArtikel(@ModelAttribute Reservierung reservierung, @ModelAttribute Artikel artikel){
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        Long id = alleBenutzer.getIdByName(username);
+        reservierung.setBearbeitet(false);
+        reservierung.setAkzeptiert(false);
+        reservierung.setArtikel(alleArtikel.findArtikelById(artikel.getId()));
+        reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
+        if(alleReservierungen.isAllowedReservierungsDate(reservierung.getArtikel(), reservierung.getStart(), reservierung.getEnde())){
+            alleReservierungen.addReservierung(reservierung);
+            return "redirect:/";
+        }else {
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
+        }
+    }
 }
