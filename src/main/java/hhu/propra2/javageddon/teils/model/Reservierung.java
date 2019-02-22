@@ -10,7 +10,8 @@ import org.apache.tomcat.jni.Local;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Data
 @Builder
@@ -60,9 +61,13 @@ public class Reservierung {
     	return ende.format(formatter);
     }
 
-    public boolean isBetween(LocalDate checkDay) {
+    public boolean containsDate(LocalDate checkDay) {
         if (!checkDay.isBefore(start) && !checkDay.isAfter(ende)) {
                 return true; }
         return false;
+    }
+
+    public int calculateReservierungsLength(){
+        return (int) DAYS.between(start, ende);
     }
 }

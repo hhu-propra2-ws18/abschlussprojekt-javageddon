@@ -43,23 +43,28 @@ public class ReservierungTest {
 
     @Test
     public void dayisAtStart() {
-        assertThat(res.isBetween(start)).isEqualTo(true);
+        assertThat(res.containsDate(start)).isEqualTo(true);
     }
 
     @Test
     public void dayisAtEnd() {
-        assertThat(res.isBetween(ende)).isEqualTo(true);
+        assertThat(res.containsDate(ende)).isEqualTo(true);
     }
 
     @Test
     public void dayisBetween() {
         LocalDate checkDay = LocalDate.of(2018, 11,20);
-        assertThat(res.isBetween(checkDay)).isEqualTo(true);
+        assertThat(res.containsDate(checkDay)).isEqualTo(true);
     }
 
     @Test
     public void dayisNotBetween() {
         LocalDate checkDay = LocalDate.of(2019, 11,20);
-        assertThat(res.isBetween(checkDay)).isEqualTo(false);
+        assertThat(res.containsDate(checkDay)).isEqualTo(false);
+    }
+
+    @Test
+    public void durationOneDay() {
+        assertThat(res2.calculateReservierungsLength()).isEqualTo(1);
     }
 }
