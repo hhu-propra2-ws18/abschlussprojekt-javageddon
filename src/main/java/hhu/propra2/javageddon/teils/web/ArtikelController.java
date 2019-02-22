@@ -85,8 +85,7 @@ public class ArtikelController {
 
     @RequestMapping(value = "/beschwerde", method = GET)
     public String artikelBeschweren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
-        m.addAttribute("reservierung",reservierung);
-        m.addAttribute("artikel", reservierung.getArtikel());
+        m.addAttribute("reservierung",alleReservierungen.findReservierungById(id));
         return "artikel_beschwerde";
     }
 
