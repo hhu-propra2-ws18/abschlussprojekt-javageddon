@@ -84,8 +84,8 @@ public class ArtikelController {
     }
 
     @PostMapping("/reservieren")
-    public String reserviereArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Reservierung reservierung, BindingResult bindingResult){
-        reservierung.setArtikel(artikel);
+    public String reserviereArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Reservierung reservierung, @RequestParam("id") long id){
+        reservierung.setArtikel(alleArtikel.findArtikelById(id));
         reservierung.setLeihender(alleBenutzer.findBenutzerById(1));
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
