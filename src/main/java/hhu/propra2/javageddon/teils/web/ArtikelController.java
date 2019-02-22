@@ -89,6 +89,7 @@ public class ArtikelController {
     public String reserviereArtikel(@ModelAttribute Reservierung reservierung, @ModelAttribute Artikel artikel){
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
+        reservierung.setArtikel(artikel);
         alleReservierungen.addReservierung(reservierung);
         return "redirect:/";
     }
