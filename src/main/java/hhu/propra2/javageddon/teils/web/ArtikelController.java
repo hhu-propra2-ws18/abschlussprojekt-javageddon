@@ -96,9 +96,13 @@ public class ArtikelController {
 
     @PostMapping("/reservieren")
     public String reserviereArtikel(@ModelAttribute Reservierung reservierung, @ModelAttribute Artikel artikel){
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        Long id = alleBenutzer.getIdByName(username);
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
         reservierung.setArtikel(alleArtikel.findArtikelById(artikel.getId()));
+        reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
         alleReservierungen.addReservierung(reservierung);
         return "redirect:/";
     }
