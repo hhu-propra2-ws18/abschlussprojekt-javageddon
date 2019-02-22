@@ -84,7 +84,7 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/reservieren", method = GET)
-    public String artikelReservieren(Model m, @RequestParam("id") long id){
+    public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", required = false) boolean error){
         Reservierung reservierung = new Reservierung();
         Artikel artikel = alleArtikel.findArtikelById(id);
         reservierung.setStart(LocalDate.now());
@@ -93,6 +93,7 @@ public class ArtikelController {
         m.addAttribute("reservierung",reservierung);
         List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
         m.addAttribute("alleReservierungen", artikelReservierungen);
+        m.addAttribute("error", error);
         return "artikel_reservieren";
     }
 
@@ -109,7 +110,7 @@ public class ArtikelController {
             alleReservierungen.addReservierung(reservierung);
             return "redirect:/";
         }else {
-            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId();
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "+?error=true";
         }
     }
 }
