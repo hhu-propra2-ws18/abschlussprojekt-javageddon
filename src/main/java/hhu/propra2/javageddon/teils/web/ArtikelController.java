@@ -90,7 +90,7 @@ public class ArtikelController {
     }
 
     @PostMapping("/reservieren")
-    public String reserviereArtikel(@ModelAttribute Reservierung reservierung, @RequestParam("id") long id){
+    public String reserviereArtikel(@ModelAttribute Reservierung reservierung){
         alleReservierungen.addReservierung(reservierung);
         return "redirect:/";
     }
