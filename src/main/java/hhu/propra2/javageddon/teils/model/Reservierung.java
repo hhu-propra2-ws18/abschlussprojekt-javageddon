@@ -68,6 +68,6 @@ public class Reservierung {
     }
 
     public int calculateReservierungsLength(){
-        return (int) DAYS.between(start, ende);
+        return (int) DAYS.between(start, ende)+1;
     }
 }
