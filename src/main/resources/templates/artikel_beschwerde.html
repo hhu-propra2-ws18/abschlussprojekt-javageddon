@@ -51,8 +51,7 @@
                     <form th:object="${beschwerde}" th:action="@{/beschwerde}" method="post">
                         <input type="hidden" th:field="${reservierung.id}">
                         Beschwerdenachricht:
-                        <textarea class="form-control" input type="textarea" rows="10" cols="30" th:field="*{kommentar}">
-                        </textarea>
+                        <textarea class="form-control" input type="textarea" rows="10" cols="30" th:field="*{kommentar}"></textarea>
 
                         <div class="action" style="margin-top: 10px">
                             <button type="submit" class="btn btn-primary"> Beschwerde Senden </button>
