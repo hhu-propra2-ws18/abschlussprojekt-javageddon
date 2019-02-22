@@ -41,7 +41,7 @@ public class ReservierungRepoTest {
     Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).standort(ad1).eigentuemer(hans).build();
     Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).standort(ad1).eigentuemer(hans).build();
     Artikel kochtopf =  Artikel.builder().titel("kochtopf").standort(ad1).aktiv(true).eigentuemer(heidi).build();
-    Reservierung r1 = Reservierung.builder().leihender(heidi).artikel(hamster).build();
+    Reservierung r1 = Reservierung.builder().leihender(heidi).artikel(hamster).bearbeitet(true).build();
     Reservierung r2 = Reservierung.builder().leihender(hans).artikel(kochtopf).build();
     Reservierung r3 = Reservierung.builder().leihender(heidi).artikel(hamster).build();
     Reservierung r4 = Reservierung.builder().leihender(heidi).artikel(fahrrad).build();
@@ -119,13 +119,23 @@ public class ReservierungRepoTest {
     }
 
     @Test
-    public void findReservierungByArtikelEigentuemer() {
+    public void findReservierungByArtikelEigentuemerBearbeitetTrue() {
     	r2 = resRepo.save(r2);
         r3 = resRepo.save(r3);
         r4 = resRepo.save(r4);
-        List<Reservierung> hansArtikelReservierung = resRepo.findByArtikelEigentuemer(hans);
+        List<Reservierung> hansArtikelReservierung = resRepo.findByArtikelEigentuemerAndBearbeitet(hans, true);
         System.out.println(hansArtikelReservierung);
-        assertThat(hansArtikelReservierung).containsExactlyInAnyOrder(r1,r3,r4);
+        assertThat(hansArtikelReservierung).containsExactly(r1);
+    }
+
+    @Test
+    public void findReservierungByArtikelEigentuemerBearbeitetFalse() {
+        r2 = resRepo.save(r2);
+        r3 = resRepo.save(r3);
+        r4 = resRepo.save(r4);
+        List<Reservierung> hansArtikelReservierung = resRepo.findByArtikelEigentuemerAndBearbeitet(hans, false);
+        System.out.println(hansArtikelReservierung);
+        assertThat(hansArtikelReservierung).containsExactlyInAnyOrder(r3,r4);
     }
 
 

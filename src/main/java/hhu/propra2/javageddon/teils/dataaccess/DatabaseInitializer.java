@@ -104,7 +104,7 @@ public class DatabaseInitializer implements ServletContextInitializer {
                 Collectors.toList(),
                 this.artikel::saveAll));
     
-	    IntStream.range(0,10).mapToObj(value -> {
+	    IntStream.range(0,30).mapToObj(value -> {
 	        final Reservierung r = new Reservierung();
 	
 	        List<Benutzer> alleBenutzer = benutzer.getAllByIdIsNotNull();
@@ -118,24 +118,21 @@ public class DatabaseInitializer implements ServletContextInitializer {
 	
 	        r.setLeihender(alleBenutzer.get(zufaelligerBenutzer));
 	        r.setArtikel(alleArtikel.get(zufaelligerArtikel));
-	
-	        LocalDate startDay = LocalDate.of(
-	        		faker.number().numberBetween(2000,2020),
-	        		faker.number().numberBetween(1,12),
-	        		faker.number().numberBetween(1,30)
-	        );
-	        r.setStart(startDay);
-	        r.setEnde(startDay.plusDays(faker.number().numberBetween(2, 10)));
-	        if(Math.random() < 0.5) {
-	            r.setBearbeitet(true);
-	        }else {
-	            r.setBearbeitet(false);
-	        }
-	        if(Math.random() < 0.5) {
-	            r.setAkzeptiert(true);
-	        }else {
-	            r.setAkzeptiert(false);
-	        }
+
+            LocalDate startDay = LocalDate.now();
+            startDay.plusDays(faker.number().numberBetween(-30,30));
+            r.setStart(startDay);
+            r.setEnde(startDay.plusDays(faker.number().numberBetween(2, 22)));
+            if(Math.random() < 0.5) {
+                r.setBearbeitet(true);
+                if(Math.random() < 0.5) {
+                    r.setAkzeptiert(true);
+                }else {
+                    r.setAkzeptiert(false);
+                }
+            }else {
+                r.setBearbeitet(false);
+            }
 	
 	
 	        return r;

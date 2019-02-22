@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -54,6 +57,8 @@ public class ArtikelController {
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
         Artikel artikel = alleArtikel.findArtikelById(id);
+        List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
+        m.addAttribute("alleReservierungen", artikelReservierungen);
         m.addAttribute("artikel", artikel);
         return "artikel_details";
     }
@@ -67,9 +72,13 @@ public class ArtikelController {
 
     @PostMapping("/artikel_erstellen")
     public String erstelleArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Adresse adresse){
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        Long id = alleBenutzer.getIdByName(username);
+
         artikel.setStandort(adresse);
         artikel.setFotos(new ArrayList<String>());
-        artikel.setEigentuemer(alleBenutzer.findBenutzerById(1)); // TODO EINGELOGGTER USER
+        artikel.setEigentuemer(alleBenutzer.findBenutzerById(id));
         alleArtikel.addArtikel(artikel);
         return "redirect:/fotoupload/" + artikel.getId();
     }
@@ -93,23 +102,4 @@ public class ArtikelController {
         alleReservierungen.addReservierung(reservierung);
         return "redirect:/";
     }
-
-/*
-    @GetMapping("/edit/{id}")
-    public String editPerson(Model m, @PathVariable("id") int id) {
-        Person p = personen.getPerson(id);
-        m.addAttribute("person", p);
-        return "edit";
-    }
-
-    @PostMapping("/edit")
-    public String changePerson(Model m, Person p, String skillList) {
-        personen.merge(p, skillList);
-        return "redirect:"
-    }
-
-    @GetMapping("/add")
-    public String addPerson() {
-        return "redirect:" + "/edit/" + personen.newPerson().getId();
-    } */
 }
