@@ -27,7 +27,9 @@
                        class="btn btn-success btn-md" href="/artikel_erstellen">Artikel anlegen</a>
 
                     <a th:if="${#httpServletRequest.isUserInRole('ADMIN')}"
-                       class="btn btn-danger btn-md" href="/admin_clearing">Clearing</a>
+                       class="btn btn-danger btn-md" href="/admin_clearing">Beschwerden:
+                        <span class="badge" th:text="${anzahlBeschwerden}">7</span>
+                    </a>
 
                     <a th:unless="${#httpServletRequest.isUserInRole('USER') || #httpServletRequest.isUserInRole('ADMIN')}"
                        class="btn btn-primary btn-md" href="/login">Login</a>
