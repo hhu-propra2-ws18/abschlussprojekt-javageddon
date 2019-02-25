@@ -2,12 +2,10 @@ package hhu.propra2.javageddon.teils.web;
 
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
-import hhu.propra2.javageddon.teils.model.Artikel;
-import hhu.propra2.javageddon.teils.model.Benutzer;
-import hhu.propra2.javageddon.teils.model.Reservierung;
+import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
+import hhu.propra2.javageddon.teils.model.*;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
-import hhu.propra2.javageddon.teils.model.Adresse;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -39,9 +37,13 @@ public class ArtikelController {
     @Autowired
     private ReservierungService alleReservierungen;
 
+    @Autowired
+    private BeschwerdeRepository alleBeschwerden;
+
     @GetMapping("/")
     public String artikelListe(Model m){
         m.addAttribute("alleArtikel", alleArtikel.findAllAktivArtikel());
+        m.addAttribute("anzahlBeschwerden", alleBeschwerden.getAllByBearbeitetFalse().size());
         return "start";
     }
 
@@ -117,14 +119,37 @@ public class ArtikelController {
             return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
         }
     }
+
     @GetMapping("/artikel_update/{id}/{aktiv}")
-    public String updateArtikel(Model model, @ModelAttribute Artikel artikel, @PathVariable long id, @PathVariable String aktiv){
+    public String updateArtikel(Model model, @ModelAttribute Artikel artikel, @PathVariable long id, @PathVariable String aktiv) {
         Artikel aktuellerArtikel = alleArtikel.findArtikelById(id);
         model.addAttribute("artikel", aktuellerArtikel);
         boolean active = Boolean.parseBoolean(aktiv);
         aktuellerArtikel.setAktiv(active);
         alleArtikel.addArtikel(aktuellerArtikel);
         return "redirect:/profil_ansicht/";
+    }
+
+    @RequestMapping(value = "/beschwerde", method = GET)
+    public String artikelBeschweren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
+        Beschwerde beschwerde = new Beschwerde();
+        beschwerde.setKommentar("");
+        m.addAttribute("reservierung",alleReservierungen.findReservierungById(id));
+        m.addAttribute("beschwerde", beschwerde);
+        return "artikel_beschwerde";
+    }
+
+    @PostMapping("/beschwerde")
+    public String beschwereArtikel(@ModelAttribute Reservierung reservierung, @ModelAttribute Beschwerde beschwerde){
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        Long id = alleBenutzer.getIdByName(username);
+        beschwerde.setReservierung(reservierung);
+        beschwerde.setBearbeitet(false);
+        beschwerde.setNutzer(alleBenutzer.findBenutzerById(id));
+        alleBeschwerden.save(beschwerde);
+
+        return "redirect:/";
     }
 
 }

@@ -166,6 +166,8 @@
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
                     <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
                        href="/details?id=id" class="btn btn-outline-danger">Details</a>
+                    <a th:href="@{'/beschwerde?id=' + ${reservierung.id}}"
+                       href="/beschwerde?id=id" class="btn btn-outline-danger">Beschweren</a>
                 </td>
             </tbody>
         </table>
@@ -234,6 +236,8 @@
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
                     <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
                        href="/details?id=id" class="btn btn-outline-danger">Details</a>
+                    <a th:href="@{'/beschwerde?id=' + ${reservierung.id}}"
+                       href="/beschwerde?id=id" class="btn btn-outline-danger">Beschweren</a>
                 </td>
             </tbody>
         </table>
