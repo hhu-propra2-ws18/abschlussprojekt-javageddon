@@ -48,7 +48,6 @@
                 <th scope="col" width="160">Preis</th>
                 <th scope="col" width="160">Kaution</th>
                 <th scope="col" width="100">Vefügbar</th>
-                <th scope="col" width="100">Aktiv</th>
                 <th scope="col" width="100"></th>
                 <th scope="col" width="100"></th>
             </tr>
@@ -84,18 +83,15 @@
                     </div>
                 </td>
                 <td>
-
                     <span class="bg-success rounded-circle" th:if="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <span class="bg-danger rounded-circle" th:unless="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </td>
 
-                <td class="text-right" th:if="${artikel.aktiv}">
-                    <a th:href="@{/artikel_update/{id}/false (id=${artikel.id})}">Deaktivieren</a>
+                <td class="text-right" th:if="${artikel.verfuegbar}">
+                    <a th:if="${artikel.aktiv}" th:href="@{/artikel_update/{id}/false (id=${artikel.id})}">Deaktivieren</a>
+                    <a th:unless="${artikel.aktiv}" th:href="@{/artikel_update/{id}/true (id=${artikel.id})}">Aktivieren</a>
                 </td>
-
-                <td class="text-right" th:unless="${artikel.aktiv}">
-                    <a th:href="@{/artikel_update/{id}/true (id=${artikel.id})}">Aktivieren</a>
-                </td>
+                <td class="text-right" th:unless="${artikel.verfuegbar}"></td>
 
                 <td class="text-right">
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
