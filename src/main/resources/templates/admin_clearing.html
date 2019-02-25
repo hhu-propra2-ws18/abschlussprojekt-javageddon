@@ -27,16 +27,21 @@
         </section>
     </div>
 
+    <div th:if="${alleBeschwerden.isEmpty()}" class="alert alert-success">
+        <strong>Hinweis</strong> Keine Beschwerden vorhanden!
+    </div>
+
     <div class="card">
+
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
                 <th scope="col" width="30">ID</th>
                 <th scope="col" width="100">Artikel</th>
-                <th scope="col" width="100">Nutzer</th>
+                <th scope="col" width="100">Beschwerde von:</th>
                 <th scope="col" width="100">Beschwerde</th>
+                <th scope="col" width="200">Optionen</th>
                 <th scope="col" width="200">Entscheidung</th>
-                <th scope="col" width="200">Senden</th>
 
             </tr>
             </thead>
@@ -60,6 +65,9 @@
 
                 <td>
 
+                    <a th:href="@{'/details?id=' + ${beschwerde.reservierung.artikel.id}}"
+                       href="/details?id=id" class="btn btn-outline-warning btn-sm">Artikel Details</a>
+
                 </td>
 
                 <td>
@@ -69,11 +77,11 @@
                     </div>
                     -->
                     <a th:href="@{'/clearing/' + ${beschwerde.id} +'/'+ ${beschwerde.reservierung.artikel.eigentuemer.id}}"
-                       href="/clearing?id=id" class="btn btn-outline-danger"
+                       href="/clearing?id=id" class="btn btn-outline-danger btn-sm"
                        th:text="${beschwerde.reservierung.artikel.eigentuemer.name}">Nutzer A</a>
 
                     <a th:href="@{'/clearing/' + ${beschwerde.id} + '/'+ ${beschwerde.reservierung.leihender.id}}"
-                       href="/clearing?id=id" class="btn btn-outline-danger"
+                       href="/clearing?id=id" class="btn btn-outline-danger btn-sm"
                        th:text="${beschwerde.reservierung.leihender.name}">Nutzer B</a>
 
                 </td>
