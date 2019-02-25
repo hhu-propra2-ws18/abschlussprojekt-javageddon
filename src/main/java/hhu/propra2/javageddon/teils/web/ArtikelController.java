@@ -86,21 +86,20 @@ public class ArtikelController {
     @RequestMapping(value = "/beschwerde", method = GET)
     public String artikelBeschweren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
         Beschwerde beschwerde = new Beschwerde();
-        beschwerde.setKommentar("Beschreiben Sie hier ihre Beschwerde.");
+        beschwerde.setKommentar("");
         m.addAttribute("reservierung",alleReservierungen.findReservierungById(id));
         m.addAttribute("beschwerde", beschwerde);
         return "artikel_beschwerde";
     }
 
     @PostMapping("/beschwerde")
-    public String beschwereArtikel(@ModelAttribute Reservierung reservierung){
-        Beschwerde beschwerde = new Beschwerde();
+    public String beschwereArtikel(@ModelAttribute Reservierung reservierung, @ModelAttribute Beschwerde beschwerde){
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
         Long id = alleBenutzer.getIdByName(username);
         beschwerde.setReservierung(reservierung);
         beschwerde.setBearbeitet(false);
-        beschwerde.setNutzer(reservierung.getLeihender());
+        beschwerde.setNutzer(alleBenutzer.findBenutzerById(id));
 
         return "redirect:/";
     }
