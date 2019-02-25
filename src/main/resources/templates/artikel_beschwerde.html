@@ -44,8 +44,8 @@
                     <p><span style="font-weight: bold;">Kaution: </span><span th:text="${reservierung.artikel.kaution + '€'}">100 €</span></p>
                     <p><span style="font-weight: bold;">Start der Reservierung: </span><span th:text="${reservierung.start}">01.01.2019</span></p>
                     <p><span style="font-weight: bold;">Ende der Reservierung: </span><span th:text="${reservierung.ende}">31.12.2019</span></p>
-                    <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${(reservierung.artikel.eigentuemer != null) ? reservierung.artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
-                    <p><span style="font-weight: bold;">Leihender: </span><span th:text="${(reservierung.leihender != null) ? reservierungleihender.name : 'NA'}">Jon Doe Leihender</span></p>
+                    <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${reservierung.artikel.eigentuemer.name}">Jon Doe</span></p>
+                    <p><span style="font-weight: bold;">Leihender: </span><span th:text="${reservierung.leihender.name}">Jon Doe Leihender</span></p>
 
 
                     <form th:object="${beschwerde}" th:action="@{/beschwerde}" method="post">
