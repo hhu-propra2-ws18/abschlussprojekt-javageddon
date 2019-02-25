@@ -120,6 +120,16 @@ public class ArtikelController {
         }
     }
 
+    @GetMapping("/artikel_update/{id}/{aktiv}")
+    public String updateArtikel(Model model, @ModelAttribute Artikel artikel, @PathVariable long id, @PathVariable String aktiv) {
+        Artikel aktuellerArtikel = alleArtikel.findArtikelById(id);
+        model.addAttribute("artikel", aktuellerArtikel);
+        boolean active = Boolean.parseBoolean(aktiv);
+        aktuellerArtikel.setAktiv(active);
+        alleArtikel.addArtikel(aktuellerArtikel);
+        return "redirect:/profil_ansicht/";
+    }
+
     @RequestMapping(value = "/beschwerde", method = GET)
     public String artikelBeschweren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
         Beschwerde beschwerde = new Beschwerde();
