@@ -1,67 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <style>
-        div.gallery {
-            margin: 5px;
-            border: 1px solid #ccc;
-            float: left;
-            width: 180px;
-        }
-        div.gallery:hover {
-            border: 2px solid #777;
-        }
-        div.gallery img {
-            width: 100%;
-            height: auto;
-        }
-
-    </style>
     <meta charset="UTF-8">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link href="../css/style.css" rel="stylesheet" id="default-css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
-
-    <title>Beschwerde</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <title>Artikel erstellen</title>
 </head>
 <body>
 
 <div class="container" style="margin-top:50px">
-    <div class="card">
-        <div class="container-fluid">
-            <div class="wrapper row">
-                <div class="details">
-                    <section class="row">
-                        <div class="col-md-10">
-                            <h3 class="product-title" th:text="${reservierung.artikel.titel}">Akkuschrauber</h3>
-                        </div>
-                    </section>
-                    <p class="product-description" th:text="${reservierung.artikel.beschreibung}">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>
-                    <p><span style="font-weight: bold;">Preis pro Tag: </span><span th:text="${reservierung.artikel.kostenTag + '€'}">10 €</span></p>
-                    <p><span style="font-weight: bold;">Kaution: </span><span th:text="${reservierung.artikel.kaution + '€'}">100 €</span></p>
-                    <p><span style="font-weight: bold;">Start der Reservierung: </span><span th:text="${reservierung.start}">01.01.2019</span></p>
-                    <p><span style="font-weight: bold;">Ende der Reservierung: </span><span th:text="${reservierung.ende}">31.12.2019</span></p>
-                    <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${reservierung.artikel.eigentuemer.name}">Jon Doe</span></p>
-                    <p><span style="font-weight: bold;">Leihender: </span><span th:text="${reservierung.leihender.name}">Jon Doe Leihender</span></p>
 
+    <div class="container-fluid">
 
-                    <form th:object="${beschwerde}" th:action="@{/beschwerde}" method="post">
-                        <input type="hidden" th:field="${reservierung.id}"/>
-                        Beschwerdenachricht:
-                        <textarea class="form-control" input type="textarea" placeholder="Beschreiben Sie ihre Beschwerde" rows="10" cols="30" th:field="*{kommentar}"></textarea>
+        <div class="row justify-content-center">
+            <aside class="col-sm-6 ">
+                <div class="card">
+                    <article class="card-body">
+                        <!--   <a href="/benutzer/?{id}" class="float-right btn btn-outline-primary">Zurück zur Übersicht</a> -->
+                        <h4 class="card-title mb-4 mt-1">Beschwerde erstellen</h4>
 
-                        <div class="action" style="margin-top: 10px">
-                            <button type="submit" class="btn btn-primary"> Beschwerde Senden </button>
-                            <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+                        <h3 class="product-title" th:text="${reservierung.artikel.titel}">Akkuschrauber</h3>
+
+                        <p class="product-description" th:text="${reservierung.artikel.beschreibung}">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>
+                        <p><span style="font-weight: bold;">Preis pro Tag: </span><span th:text="${reservierung.artikel.kostenTag + '€'}">10 €</span></p>
+                        <p><span style="font-weight: bold;">Kaution: </span><span th:text="${reservierung.artikel.kaution + '€'}">100 €</span></p>
+                        <p><span style="font-weight: bold;">Start der Reservierung: </span><span th:text="${reservierung.start}">01.01.2019</span></p>
+                        <p><span style="font-weight: bold;">Ende der Reservierung: </span><span th:text="${reservierung.ende}">31.12.2019</span></p>
+                        <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${reservierung.artikel.eigentuemer.name}">Jon Doe</span></p>
+                        <p><span style="font-weight: bold;">Leihender: </span><span th:text="${reservierung.leihender.name}">Jon Doe Leihender</span></p>
+
+                        <form th:object="${beschwerde}" th:action="@{/beschwerde}" method="post">
+                            <input type="hidden" th:field="${reservierung.id}"/>
+                            Beschwerdenachricht:
+                            <textarea class="form-control" input type="textarea" placeholder="Beschreiben Sie ihre Beschwerde" rows="10" cols="30" th:field="*{kommentar}"></textarea>
+
+                            <div class="action" style="margin-top: 10px">
+                                <button type="submit" class="btn btn-primary"> Beschwerde Senden </button>
+                                <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
+                            </div>
+                        </form>
+
+                    </article>
+                </div> <!-- card.// -->
+
+            </aside>
         </div>
     </div>
 </div>
+
 </body>
 </html>
