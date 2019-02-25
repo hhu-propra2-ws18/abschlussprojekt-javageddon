@@ -34,3 +34,10 @@ services:
       #- ./data:/var/lib/postgresql/data
   # ========================================
 
+  proPay:
+    image: propra/propay
+    ports:
+      - "8888:8888"
+
+
+
