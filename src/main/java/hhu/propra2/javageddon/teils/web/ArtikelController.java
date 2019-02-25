@@ -85,7 +85,10 @@ public class ArtikelController {
 
     @RequestMapping(value = "/beschwerde", method = GET)
     public String artikelBeschweren(Model m, @RequestParam("id") long id, @ModelAttribute Reservierung reservierung){
+        Beschwerde beschwerde = new Beschwerde();
+        beschwerde.setKommentar("Beschreiben Sie hier ihre Beschwerde.");
         m.addAttribute("reservierung",alleReservierungen.findReservierungById(id));
+        m.addAttribute("beschwerde", beschwerde);
         return "artikel_beschwerde";
     }
 
