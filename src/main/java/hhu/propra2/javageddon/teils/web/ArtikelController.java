@@ -17,8 +17,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,21 +67,25 @@ public class ArtikelController {
     @GetMapping("/artikel_erstellen")
     public String artikelErstellen(Model m){
         m.addAttribute("artikel", new Artikel());
-        m.addAttribute("standort", new Adresse());
+        m.addAttribute("adresse", new Adresse());
         return "artikel_erstellen";
     }
 
     @PostMapping("/artikel_erstellen")
-    public String erstelleArtikel(@ModelAttribute Artikel artikel, @ModelAttribute Adresse adresse){
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)currentUser).getUsername();
-        Long id = alleBenutzer.getIdByName(username);
+    public String erstelleArtikel(@Valid Artikel artikel, BindingResult artikelBindingResult, @Valid Adresse adresse, BindingResult standortBindingResult){
+        if(artikelBindingResult.hasErrors() || standortBindingResult.hasErrors()){
+            return "artikel_erstellen";
+        }else {
+            Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = ((UserDetails) currentUser).getUsername();
+            Long id = alleBenutzer.getIdByName(username);
 
-        artikel.setStandort(adresse);
-        artikel.setFotos(new ArrayList<String>());
-        artikel.setEigentuemer(alleBenutzer.findBenutzerById(id));
-        alleArtikel.addArtikel(artikel);
-        return "redirect:/fotoupload/" + artikel.getId();
+            artikel.setStandort(adresse);
+            artikel.setFotos(new ArrayList<String>());
+            artikel.setEigentuemer(alleBenutzer.findBenutzerById(id));
+            alleArtikel.addArtikel(artikel);
+            return "redirect:/fotoupload/" + artikel.getId();
+        }
     }
 
 }
