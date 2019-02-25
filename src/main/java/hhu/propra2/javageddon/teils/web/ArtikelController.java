@@ -100,6 +100,7 @@ public class ArtikelController {
         beschwerde.setReservierung(reservierung);
         beschwerde.setBearbeitet(false);
         beschwerde.setNutzer(alleBenutzer.findBenutzerById(id));
+        alleBeschwerden.save(beschwerde);
 
         return "redirect:/";
     }
