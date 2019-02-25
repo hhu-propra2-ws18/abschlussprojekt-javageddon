@@ -117,4 +117,14 @@ public class ArtikelController {
             return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
         }
     }
+    @GetMapping("/artikel_update/{id}/{aktiv}")
+    public String updateArtikel(Model model, @ModelAttribute Artikel artikel, @PathVariable long id, @PathVariable String aktiv){
+        Artikel aktuellerArtikel = alleArtikel.findArtikelById(id);
+        model.addAttribute("artikel", aktuellerArtikel);
+        boolean active = Boolean.parseBoolean(aktiv);
+        aktuellerArtikel.setAktiv(active);
+        alleArtikel.addArtikel(aktuellerArtikel);
+        return "redirect:/profil_ansicht/";
+    }
+
 }
