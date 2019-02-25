@@ -152,4 +152,15 @@ public class ArtikelController {
         return "redirect:/";
     }
 
+    @GetMapping("/reservierung_update/{id}/{akzeptiert}")
+    public String updateReservierung(Model model, @ModelAttribute Reservierung reservierung, @PathVariable long id, @PathVariable String akzeptiert) {
+        Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
+        model.addAttribute("reservierung", aktuelleReservierung);
+        boolean accepted = Boolean.parseBoolean(akzeptiert);
+        aktuelleReservierung.setBearbeitet(true);
+        aktuelleReservierung.setAkzeptiert(accepted);
+        alleReservierungen.addReservierung(aktuelleReservierung);
+        return "redirect:/profil_ansicht/";
+    }
+
 }

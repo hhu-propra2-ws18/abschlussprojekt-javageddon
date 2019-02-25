@@ -228,10 +228,16 @@
                     <span class="bg-danger rounded-circle" th:unless="${reservierung.bearbeitet}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </td>
 
-                <td>
+            <!--    <td>
                     <span class="bg-success rounded-circle" th:if="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <span class="bg-danger rounded-circle" th:unless="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                </td> -->
+
+                <td class="text-right">
+                    <a class="btn btn-success" th:href="@{/reservierung_update/{id}/true (id=${reservierung.id})}">Akzeptieren</a>
+                    <a class="btn btn-danger" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Ablehnen</a>
                 </td>
+
                 <td class="text-right">
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
                     <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
