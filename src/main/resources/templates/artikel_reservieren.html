@@ -25,7 +25,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
 
-    <title>Artikeldetails</title>
+    <title>Reservierungsanfrage</title>
 </head>
 <body>
 
@@ -35,15 +35,12 @@
             <div class="wrapper row">
                 <div class="preview col-md-6">
 
-                    <img th:if="${artikel.fotos.isEmpty()}" th:src="'../fotos/kein-bild-vorhanden'"
-                         class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"
-                    />
-
-                    <div class="gallery" th:unless="${artikel.fotos.isEmpty()}" th:each = "foto: ${artikel.fotos}" >
+                    <div class="gallery" th:each = "foto: ${artikel.fotos}"} >
                         <a target="_blank" th:href= "@{'../fotos/' + ${foto}}">
                             <img th:src="@{'../fotos/' + ${foto}}" alt="FOTO" width="300" height="200">
                         </a>
                     </div>
+
 
                 </div>
                 <div class="details col-md-6">
@@ -65,17 +62,30 @@
                     <p><span style="font-weight: bold;">Standort: </span><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
 
                     <p><span style="font-weight: bold;">Reservierungen: </span>
-                    <span th:if="${alleReservierungen.isEmpty()}">Keine Reservierung vorhanden</span>
-                    <span th:unless="${alleReservierungen.isEmpty()}">
+                        <span th:if="${alleReservierungen.isEmpty()}">Keine Reservierung vorhanden</span>
+                        <span th:unless="${alleReservierungen.isEmpty()}">
                         <ul th:each="reservierung: ${alleReservierungen}">
                             <li th:text="${reservierung.printReservierungsDauer()}"></li>
                         </ul>
                     </span></p>
 
-                    <div class="action">
-                        <a th:href="@{'/reservieren?id=' + ${artikel.id}}"class="btn btn-primary btn-md" >Reservieren</a>
+                    <div th:if="${error}" class="alert alert-danger">
+                        <strong>Fehler!</strong> Reseveriungszeitraum ungültig!
+                    </div>
+
+                    <form th:object="${reservierung}" th:action="@{/reservieren}" method="post">
+                        <input type="hidden" th:field="${artikel.id}">
+                        Start Datum deiner Reservierung:
+                        <input type="date" th:field="*{start}"><br><br>
+                        End Datum deine Reservierung:
+                        <input type="date" th:field="*{ende}"><br><br>
+
+
+                    <div class="action" style="margin-top: 10px">
+                        <button type="submit" class="btn btn-primary"> Anfrage Senden </button>
                         <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,9 +67,9 @@ public class ReservierungService {
         Reservierung testDate = Reservierung.builder().start(startAntrag).ende(endeAntrag).build();
         List<Reservierung> artikelReservierung = alleReservierungen.findByArtikel(a);
         for (Reservierung res : artikelReservierung) {
-            if (res.isBetween(startAntrag) || res.isBetween(endeAntrag)
-                    || testDate.isBetween(res.getStart())
-                    || testDate.isBetween(res.getEnde())) {
+            if (res.containsDate(startAntrag) || res.containsDate(endeAntrag)
+                    || testDate.containsDate(res.getStart())
+                    || testDate.containsDate(res.getEnde())) {
                 return false;
             }
         }

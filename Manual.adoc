@@ -1,0 +1,29 @@
+# Beschreibung und Bedienungsanleitung zum Projekt
+
+## Struktur
+
+### Anwendung und Programmlogik
+
+Der Teil der Anwendung, der die Programmlogik enthält (darunter verstehen wir hier alles, was in java geschrieben ist und direkt zum Betrieb der Anwendung beitraegt, Tests und Templates also nicht), ist in folgende vier Packages unterteilt:
+
+ * model: Hier werden die Entitaeten aufbewahrt, mit denen das System arbeitet. "Artikel" enthaelt alle Attribute, die noetig sind, damit Benutzer einen neuen Gegenstand im System erstellen koennen. (TODO: Attribute aktiv und verfuegbar erwaehnen). Benutzer definiert einen individuellen User und enthaelt alle dazu notwendigen Attribute. Gleiches gilt fuer Reservierung, Adresse und Beschwerde. Die Methoden in der Klasse Reservierung dienen dazu, Anfang, Ende und Dauer einer Reservierung anzuzeigen. Die Klassen sind untereinander verbunden: Die Adresse wird in den Artikel als Standort eingebettet, jeder Artikel hat einen Benutzer als Eigentuemer, jede Reservierung enthaelt einen Benutzer, der den Gegenstand ausleihen will und den Gegenstand selbst, ueber den man auch den Eigentuemer ermitteln kann. Eine Beschwerde enthaelt eine Reservierung, auf die sie sich bezieht, den Nutzer, der sich beschwert hat, und den Benutzer, dem am Ende Recht gegeben wird (entweder der verleihende oder der ausleihende Benutzer).
+
+ * dataaccess: Hier befinden sich die Repositories, in denen verschiedene Methoden des Interfaces CrudRepository ueberschrieben werden. Sie dienen dazu, mit der Datenbank zu kommunizieren und die Objekte in der Datenbank zu verwalten. Darueber hinaus nutzen die Methoden die Verbindungen zwischen den einzelnen Objekten aus, um den Zugriff auf einzelne Objekte zu ermoeglichen. So kann man zum Beispiel durch die Methode findByArtikelAndLeihender in ReservierungRepository eine Reservierung anhand des Artikels, auf den sie sich bezieht, und eines Benutzers, der sich den Artikel ausleihen will, suchen. Die Klasse FotoStorage und ihr Interface sorgen fuer die Speicherung der Links zu den Fotos in der Datenbank, wobei die Foto-Dateien auch einen neuen und eindeutigen Namen erhalten.
+
+ * services: Die Klassen in diesem Package enthalten einerseits Wrapper-Methoden fuer Methoden aus den Repositories, die im Controller benoetigte Aufgaben erfuellen. Andererseits enthalten sie auch Methoden mit komplexerer Logik, wie beispielsweise isAllowedReservierungsDate im ReservierungsService, die ueberpruefen soll, ob der Zeitraum fuer eine Reservierung gueltig oder schon durch eine andere Reservierung belegt ist. Zweck der Services ist, dass im Controller moeglichst keine Logik vorhanden ist, beziehungsweise moeglichst alles, was fuer das korrekte Funktionieren des Systems an Logik benoetigt wird, getestet werden kann. Die Services ArtikelService und ReservierungsService beziehen sich auf den ArtikelController, der BenutzerService auf den BenutzerController.
+
+ * web: Hier befinden sich die einzelnen Controller und die Konfiguration fuer Spring Security (TODO: Beschreiben, was in WebSecurityConfig genau passiert).
+
+ ### Resources
+
+ Hier werden die html-Seiten sowie die hochgeladenen Fotos gespeichert. Es gibt zwei application.properties-Dateien, wobei eine fuer den regualaeren Betrieb verwendet wird und Postgres einbindet, die andere (-dev) hingegen fuers Testing (unter Einbindung von H2).
+
+ * templates:
+
+ ### Testing
+
+Wir testen bislang einerseits die Repositories und die Methoden der Modell-Objekte (sofern sie welche haben), andererseits die Services, welche Logik enthalten, die ansonsten im Controller untergebracht und damit schwer zu testen waere.
+
+ * modelTest: Wir haben die Testklassen fuer die Repositories jeweils so aufgebaut, dass wir zunaechst die benoetigten Objekte erzeugen und diese dann mit der Annotatioin @Before vor jedem Test neu in die Datenbank speichern. Mit @After werden die Datenbanken nach jedem Test wieder gelehrt. Alle Klassen enthalten Tests, die die Korrekte Wiedergewinnung und Aktualisierung der Daten, welche an die Bank geschickt werden, ueberpruefen. Zudem werden saemtliche ueberschriebenen Methoden aus den Repositories getestet. Wenn Klassen aus model ueber Methoden verfuegen, werden diese ebenfalls getestet.
+
+ * serviceTests: Die Logik in den Services enthaelt sowohl simple als auch komplexere Methoden. Bei ersteren reicht teils ein (sinnvoller Test, bei Letzteren haben wir uns bemueht, moeglichst alle Faelle abzudecken, bei denen Fehler auftreten koennten. So wird die Methode isAllowedReservierungsDate aus dem ReservierungsService darauf getestet, dass sie ein illegales Anfangsdatum, Enddatum, Anfangs-und Enddatum oder eine ungueltige Reservierung mit legalem Anfangs- und Enddatum erkennt. Auch die Grenzfaelle (nur Start- oder Enddatum einer Reservierung sind illegal) werden getestet.
