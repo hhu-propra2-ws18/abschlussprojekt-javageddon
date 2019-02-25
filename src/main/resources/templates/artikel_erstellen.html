@@ -22,7 +22,7 @@
 
                         <form method="post" th:action="@{/artikel_erstellen}">
 
-                            <input type="hidden" value="1" name="id" th:value="${artikel.id}">
+                            <input type="hidden" value="1" name="id" th:value="${artikel.id}"/>
                             <input type="hidden" value="true" name="aktiv"/>
                             <input type="hidden" value="true" name="verfuegbar"/>
 
@@ -58,7 +58,7 @@
                             <div class="form-group" style="margin-top:20px">
                                 <button type="submit" class="btn btn-primary btn-block"> Weiter </button>
                             </div> <!-- form-group// -->
-                            </input>
+                            
                         </form>
                     </article>
                 </div> <!-- card.// -->
