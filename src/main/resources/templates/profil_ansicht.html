@@ -162,12 +162,10 @@
                     <span class="bg-success rounded-circle" th:if="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     <span class="bg-danger rounded-circle" th:unless="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </td>
-                <td class="text-right">
+                <td class="btn">
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
-                    <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
-                       href="/details?id=id" class="btn btn-outline-danger">Details</a>
-                    <a th:href="@{'/beschwerde?id=' + ${reservierung.id}}"
-                       href="/beschwerde?id=id" class="btn btn-outline-danger">Beschweren</a>
+                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
             </tbody>
         </table>
@@ -228,22 +226,14 @@
                     <span class="bg-danger rounded-circle" th:unless="${reservierung.bearbeitet}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </td>
 
-            <!--    <td>
-                    <span class="bg-success rounded-circle" th:if="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span class="bg-danger rounded-circle" th:unless="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                </td> -->
-
                 <td class="text-right">
                     <a class="btn btn-success" th:href="@{/reservierung_update/{id}/true (id=${reservierung.id})}">Akzeptieren</a>
                     <a class="btn btn-danger" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Ablehnen</a>
                 </td>
 
                 <td class="text-right">
-                    <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
-                    <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
-                       href="/details?id=id" class="btn btn-outline-danger">Details</a>
-                    <a th:href="@{'/beschwerde?id=' + ${reservierung.id}}"
-                       href="/beschwerde?id=id" class="btn btn-outline-danger">Beschweren</a>
+                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
             </tbody>
         </table>

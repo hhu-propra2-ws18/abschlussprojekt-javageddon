@@ -4,6 +4,8 @@ import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Beschwerde;
+import hhu.propra2.javageddon.teils.services.BenutzerService;
+import hhu.propra2.javageddon.teils.services.BeschwerdeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,27 +18,27 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 public class BeschwerdeController {
 
     @Autowired
-    private BeschwerdeRepository alleBeschwerden;
+    private BeschwerdeService alleBeschwerden;
 
     @Autowired
-    private BenutzerRepository alleBenutzer;
+    private BenutzerService alleBenutzer;
 
 
     @GetMapping("/admin_clearing")
     public String adminClearing(Model m) {
-        m.addAttribute("alleBeschwerden", alleBeschwerden.getAllByBearbeitetFalse());
+        m.addAttribute("alleBeschwerden", alleBeschwerden.findAllUnbearbeitetBeschwerden());
         return "admin_clearing";
     }
 
 
     @RequestMapping(value = "/clearing/{id}/{uid}", method = GET)
     public String updateBeschwerde(Model m, @PathVariable("id") long id, @PathVariable("uid") long uid){
-        m.addAttribute("alleBeschwerden", alleBeschwerden.getAllByBearbeitetFalse());
-        Benutzer benutzer = alleBenutzer.findById(uid);
-        Beschwerde beschwerde = alleBeschwerden.findById(id).get();
+        m.addAttribute("alleBeschwerden", alleBeschwerden.findAllUnbearbeitetBeschwerden());
+        Benutzer benutzer = alleBenutzer.findBenutzerById(uid);
+        Beschwerde beschwerde = alleBeschwerden.findBeschwerdeById(id);
         beschwerde.setHatRecht(benutzer);
         beschwerde.setBearbeitet(true);
-        alleBeschwerden.save(beschwerde);
+        alleBeschwerden.addBeschwerde(beschwerde);
         return "redirect:/admin_clearing";
     }
 }
