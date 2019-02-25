@@ -164,10 +164,8 @@
                 </td>
                 <td class="btn">
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
-                    <a th:href="@{'/beschwerde?id=' + ${reservierung.id}}" class="btn btn-danger btn-md"
-                       href="/beschwerde?id=id" class="btn btn-outline-danger">Beschweren</a>
-                    <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
-                       href="/details?id=id" class="btn btn-outline-danger">Details</a>
+                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
             </tbody>
         </table>
@@ -234,10 +232,8 @@
                 </td>
                 <td class="btn">
                     <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
-                    <a th:href="@{'/beschwerde?id=' + ${reservierung.id}}" class="btn btn-danger btn-md"
-                       href="/beschwerde?id=id" class="btn btn-outline-danger">Beschweren</a>
-                    <a th:href="@{'/details?id=' + ${reservierung.artikel.id}}"
-                       href="/details?id=id" class="btn btn-outline-danger">Details</a>
+                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
             </tbody>
         </table>
