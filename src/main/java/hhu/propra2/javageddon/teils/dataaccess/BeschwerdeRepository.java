@@ -10,5 +10,4 @@ public interface BeschwerdeRepository extends CrudRepository<Beschwerde,Long> {
 
     List<Beschwerde> getAllByIdIsNotNull();
 
-
 }

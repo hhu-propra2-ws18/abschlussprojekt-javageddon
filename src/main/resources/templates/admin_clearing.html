@@ -41,6 +41,7 @@
             </thead>
             <tbody>
             <tr th:each="beschwerde: ${alleBeschwerden}">
+
                 <td>
                     <div class="price-wrap">
                         <var class="price" th:text="${beschwerde.id}"> 2342 </var>
@@ -57,17 +58,31 @@
                 </td>
 
                 <td>
+                    <!--
                     <div class="form-group">
                         <label for="sel1">Wer hat Recht?:</label>
-                        <select class="form-control" id="sel1">
-                            <option th:text="${beschwerde.reservierung.artikel.eigentuemer.name}">Nutzer 1</optionth:text>
-                            <option th:text="${beschwerde.reservierung.leihender.name}">Nutzer 2</optionth:text>
+                        <select th:field="*{hatRecht}" th:class="form-control" id="sel1">
+                            <option th:value="${beschwerde.reservierung.artikel.eigentuemer}"
+                                    th:text="${beschwerde.reservierung.artikel.eigentuemer.name}">
+                                Nutzer 1</option>
+
+                            <option th:value="${beschwerde.reservierung.leihender}"
+                                    th:text="${beschwerde.reservierung.leihender.name}">
+                            Nutzer 2</option>
+
                         </select>
                     </div>
+                    -->
                 </td>
 
                 <td>
-                    <a href="" class="btn btn-outline-primary">Senden</a>
+                    <!--
+                    <div class="form-group" style="margin-top:20px">
+                        <button type="submit" class="btn btn-primary btn-block"> Senden </button>
+                    </div>
+                    -->
+                    <a th:href="@{'/clearing?id=' + ${beschwerde.id}}"
+                       href="/clearing?id=id" class="btn btn-outline-danger">Senden</a>
                 </td>
 
             </tr>
