@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta http-equiv="cache-control" content="no-cache">
     <meta charset="UTF-8">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <meta charset="UTF-8">
@@ -58,21 +59,7 @@
                 </td>
 
                 <td>
-                    <!--
-                    <div class="form-group">
-                        <label for="sel1">Wer hat Recht?:</label>
-                        <select th:field="*{hatRecht}" th:class="form-control" id="sel1">
-                            <option th:value="${beschwerde.reservierung.artikel.eigentuemer}"
-                                    th:text="${beschwerde.reservierung.artikel.eigentuemer.name}">
-                                Nutzer 1</option>
 
-                            <option th:value="${beschwerde.reservierung.leihender}"
-                                    th:text="${beschwerde.reservierung.leihender.name}">
-                            Nutzer 2</option>
-
-                        </select>
-                    </div>
-                    -->
                 </td>
 
                 <td>
@@ -81,8 +68,14 @@
                         <button type="submit" class="btn btn-primary btn-block"> Senden </button>
                     </div>
                     -->
-                    <a th:href="@{'/clearing?id=' + ${beschwerde.id}}"
-                       href="/clearing?id=id" class="btn btn-outline-danger">Senden</a>
+                    <a th:href="@{'/clearing/' + ${beschwerde.id} +'/'+ ${beschwerde.reservierung.artikel.eigentuemer.id}}"
+                       href="/clearing?id=id" class="btn btn-outline-danger"
+                       th:text="${beschwerde.reservierung.artikel.eigentuemer.name}">Nutzer A</a>
+
+                    <a th:href="@{'/clearing/' + ${beschwerde.id} + '/'+ ${beschwerde.reservierung.leihender.id}}"
+                       href="/clearing?id=id" class="btn btn-outline-danger"
+                       th:text="${beschwerde.reservierung.leihender.name}">Nutzer B</a>
+
                 </td>
 
             </tr>

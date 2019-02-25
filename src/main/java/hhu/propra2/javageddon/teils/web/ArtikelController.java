@@ -41,7 +41,7 @@ public class ArtikelController {
     @GetMapping("/")
     public String artikelListe(Model m){
         m.addAttribute("alleArtikel", alleArtikel.findAllAktivArtikel());
-        m.addAttribute("anzahlBeschwerden", alleBeschwerden.count());
+        m.addAttribute("anzahlBeschwerden", alleBeschwerden.getAllByBearbeitetFalse().size());
         return "start";
     }
 
