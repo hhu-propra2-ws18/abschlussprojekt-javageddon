@@ -40,7 +40,7 @@ public class ArtikelServiceTest {
     ArrayList<String> fotos = new ArrayList<String>();
     Benutzer heidi = Benutzer.builder().name("Harald").email("har@tom.de").build();
     Adresse ad = Adresse.builder().hausnummer("5").strasse("Hauptstrasse").ort("berlin").plz(4004).build();
-    Artikel hamster = Artikel.builder().titel("Hamster").eigentuemer(heidi).standort(ad).fotos(fotos).build();
+    Artikel hamster = Artikel.builder().titel("Hamster").eigentuemer(heidi).standort(ad).fotos(fotos).beschreibung("?").kaution(1).kostenTag(1).build();
     
 
     @Before

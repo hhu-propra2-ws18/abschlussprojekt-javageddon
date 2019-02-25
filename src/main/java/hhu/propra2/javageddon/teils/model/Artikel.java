@@ -23,20 +23,16 @@ public class Artikel {
     private long id;
 
     @NotEmpty(message = "Der Artikel muss einen Artikel haben")
-    @Builder.Default
-    private String titel = "NO_TITLE";
+    private String titel;
 
     @NotEmpty(message = "Der Artikel muss eine Beschreibung haben")
-    @Builder.Default
-    private String beschreibung = "NO_DESCRIPTION";
+    private String beschreibung;
 
     @Min(value=1, message = "Der Artikel muss einen Preis pro Tag haben")
-    @Builder.Default
-    private int kostenTag = 1;
+    private int kostenTag;
 
     @Min(value=1, message = "Der Artikel muss eine Kaution haben")
-    @Builder.Default
-    private int kaution = 1;
+    private int kaution;
 
     private boolean aktiv;
 
