@@ -148,8 +148,7 @@ public class ArtikelController {
         beschwerde.setBearbeitet(false);
         beschwerde.setNutzer(alleBenutzer.findBenutzerById(id));
         alleBeschwerden.save(beschwerde);
-
-        return "redirect:/";
+        return "redirect:/profil_ansicht/";
     }
 
     @GetMapping("/reservierung_update/{id}/{akzeptiert}")
@@ -162,5 +161,15 @@ public class ArtikelController {
         alleReservierungen.addReservierung(aktuelleReservierung);
         return "redirect:/profil_ansicht/";
     }
+
+    @GetMapping("/reservierung_update/{id}")
+    public String updateReservierung(Model model, @ModelAttribute Reservierung reservierung, @PathVariable long id) {
+        Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
+        model.addAttribute("reservierung", aktuelleReservierung);
+        aktuelleReservierung.setAbgeschlossen(true);
+        alleReservierungen.addReservierung(aktuelleReservierung);
+        return "redirect:/profil_ansicht/";
+    }
+
 
 }
