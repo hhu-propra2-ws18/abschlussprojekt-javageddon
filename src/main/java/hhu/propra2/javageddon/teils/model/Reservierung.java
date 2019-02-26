@@ -42,6 +42,10 @@ public class Reservierung {
 
     private Boolean akzeptiert;
 
+    private Boolean abgeschlossen = false;
+
+    private Boolean sichtbar = true;
+
     public String printReservierungsDauer(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         if (start.isEqual(ende)) {

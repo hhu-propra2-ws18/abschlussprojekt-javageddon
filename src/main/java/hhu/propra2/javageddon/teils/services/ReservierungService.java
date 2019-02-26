@@ -44,6 +44,23 @@ public class ReservierungService {
     	return alleReservierungen.findByArtikelEigentuemerAndBearbeitet(b, false);
     }
 
+    public List<Reservierung> findReservierungByArtikelEigentuemerAndNichtAbgeschlossen(Benutzer b) {
+        List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelEigentuemerAndAbgeschlossenAndAkzeptiert(b, false, true);
+        List<Reservierung> zukuenftigeReservierungen = new ArrayList<Reservierung>();
+        LocalDate currentDay = LocalDate.now();
+        for (Reservierung res : artikelReservierungen) {
+            if (res.getStart().isAfter(currentDay)) {
+                zukuenftigeReservierungen.add(res);
+            }
+        }
+        artikelReservierungen.removeAll(zukuenftigeReservierungen);
+
+        return artikelReservierungen
+                .stream()
+                .sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
+                .collect(Collectors.toList());
+    }
+
     public List<Reservierung> findCurrentReservierungByArtikelOrderedByDate(Artikel a){
         List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikel(a);
         List<Reservierung> vergangeneReservierungen = new ArrayList<Reservierung>();
