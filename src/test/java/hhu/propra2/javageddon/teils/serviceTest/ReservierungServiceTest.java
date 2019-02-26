@@ -42,19 +42,25 @@ public class ReservierungServiceTest {
     LocalDate pastDay = LocalDate.now().minusDays(10);
 
     Benutzer heidi = Benutzer.builder().name("Harald").email("har@tom.de").build();
+
     Adresse ad = Adresse.builder().hausnummer("5").strasse("Hauptstrasse").ort("berlin").plz(4004).build();
     Artikel hamster = Artikel.builder().titel("Hamster").eigentuemer(heidi).standort(ad).beschreibung("?").kaution(1).kostenTag(1).build();
     Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(heidi).standort(ad).beschreibung("?").kaution(1).kostenTag(1).build();
+    Artikel weiteresFahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(heidi).standort(ad).beschreibung("?").kaution(1).kostenTag(1).build();
 
-    Reservierung currentRes = Reservierung.builder().start(currentDay).ende(currentDay).artikel(hamster).build();
-    Reservierung futureRes = Reservierung.builder().start(futureDay).ende(futureDay).artikel(hamster).build();
-    Reservierung pastRes = Reservierung.builder().start(pastDay).ende(pastDay).artikel(hamster).build();
+    Reservierung currentRes = Reservierung.builder().start(currentDay).ende(currentDay).artikel(hamster).abgeschlossen(false).akzeptiert(true).build();
+    Reservierung futureRes = Reservierung.builder().start(futureDay).ende(futureDay).artikel(hamster).abgeschlossen(false).akzeptiert(true).build();
+    Reservierung pastRes = Reservierung.builder().start(pastDay).ende(pastDay).artikel(hamster).abgeschlossen(true).akzeptiert(false).build();
     Reservierung farFutureRes = Reservierung.builder().start(currentDay.plusYears(2))
             .ende(currentDay.plusYears(2).plusDays(10)).artikel(hamster).build();
+
+    Reservierung weiteresFahrradRes = Reservierung.builder().start(currentDay).ende(futureDay).artikel(weiteresFahrrad).abgeschlossen(false).akzeptiert(true).build();
+
     @Before
     public void testInit() {
         heidi = benRepo.save(heidi);
         hamster = artRepo.save(hamster);
+        weiteresFahrrad = artRepo.save(weiteresFahrrad);
         currentRes = rService.addReservierung(currentRes);
         pastRes = rService.addReservierung(pastRes);
         futureRes = rService.addReservierung(futureRes);
@@ -71,6 +77,19 @@ public class ReservierungServiceTest {
     public void selectsOnlyCurrentReservierungen() {
         List<Reservierung> aktuelleReservierungen = rService.findCurrentReservierungByArtikelOrderedByDate(hamster);
         assertThat(aktuelleReservierungen).containsExactly(currentRes, futureRes);
+    }
+
+    @Test
+    public void selectsOnlyUnfinishedReservierungen() {
+        List<Reservierung> aktuelleReservierungen = rService.findReservierungByArtikelEigentuemerAndNichtAbgeschlossen(heidi);
+        assertThat(aktuelleReservierungen).containsExactly(currentRes);
+    }
+
+    @Test
+    public void selectsOnlyUnfinishedReservierungenInCorrectOrder() {
+        weiteresFahrradRes = rService.addReservierung(weiteresFahrradRes);
+        List<Reservierung> aktuelleReservierungen = rService.findReservierungByArtikelEigentuemerAndNichtAbgeschlossen(heidi);
+        assertThat(aktuelleReservierungen).containsExactly(currentRes, weiteresFahrradRes);
     }
 
     @Test
