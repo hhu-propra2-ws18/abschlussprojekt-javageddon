@@ -2,15 +2,17 @@ package hhu.propra2.javageddon.teils.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.List;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProPayUser {
 
     private String account;
-    private int amount;
+    private double amount;
 
-    private Reservations reservations;
+    private List<Reservations> reservations;
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 

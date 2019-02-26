@@ -1,30 +1,90 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ProPay Details</title>
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <title>ProPay Übersicht</title>
 </head>
 <body>
 
 <div class="container" style="margin: 50px">
 
-    <div class="container-fluid">
-        <section class="row">
-            <div class="col-md-6">
-                <h1>Deine ProPay Übersicht</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h2>Deine ProPay Übersicht</h2>
             </div>
-            <div class="col-md-6">
+            <div class="col">
 
-            <a class="btn float-right" role="group">
-
-                <a href="/profil_ansicht" class="btn btn-warning">Profilübersicht</a>
-
-            </a>
+            </div>
+            <div class="col">
+                <a class="btn float-right" role="group">
+                    <a href="/profil_ansicht" class="btn btn-warning">Profilübersicht</a>
+                </a>
+            </div>
         </div>
-        </section>
-    </div>
 
+        <div class="row">
+            <p></p>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p><span style="font-weight: bold;">Dein ProPay Name: </span>
+                    <span th:text="${proPayUser.account}">Nervensäge</span></p>
+
+                <p><span style="font-weight: bold;">Aktuelles ProPay Guthaben: </span>
+                    <span th:text="${proPayUser.amount + ' €'}">2342 €</span></p>
+            </div>
+            <div class="col">
+            </div>
+            <div class="col">
+                <p><span style="font-weight: bold;">Lade hier dein ProPay Konto auf</span>
+                <form class="form-inline" method="post" th:action="@{/proPay_Aufladen}" th:object="${aufladung}">
+                    <div class="form-group">
+                        <input th:field="*{betrag}" type="text" class="form-control" placeholder="Betrag in Euro">
+                    </div>
+                <button type="submit" class="btn btn-outline-primary">Aufladen</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <p></p>
+        </div>
+
+        <div class="row">
+            <div class="col">
+            </div>
+            <div class="col">
+                <h4>Deine Transaktionen:</h4>
+            </div>
+            <div class="col">
+            </div>
+        </div>
+
+        <div class="row">
+            <table class="table table-hover shopping-cart-wrap">
+                <thead class="text-muted">
+                <tr>
+                    <th scope="col" width="30">Datum</th>
+                    <th scope="col" width="100">Betrag</th>
+                    <th scope="col" width="100">Verwendungszweck</th>
+                </tr>
+                </thead>
+                <tbody>
+
+
+
+                </tbody>
+            </table>
+        </div>
+
+
+
+        </div>
 </div>
 
 </body>

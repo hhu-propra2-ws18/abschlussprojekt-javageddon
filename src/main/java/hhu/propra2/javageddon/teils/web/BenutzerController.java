@@ -77,7 +77,23 @@ public class BenutzerController {
     }
 
     @GetMapping("/proPay_details")
-    public String proPaySicht(){
+    public String proPaySicht(Model m){
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        m.addAttribute("aufladung", new Aufladung());
+        m.addAttribute("proPayUser",ProPay.getProPayUser(username));
         return "proPay_details";
+    }
+
+    @PostMapping("/proPay_Aufladen")
+    public String proPayAufladen(@ModelAttribute Aufladung aufladung){
+
+
+        //TODO Nach dem testen entfernen!
+
+        System.out.println("Betrag der aufgeladen werden soll: ");
+        System.out.println(aufladung.getBetrag());
+        return "redirect:proPay_details";
+
     }
 }
