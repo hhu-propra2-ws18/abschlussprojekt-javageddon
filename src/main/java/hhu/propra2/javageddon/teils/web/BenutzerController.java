@@ -75,4 +75,9 @@ public class BenutzerController {
         m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemerAndNichtBearbeitet(alleBenutzer.findBenutzerById(id)));
         return "profil_ansicht";
     }
+
+    @GetMapping("/proPay_details")
+    public String proPaySicht(){
+        return "proPay_details";
+    }
 }
