@@ -1,8 +1,11 @@
 package hhu.propra2.javageddon.teils.web;
 
+import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.Benutzer;
+import hhu.propra2.javageddon.teils.model.ProPayUser;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
+import hhu.propra2.javageddon.teils.services.ProPayService;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +23,8 @@ public class BenutzerController {
     @Autowired
     private ArtikelService alleArtikel;
     
-    @Autowired ReservierungService alleReservierungen;
+    @Autowired
+    private ReservierungService alleReservierungen;
 
 
     @GetMapping("/registrieren")
@@ -63,6 +67,8 @@ public class BenutzerController {
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
         Long id = alleBenutzer.getIdByName(username);
+
+        m.addAttribute("proPayUser",ProPay.getProPayUser(username));
         m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
         m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
