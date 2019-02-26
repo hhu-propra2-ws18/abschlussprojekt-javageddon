@@ -20,9 +20,6 @@
                 <h1>Artikel Übersicht</h1>
             </div>
             <div class="col-md-6">
-
-                <a class="btn float-right" role="group">
-
                     <a th:if="${#httpServletRequest.isUserInRole('USER') || #httpServletRequest.isUserInRole('ADMIN')}"
                        class="btn btn-success btn-md" href="/artikel_erstellen">Artikel anlegen</a>
 
@@ -42,9 +39,6 @@
 
                     <a th:if="${#httpServletRequest.isUserInRole('USER') || #httpServletRequest.isUserInRole('ADMIN')}"
                        class="btn btn-warning btn-md" href="/profil_ansicht">Mein Profil</a>
-
-
-                </a>
             </div>
         </section>
     </div>
@@ -64,21 +58,17 @@
             <tr th:each="artikel: ${alleArtikel}">
                 <td>
                     <figure class="media">
-
                         <div class="img-wrap">
-
-                        <img th:src="${(artikel.fotos.isEmpty() == false ) ? '../fotos/' + artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
-                             class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"
-                        />
-
-    </div>
+                            <img th:src="${(artikel.fotos.isEmpty() == false ) ? '../fotos/' + artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
+                                 class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"
+                            />
+                        </div>
 
                        <figcaption class="media-body">
                             <h4 th:text="${artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
                         </figcaption>
                     </figure>
                 </td>
-
                 <td>
                 <div class="price-wrap">
                     <var class="price" th:text="|${artikel.kostenTag} €|">10€</var>
@@ -95,8 +85,7 @@
                 <span class="bg-success rounded-circle" th:if="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="bg-danger rounded-circle" th:unless="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </td>
-                 <td class="text-right">
-                    <!-- <a title="" href="" class="btn btn-outline-success" data-toggle="tooltip" data-original-title="Save to Wishlist"> <i class="fa fa-heart"></i></a>-->
+                <td class="text-right">
                      <a th:href="@{'/details?id=' + ${artikel.id}}"
                         href="/details?id=id" class="btn btn-outline-danger">Details</a>
                 </td>
