@@ -28,8 +28,8 @@ public class ReservierungService {
         return alleReservierungen.findByArtikel(a);
     }
 
-    public List<Reservierung> findReservierungByLeihender(Benutzer b){
-        return alleReservierungen.findByLeihender(b);
+    public List<Reservierung> findReservierungByLeihenderAndSichtbar(Benutzer b, Boolean tf){
+        return alleReservierungen.findByLeihenderAndSichtbar(b, tf);
     }
 
     public List<Reservierung> findReservierungByArtikelAndLeihender(Artikel a, Benutzer b){
@@ -45,7 +45,7 @@ public class ReservierungService {
     }
 
     public List<Reservierung> findReservierungByArtikelEigentuemerAndNichtAbgeschlossen(Benutzer b) {
-        List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelEigentuemerAndAbgeschlossenAndAkzeptiert(b, false, true);
+        List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelEigentuemerAndZurueckerhaltenAndAkzeptiert(b, false, true);
         List<Reservierung> zukuenftigeReservierungen = new ArrayList<Reservierung>();
         LocalDate currentDay = LocalDate.now();
         for (Reservierung res : artikelReservierungen) {
@@ -95,6 +95,18 @@ public class ReservierungService {
             }
         }
         return true;
+    }
+
+    public List<Reservierung> fristAbgelaufeneReservierungen(Benutzer b){
+        List<Reservierung> leihender_Reservierungen = alleReservierungen.findByLeihender(b);
+        List<Reservierung> abgelaufeneReservierungen = new ArrayList<Reservierung>();
+        LocalDate currentDay = LocalDate.now();
+        for (Reservierung res : leihender_Reservierungen) {
+            if (res.getEnde().isBefore(currentDay) & !res.getZurueckgegeben() & res.getAkzeptiert()) {
+                abgelaufeneReservierungen.add(res);
+            }
+        }
+        return abgelaufeneReservierungen;
     }
 
 }
