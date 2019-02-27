@@ -82,11 +82,12 @@ public class BenutzerController {
     public String proPaySicht(Model m){
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
+        Benutzer benutzer = alleBenutzer.findBenutzerById(alleBenutzer.getIdByName(username));
         Aufladung aufladung = new Aufladung();
 
         m.addAttribute("aufladung", aufladung);
         m.addAttribute("proPayUser",ProPay.getProPayUser(username));
-        m.addAttribute("alleTransaktionen",alleTransaktionen);
+        m.addAttribute("alleTransaktionen",alleTransaktionen.findTransaktionenByKontoinhaber(benutzer));
         return "proPay_details";
     }
 

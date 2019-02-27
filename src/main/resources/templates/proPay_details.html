@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -75,7 +75,23 @@
                 </tr>
                 </thead>
                 <tbody>
+                <tr th:each="transaktion: ${alleTransaktionen}">
 
+                    <td>
+                        <div class="price-wrap">
+                            <var class="price" th:text="${transaktion.datum}">01.02.03</var>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="price-wrap">
+                            <var class="price" th:text="|${transaktion.betrag} €|">1234€</var>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="price-wrap">
+                            <var class="price" th:text="${transaktion.verwendungszweck}">Test Test, dies ist ein Test!</var>
+                        </div>
+                    </td>
 
 
                 </tbody>
