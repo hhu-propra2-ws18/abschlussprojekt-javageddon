@@ -43,5 +43,34 @@ public class ProPay {
     }
 
 
+    public static void releaseReservationKaution(Reservierung reservierung){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(URL_RESERVATION + "release/" + reservierung.getLeihender().getName()+
+                                      "?reservationId=" + reservierung.getKautionsId(), "?reservationId=" +
+                                      reservierung.getKautionsId(),ProPayUser.class);
+    }
+
+    public static void releaseReservationMiete(Reservierung reservierung){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(URL_RESERVATION + "release/" + reservierung.getLeihender().getName()+
+                "?reservationId=" + reservierung.getMieteId(), "?reservationId=" +
+                reservierung.getMieteId(),ProPayUser.class);
+    }
+
+    public static void punishReservationKaution(Reservierung reservierung){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(URL_RESERVATION + "punish/" + reservierung.getLeihender().getName()+
+                "?reservationId=" + reservierung.getKautionsId(), "?reservationId=" +
+                reservierung.getKautionsId(),ProPayUser.class);
+    }
+
+    public static void punishReservationMiete(Reservierung reservierung){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(URL_RESERVATION + "punish/" + reservierung.getLeihender().getName()+
+                "?reservationId=" + reservierung.getMieteId(), "?reservationId=" +
+                reservierung.getMieteId(),ProPayUser.class);
+    }
+
+
 
 }
