@@ -1,6 +1,7 @@
 package hhu.propra2.javageddon.teils.services;
 
 import hhu.propra2.javageddon.teils.dataaccess.TransaktionRepository;
+import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Transaktion;
 import org.springframework.stereotype.Service;
@@ -21,5 +22,9 @@ public class TransaktionService {
                 .stream()
                 .sorted((t1, t2) -> t2.getDatum().compareTo(t1.getDatum()))
                 .collect(Collectors.toList());
+    }
+
+    public Transaktion addTransaktion(Transaktion t) {
+        return alleTransaktionen.save(t);
     }
 }

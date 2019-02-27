@@ -106,6 +106,8 @@ public class BenutzerController {
         transaktion.setKontoinhaber(alleBenutzer.findBenutzerById(id));
         transaktion.setVerwendungszweck("Aufladung über Teils!");
 
+        alleTransaktionen.addTransaktion(transaktion);
+
         return "redirect:proPay_details";
 
     }
