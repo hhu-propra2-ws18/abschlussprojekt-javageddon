@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
     <title>Profil</title>
 </head>
 <body>
 
-
-<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css"> -->
 
 <div class="container" style="margin-top:50px">
     <div class="action">
@@ -26,10 +22,12 @@
     </div>
 
     <div class="details col-md-6">
-
         <p><span style="font-weight: bold;">Name: </span><span th:text="${benutzer.name}">Jens Bendisposto</span></p>
         <p><span style="font-weight: bold;">E-mail: </span><span th:text="${benutzer.email}">email@gmail.com</span></p>
+    </div>
 
+    <div th:each="warnung: ${alleWarnungen}">
+        <p class="alert alert-danger" role="alert" style="font-size:22px">Die Leihfrist für den Artikel <span style="font-weight:bold" th:text="${warnung.artikel.titel}">Akkuschrauber</span> ist abgelaufen!</p>
     </div>
 
     <div class="container-fluid">
@@ -44,11 +42,11 @@
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
-                <th scope="col">Artikel</th>
-                <th scope="col" width="160">Preis</th>
-                <th scope="col" width="160">Kaution</th>
-                <th scope="col" width="100">Vefügbar</th>
-                <th scope="col" width="100"></th>
+                <th scope="col" width="400">Artikel</th>
+                <th scope="col" width="100">Preis</th>
+                <th scope="col" width="100">Kaution</th>
+                <th scope="col" width="200">Status</th>
+                <th scope="col" width="200"></th>
                 <th scope="col" width="100"></th>
             </tr>
             </thead>
@@ -67,7 +65,6 @@
                         </figcaption>
                     </figure>
                 </td>
-
                 <td>
                     <div class="price-wrap">
                         <var class="price" th:text="|${artikel.kostenTag} €|">10€</var>
@@ -80,30 +77,25 @@
                     </div>
                 </td>
                 <td>
-                    <span class="bg-success rounded-circle" th:if="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span class="bg-danger rounded-circle" th:unless="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                    <p class="alert alert-success" role="alert" th:if="${artikel.verfuegbar}">Verfügbar</p>
+                    <p class="alert alert-danger" role="alert" th:unless="${artikel.verfuegbar}">Nicht Verfügbar</p>
                 </td>
-
                 <td class="text-right" th:if="${artikel.verfuegbar}">
-                    <a th:if="${artikel.aktiv}" th:href="@{/artikel_update/{id}/false (id=${artikel.id})}">Deaktivieren</a>
-                    <a th:unless="${artikel.aktiv}" th:href="@{/artikel_update/{id}/true (id=${artikel.id})}">Aktivieren</a>
+                    <a class="btn btn-outline-danger" th:if="${artikel.aktiv}" th:href="@{/artikel_update/{id}/false (id=${artikel.id})}">Deaktivieren</a>
+                    <a class="btn btn-outline-success" th:unless="${artikel.aktiv}" th:href="@{/artikel_update/{id}/true (id=${artikel.id})}">Aktivieren</a>
                 </td>
-                <td class="text-right" th:unless="${artikel.verfuegbar}"></td>
-
                 <td class="text-right">
-                    <a th:href="@{'/details?id=' + ${artikel.id}}"
-                       href="/details?id=id" class="btn btn-outline-danger">Details</a>
+                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${artikel.id}}"
+                       href="/details?id=id" >Details</a>
                 </td>
             </tbody>
         </table>
     </div>
 
-
-
     <div class="container-fluid" style="margin-top:50px">
         <section class="row">
             <div class="col-md-8">
-                <h3>Du hast reserviert...</h3>
+                <h3>Von dir angefragte Artikel</h3>
             </div>
         </section>
     </div>
@@ -112,11 +104,11 @@
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
-                <th scope="col">Artikel</th>
-                <th scope="col" width="160">Start/Ende</th>
-                <th scope="col" width="100">Bearbeitet</th>
-                <th scope="col" width="100">Akzeptiert</th>
-                <th scope="col" width="200"> </th>
+                <th scope="col" width="400">Artikel</th>
+                <th scope="col" width="150">Start/Ende</th>
+                <th scope="col" width="200">Status</th>
+                <th scope="col" width="300"></th>
+                <th scope="col" width="108"></th>
             </tr>
             </thead>
             <tbody>
@@ -141,17 +133,21 @@
                     </div>
                 </td>
                 <td>
-                    <span class="bg-success rounded-circle" th:if="${reservierung.bearbeitet}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span class="bg-danger rounded-circle" th:unless="${reservierung.bearbeitet}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                </td>
+                    <p class="alert alert-warning" role="alert" th:unless="${reservierung.bearbeitet}">Anfrage in Bearbeitung</p>
+                    <p class="alert alert-danger" role="alert" th:if="${reservierung.bearbeitet == true and reservierung.akzeptiert == false}">Anfrage abgelehnt</p>
+                    <p class="alert alert-success" role="alert" th:if="${reservierung.bearbeitet == true and reservierung.akzeptiert == true and reservierung.zurueckerhalten == false}">Anfrage akzeptiert</p>
+                    <p class="alert alert-success" role="alert" th:if="${reservierung.containsDate(LocalDate.now()) == true and reservierung.zurueckgegeben == false}">Ausleihe läuft</p>
+                    <p class="alert alert-secondary" role="alert" th:if="${reservierung.bearbeitet == true and reservierung.akzeptiert == true and reservierung.zurueckerhalten == true}">Verleih abgeschlossen</p>
+                    <p class="alert alert-danger" role="alert" th:if="${reservierung.getEnde().isBefore(LocalDate.now()) == true and reservierung.zurueckgegeben == false}">Ausleihe abgelaufen</p>
 
-                <td>
-                    <span class="bg-success rounded-circle" th:if="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span class="bg-danger rounded-circle" th:unless="${reservierung.akzeptiert}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 </td>
                 <td class="btn">
-                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                    <a class="btn btn-danger" th:unless="${reservierung.zurueckgegeben}" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
                     <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
+                </td>
+                <td>
+                    <a th:if="${reservierung.zurueckerhalten}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
+                    <a th:if="${reservierung.zurueckgegeben == false and reservierung.akzeptiert == true}" class="btn btn-secondary" th:href="@{/reservierung_zurueckgeben/{id} (id=${reservierung.id})}">Zurückgeben</a>
                 </td>
             </tbody>
         </table>
@@ -170,24 +166,21 @@
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
-                <th scope="col">Artikel</th>
-                <th scope="col" width="160">Start/Ende</th>
-                <th scope="col" width="100">Bearbeitet</th>
-                <th scope="col" width="100">Akzeptiert</th>
-                <th scope="col" width="200"> </th>
+                <th scope="col" width="400">Artikel</th>
+                <th scope="col" width="150">Start/Ende</th>
+                <th scope="col" width="200">Bearbeitet</th>
+                <th scope="col" width="100"></th>
+                <th scope="col" width="100"></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="reservierung: ${alleAnfragen}">
                 <td>
                     <figure class="media">
-
                         <div class="img-wrap">
-
                             <img th:src="${(reservierung.artikel.fotos.isEmpty() == false ) ? '../fotos/' + reservierung.artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
                                  class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"
                             />
-
                         </div>
 
                         <figcaption class="media-body">
@@ -203,17 +196,16 @@
                     </div>
                 </td>
                 <td>
-                    <span class="bg-success rounded-circle" th:if="${reservierung.bearbeitet}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <span class="bg-danger rounded-circle" th:unless="${reservierung.bearbeitet}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                </td>
-
-                <td class="text-right">
-                    <a class="btn btn-success" th:href="@{/reservierung_update/{id}/true (id=${reservierung.id})}">Akzeptieren</a>
-                    <a class="btn btn-danger" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Ablehnen</a>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a class="btn btn-success" th:href="@{/reservierung_update/{id}/true (id=${reservierung.id})}">Akzeptieren</a>
+                        <a class="btn btn-danger" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Ablehnen</a>
+                    </div>
                 </td>
 
                 <td class="text-right">
                     <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                </td>
+                <td class="text-right">
                     <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
             </tbody>
@@ -232,9 +224,10 @@
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
-                <th scope="col">Artikel</th>
+                <th scope="col" width="400">Artikel</th>
                 <th scope="col" width="160">Start/Ende</th>
                 <th scope="col" width="100">Ausgeliehen von</th>
+                <th scope="col" width="200"></th>
                 <th scope="col" width="200"></th>
             </tr>
             </thead>
@@ -267,7 +260,11 @@
                 </td>
 
                 <td class="text-right">
-                    <a class="btn btn-success" th:href="@{/reservierung_update/{id} (id=${reservierung.id})}">Abschliessen</a>
+                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                </td>
+
+                <td class="text-right" th:if="${reservierung.zurueckgegeben}">
+                    <a class="btn btn-success" th:href="@{/reservierung_update/{id} (id=${reservierung.id})}">Zurückerhalten</a>
                 </td>
             </tbody>
         </table>

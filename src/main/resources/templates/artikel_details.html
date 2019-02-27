@@ -1,85 +1,55 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 <head>
-    <style>
-        div.gallery {
-            margin: 5px;
-            border: 1px solid #ccc;
-            float: left;
-            width: 180px;
-        }
-        div.gallery:hover {
-            border: 2px solid #777;
-        }
-        div.gallery img {
-            width: 100%;
-            height: auto;
-        }
-
-    </style>
     <meta charset="UTF-8">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <link href="../css/style.css" rel="stylesheet" id="default-css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
-
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link href="../static/css/style.css" th:href="@{/static/css/style.css}" rel="stylesheet" type="text/css"  />
     <title>Artikeldetails</title>
 </head>
 <body>
 
 <div class="container" style="margin-top:50px">
-    <div class="card">
         <div class="container-fluid">
             <div class="wrapper row">
-                <div class="preview col-md-6">
-
+                <div class="preview col-md-4">
                     <img th:if="${artikel.fotos.isEmpty()}" th:src="'../fotos/kein-bild-vorhanden'"
-                         class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"
-                    />
-
+                         class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"/>
                     <div class="gallery" th:unless="${artikel.fotos.isEmpty()}" th:each = "foto: ${artikel.fotos}" >
                         <a target="_blank" th:href= "@{'../fotos/' + ${foto}}">
                             <img th:src="@{'../fotos/' + ${foto}}" alt="FOTO" width="300" height="200">
                         </a>
                     </div>
-
                 </div>
+
                 <div class="details col-md-6">
-                    <section class="row">
-                        <div class="col-md-10">
-                            <h3 class="product-title" th:text="${artikel.titel}">Akkuschrauber</h3>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="btn" role="group">
-                                <span class="bg-success rounded-circle" th:if="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                <span class="bg-danger rounded-circle" th:unless="${artikel.verfuegbar}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            </div>
-                        </div>
-                    </section>
-                    <p class="product-description" th:text="${artikel.beschreibung}">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>
-                    <p><span style="font-weight: bold;">Preis pro Tag: </span><span th:text="${artikel.kostenTag + '€'}">10 €</span></p>
-                    <p><span style="font-weight: bold;">Kaution: </span><span th:text="${artikel.kaution + '€'}">100 €</span></p>
-                    <p><span style="font-weight: bold;">Eigentümer: </span><span th:text="${(artikel.eigentuemer != null) ? artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
-                    <p><span style="font-weight: bold;">Standort: </span><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
+                        <h3 class="product-title" th:text="${artikel.titel}">Akkuschrauber</h3>
+                        <p></p>
+                        <p class="product-description" th:text="${artikel.beschreibung}">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>
+                        <p><b>Preis pro Tag: </b><span th:text="${artikel.kostenTag + '€'}">10 €</span></p>
+                        <p><b>Kaution: </b><span th:text="${artikel.kaution + '€'}">100 €</span></p>
+                        <p><b>Eigentümer: </b><span th:text="${(artikel.eigentuemer != null) ? artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
+                        <p><b>Standort: </b><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
+                        <p><b>Reservierungen: </b>
+                        <span th:if="${alleReservierungen.isEmpty()}">Keine Reservierung vorhanden</span>
+                        <span th:unless="${alleReservierungen.isEmpty()}">
+                            <ul th:each="reservierung: ${alleReservierungen}">
+                                <li th:text="${reservierung.printReservierungsDauer()}"></li>
+                            </ul>
+                        </span></p>
 
-                    <p><span style="font-weight: bold;">Reservierungen: </span>
-                    <span th:if="${alleReservierungen.isEmpty()}">Keine Reservierung vorhanden</span>
-                    <span th:unless="${alleReservierungen.isEmpty()}">
-                        <ul th:each="reservierung: ${alleReservierungen}">
-                            <li th:text="${reservierung.printReservierungsDauer()}"></li>
-                        </ul>
-                    </span></p>
-
-                    <div class="action">
-                        <a th:href="@{'/reservieren?id=' + ${artikel.id}}"class="btn btn-primary btn-md" >Reservieren</a>
-                        <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
-                    </div>
+                        <div class="action">
+                            <a th:href="@{'/reservieren?id=' + ${artikel.id}}"class="btn btn-primary btn-md" >Anfrage abschicken</a>
+                            <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
+                        </div>
                 </div>
+                        <div class="details col-md-2">
+                            <div class="alert alert-success" role="alert" th:if="${artikel.verfuegbar}">Verfügbar</div>
+                            <div class="alert alert-danger" role="alert" th:unless="${artikel.verfuegbar}">Nicht Verfügbar</div>
+                        </div>
             </div>
         </div>
-    </div>
 </div>
 </body>
 </html>
