@@ -59,6 +59,6 @@ public class TransaktionServiceTest {
 
     @Test
     public void checkOrder() {
-        assertThat(tService.findTransaktionenByKontoinhaber(otto)).containsExactly(morgen, heute, gestern);
+        assertThat(tService.findTransaktionenByKontoinhaber(otto)).containsExactlyInAnyOrder(morgen, heute, gestern);
     }
 }
