@@ -119,7 +119,6 @@ public class ArtikelController {
             return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
         }
         if(alleReservierungen.isAllowedReservierungsDate(reservierung.getArtikel(), reservierung.getStart(), reservierung.getEnde())){
-            alleReservierungen.addReservierung(reservierung);
 
             Reservations kaution = new Reservations();
             Reservations miete = new Reservations();
@@ -132,7 +131,8 @@ public class ArtikelController {
             miete.setAmount(artikel.getKostenTag()*reservierung.calculateReservierungsLength());
             proPayUser.addReservation(miete);
             reservierung.setMieteId(ProPay.executeReservation(miete,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
-            
+
+            alleReservierungen.addReservierung(reservierung);
 
             return "redirect:/";
         }else {
