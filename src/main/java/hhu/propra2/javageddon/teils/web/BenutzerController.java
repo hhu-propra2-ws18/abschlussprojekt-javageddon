@@ -65,10 +65,10 @@ public class BenutzerController {
         Long id = alleBenutzer.getIdByName(username);
         m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
         m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
-        m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
+        m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihenderAndSichtbar(alleBenutzer.findBenutzerById(id),true));
         m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemerAndNichtBearbeitet(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("aktuelleAusleihen", alleReservierungen.findReservierungByArtikelEigentuemerAndNichtAbgeschlossen(alleBenutzer.findBenutzerById(id)));
-
+        m.addAttribute("alleWarnungen", alleReservierungen.fristAbgelaufeneReservierungen(alleBenutzer.findBenutzerById(id)));
         return "profil_ansicht";
     }
 }

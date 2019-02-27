@@ -166,10 +166,26 @@ public class ArtikelController {
     public String updateReservierung(Model model, @ModelAttribute Reservierung reservierung, @PathVariable long id) {
         Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
         model.addAttribute("reservierung", aktuelleReservierung);
-        aktuelleReservierung.setAbgeschlossen(true);
+        aktuelleReservierung.setZurueckerhalten(true);
         alleReservierungen.addReservierung(aktuelleReservierung);
         return "redirect:/profil_ansicht/";
     }
 
+    @GetMapping("/reservierung_sichtbar/{id}")
+    public String updateSichtbarkeit(Model model, @ModelAttribute Reservierung reservierung, @PathVariable long id){
+        Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
+        model.addAttribute("reservierung", aktuelleReservierung);
+        aktuelleReservierung.setSichtbar(false);
+        alleReservierungen.addReservierung(aktuelleReservierung);
+        return "redirect:/profil_ansicht/";
+    }
 
+    @GetMapping("/reservierung_zurueckgeben/{id}")
+    public String updateZurueckgeben(Model model, @ModelAttribute Reservierung reservierung, @PathVariable long id){
+        Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
+        model.addAttribute("reservierung", aktuelleReservierung);
+        aktuelleReservierung.setZurueckgegeben(true);
+        alleReservierungen.addReservierung(aktuelleReservierung);
+        return "redirect:/profil_ansicht/";
+    }
 }
