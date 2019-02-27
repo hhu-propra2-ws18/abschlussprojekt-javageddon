@@ -36,7 +36,7 @@ public class TransaktionServiceTest {
     Benutzer otto = Benutzer.builder().name("Otto").email("otto@otto.de").build();
 
     Transaktion gestern = new Transaktion().builder().kontoinhaber(otto).betrag(50).datum(LocalDate.now().minusDays(1)).verwendungszweck("Test").build();
-    Transaktion heute = new Transaktion().builder().kontoinhaber(otto).betrag(50).datum(LocalDate.now()).verwendungszweck("Test").build();
+    Transaktion heute = new Transaktion().builder().kontoinhaber(otto).betrag(50).verwendungszweck("Test").build();
     Transaktion morgen = new Transaktion().builder().kontoinhaber(otto).betrag(50).datum(LocalDate.now().plusDays(1)).verwendungszweck("Test").build();
 
 

@@ -24,7 +24,8 @@ public class Transaktion {
     @ManyToOne
     private Benutzer kontoinhaber;
 
-    private LocalDate datum;
+    @Builder.Default
+    private LocalDate datum = LocalDate.now();
 
     private String verwendungszweck;
 
