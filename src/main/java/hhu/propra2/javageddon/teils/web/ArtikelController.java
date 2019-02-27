@@ -3,6 +3,7 @@ package hhu.propra2.javageddon.teils.web;
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
+import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.*;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
@@ -112,8 +113,40 @@ public class ArtikelController {
         reservierung.setAkzeptiert(false);
         reservierung.setArtikel(alleArtikel.findArtikelById(artikel.getId()));
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
+        ProPayUser proPayUser = ProPay.getProPayUser(username);
+        if(!alleReservierungen.hasEnoughMoney(reservierung,(int) proPayUser.getVerfuegbaresGuthaben())) {
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
+        }
         if(alleReservierungen.isAllowedReservierungsDate(reservierung.getArtikel(), reservierung.getStart(), reservierung.getEnde())){
             alleReservierungen.addReservierung(reservierung);
+
+            Reservations kaution = new Reservations();
+            Reservations miete = new Reservations();
+
+            proPayUser.addReservation(kaution);
+            List<Reservations> oldRes = ProPay.getProPayUser(username).getReservations();
+            ProPay.executeReservation(kaution,artikel.getEigentuemer(), reservierung.getLeihender());
+            List<Reservations> newRes = ProPay.getProPayUser(username).getReservations();
+
+            newRes.removeAll(oldRes);
+            if(newRes.size() == 1){
+                reservierung.setKautionsId(newRes.get(0).getId());
+            } else {
+                //TODO ERROR
+            }
+
+            proPayUser.addReservation(miete);
+            oldRes = ProPay.getProPayUser(username).getReservations();
+            ProPay.executeReservation(miete,artikel.getEigentuemer(), reservierung.getLeihender());
+            newRes = ProPay.getProPayUser(username).getReservations();
+
+            newRes.removeAll(oldRes);
+            if(newRes.size() == 1){
+                reservierung.setMieteId(newRes.get(0).getId());
+            } else {
+                //TODO ERROR
+            }
+
             return "redirect:/";
         }else {
             return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";

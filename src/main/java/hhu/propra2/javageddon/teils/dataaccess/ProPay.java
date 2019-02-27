@@ -6,6 +6,7 @@ import org.springframework.web.client.RestTemplate;
 public class ProPay {
 
      static final String URL_ACCOUNT = "http://proPay:8888/account/";
+    static final String URL_RESERVATION = "http://proPay:8888/reservation/";
 
         public static ProPayUser getProPayUser(String username) {
 
@@ -28,6 +29,15 @@ public class ProPay {
         restTemplate.postForObject(URL_ACCOUNT + ueberweisung.getKontoinhaber().getAccount()+ "/transfer/" +
                                     ueberweisung.getZielKonto().getAccount() + "?amount=" + ueberweisung.getBetrag(),
                                     "amount="+ (int)ueberweisung.getBetrag(),ProPayUser.class);
+    }
+
+
+    public static void executeReservation(Reservations reservations, Benutzer zielKonto, Benutzer kontoinhaber){
+
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(URL_RESERVATION + "/reserve/" + kontoinhaber.getName()+ "/" +
+                                        zielKonto.getName() + "?amount=" + reservations.getAmount(),
+                                    "amount="+ (int)reservations.getAmount(),ProPayUser.class);
     }
 
 }

@@ -78,6 +78,16 @@ public class ReservierungService {
                 .collect(Collectors.toList());
     }
 
+    public boolean hasEnoughMoney(Reservierung r, int guthaben){
+        int gesamtKosten = r.getArtikel().getKaution() + (r.getArtikel().getKostenTag() * r.calculateReservierungsLength());
+
+        if(gesamtKosten <= guthaben){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean isAllowedReservierungsDate(Artikel a, LocalDate startAntrag, LocalDate endeAntrag) {
         if (startAntrag.isBefore(LocalDate.now())) {
             return false;

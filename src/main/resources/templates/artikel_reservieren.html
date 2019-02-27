@@ -70,7 +70,7 @@
                     </span></p>
 
                     <div th:if="${error}" class="alert alert-danger">
-                        <strong>Fehler!</strong> Reseveriungszeitraum ungültig!
+                        <strong>Fehler!</strong> Reseveriungszeitraum ungültig oder nicht genug Propay Guthaben!
                     </div>
 
                     <form th:object="${reservierung}" th:action="@{/reservieren}" method="post">

@@ -23,6 +23,10 @@ public class Reservierung {
     @GeneratedValue
     private long id;
 
+    private int kautionsId;
+
+    private int mieteId;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate start;
 
