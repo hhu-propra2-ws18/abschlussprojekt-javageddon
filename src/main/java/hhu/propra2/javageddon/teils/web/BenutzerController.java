@@ -1,6 +1,7 @@
 package hhu.propra2.javageddon.teils.web;
 
 import hhu.propra2.javageddon.teils.dataaccess.ProPay;
+import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.ProPayUser;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
@@ -80,19 +81,20 @@ public class BenutzerController {
     public String proPaySicht(Model m){
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
-        m.addAttribute("aufladung", new Aufladung());
+        Aufladung aufladung = new Aufladung();
+
+        m.addAttribute("aufladung", aufladung);
         m.addAttribute("proPayUser",ProPay.getProPayUser(username));
         return "proPay_details";
     }
 
     @PostMapping("/proPay_Aufladen")
     public String proPayAufladen(@ModelAttribute Aufladung aufladung){
-
-
-        //TODO Nach dem testen entfernen!
-
-        System.out.println("Betrag der aufgeladen werden soll: ");
-        System.out.println(aufladung.getBetrag());
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        ProPayUser proPayUser = ProPay.getProPayUser(username);
+        aufladung.setProPayUser(proPayUser);
+        ProPay.heresTheMoney(aufladung);
         return "redirect:proPay_details";
 
     }

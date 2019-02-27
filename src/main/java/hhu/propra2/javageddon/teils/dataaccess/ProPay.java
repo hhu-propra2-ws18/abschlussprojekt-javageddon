@@ -1,5 +1,6 @@
 package hhu.propra2.javageddon.teils.dataaccess;
 
+import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.ProPayUser;
 import org.springframework.web.client.RestTemplate;
 
@@ -15,6 +16,13 @@ public class ProPay {
             return  restTemplate.getForObject(URL_ACCOUNT + username, ProPayUser.class);
 
 
+        }
+
+        public static void heresTheMoney(Aufladung aufladung){
+
+
+            RestTemplate restTemplate = new RestTemplate();
+            restTemplate.postForObject(URL_ACCOUNT + aufladung.getProPayUser().getAccount() + "?amount=" +(int)aufladung.getBetrag(),"amount="+ (int)aufladung.getBetrag(),ProPayUser.class);
         }
 
 }
