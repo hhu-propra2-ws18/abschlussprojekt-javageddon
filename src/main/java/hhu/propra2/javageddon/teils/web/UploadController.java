@@ -44,7 +44,9 @@ public class UploadController {
                          .stream()
                          .map(file -> {
                              String newName = fotoStorage.store(file);
-                             renamedFiles.add(newName);
+                             if(newName.equals("nichts") == false) {
+                                 renamedFiles.add(newName);
+                             }
                              return file.getOriginalFilename();
                          })
                          .collect(Collectors.toList());

@@ -43,8 +43,8 @@ public class ReservierungServiceTest {
 
     Benutzer heidi = Benutzer.builder().name("Harald").email("har@tom.de").build();
     Adresse ad = Adresse.builder().hausnummer("5").strasse("Hauptstrasse").ort("berlin").plz(4004).build();
-    Artikel hamster = Artikel.builder().titel("Hamster").eigentuemer(heidi).standort(ad).build();
-    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(heidi).standort(ad).build();
+    Artikel hamster = Artikel.builder().titel("Hamster").eigentuemer(heidi).standort(ad).beschreibung("?").kaution(1).kostenTag(1).build();
+    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(heidi).standort(ad).beschreibung("?").kaution(1).kostenTag(1).build();
 
     Reservierung currentRes = Reservierung.builder().start(currentDay).ende(currentDay).artikel(hamster).build();
     Reservierung futureRes = Reservierung.builder().start(futureDay).ende(futureDay).artikel(hamster).build();

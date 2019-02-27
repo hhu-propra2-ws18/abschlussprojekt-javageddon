@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 
 @Data
@@ -18,12 +22,16 @@ public class Artikel {
     @GeneratedValue
     private long id;
 
+    @NotEmpty(message = "Der Artikel muss einen Artikel haben")
     private String titel;
 
+    @NotEmpty(message = "Der Artikel muss eine Beschreibung haben")
     private String beschreibung;
 
+    @Min(value=1, message = "Der Artikel muss einen Preis pro Tag haben")
     private int kostenTag;
 
+    @Min(value=1, message = "Der Artikel muss eine Kaution haben")
     private int kaution;
 
     private boolean aktiv;

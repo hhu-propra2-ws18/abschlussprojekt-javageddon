@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BeschwerdeRepository extends CrudRepository<Beschwerde,Long> {
 
-    List<Beschwerde> getAllByIdIsNotNull();
-    List<Beschwerde> getAllByBearbeitetFalse();
+    List<Beschwerde> findAllByBearbeitet(boolean b);
+    Beschwerde findById(long id);
 
 }

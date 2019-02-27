@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
+import static java.time.temporal.ChronoUnit.DAYS;
 
 @Data
 @Builder
@@ -21,8 +23,10 @@ public class Reservierung {
     @GeneratedValue
     private long id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate start;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate ende;
 
     @ManyToOne
@@ -36,7 +40,13 @@ public class Reservierung {
     @Builder.Default
     private Boolean bearbeitet = false;
 
-    private Boolean akzeptiert;
+    private Boolean akzeptiert = false;
+
+    private Boolean zurueckgegeben = false;
+
+    private Boolean zurueckerhalten = false;
+
+    private Boolean sichtbar = true;
 
     public String printReservierungsDauer(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -57,9 +67,13 @@ public class Reservierung {
     	return ende.format(formatter);
     }
 
-    public boolean isBetween(LocalDate checkDay) {
+    public boolean containsDate(LocalDate checkDay) {
         if (!checkDay.isBefore(start) && !checkDay.isAfter(ende)) {
                 return true; }
         return false;
+    }
+
+    public int calculateReservierungsLength(){
+        return (int) DAYS.between(start, ende)+1;
     }
 }

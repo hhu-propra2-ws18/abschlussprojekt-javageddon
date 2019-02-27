@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -14,12 +18,16 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Adresse {
 
+    @NotEmpty(message = "Die Adresse muss eine Hausnummer haben")
     private String hausnummer;
 
+    @NotEmpty(message = "Die Adresse muss eine Strasse haben")
     private String strasse;
 
+    @NotEmpty(message = "Die Adresse muss einen Ort haben")
     private String ort;
 
+    @Min(value=1, message = "Die Adresse muss eine Postleitzahl haben")
     private int plz;
 
     public String adressAusgabe(){

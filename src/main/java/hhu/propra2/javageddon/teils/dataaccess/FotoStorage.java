@@ -18,7 +18,7 @@ public class FotoStorage implements FotoStorageInterface{
     @Override
     public String store(MultipartFile file){
        if (file.isEmpty()){
-            return "kein-bild-vorhanden";
+            return "nichts";
         }
         try {
             String newName = "" + index;

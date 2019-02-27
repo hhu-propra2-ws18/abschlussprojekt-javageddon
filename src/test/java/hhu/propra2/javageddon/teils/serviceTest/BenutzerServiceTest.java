@@ -74,4 +74,11 @@ public class BenutzerServiceTest {
         assertThat(bService.hasIncorrectInput(leererName)).isEqualTo(true);
         assertThat(bService.hasIncorrectInput(leereEmail)).isEqualTo(true);
     }
+
+    @Test
+    public void getsBenutzerByName(){
+        bService.addBenutzer(richtigeEingabe);
+        Long id = bService.getIdByName(richtigeEingabe.getName());
+        assertThat((long)id).isEqualTo(richtigeEingabe.getId());
+    }
 }

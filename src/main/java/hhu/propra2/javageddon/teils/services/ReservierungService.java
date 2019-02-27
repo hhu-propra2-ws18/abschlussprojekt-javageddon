@@ -7,9 +7,8 @@ import hhu.propra2.javageddon.teils.model.Reservierung;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,8 +28,8 @@ public class ReservierungService {
         return alleReservierungen.findByArtikel(a);
     }
 
-    public List<Reservierung> findReservierungByLeihender(Benutzer b){
-        return alleReservierungen.findByLeihender(b);
+    public List<Reservierung> findReservierungByLeihenderAndSichtbar(Benutzer b, Boolean tf){
+        return alleReservierungen.findByLeihenderAndSichtbar(b, tf);
     }
 
     public List<Reservierung> findReservierungByArtikelAndLeihender(Artikel a, Benutzer b){
@@ -45,18 +44,38 @@ public class ReservierungService {
     	return alleReservierungen.findByArtikelEigentuemerAndBearbeitet(b, false);
     }
 
+    public List<Reservierung> findReservierungByArtikelEigentuemerAndNichtAbgeschlossen(Benutzer b) {
+        List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelEigentuemerAndZurueckerhaltenAndAkzeptiert(b, false, true);
+        List<Reservierung> zukuenftigeReservierungen = new ArrayList<Reservierung>();
+        LocalDate currentDay = LocalDate.now();
+        for (Reservierung res : artikelReservierungen) {
+            if (res.getStart().isAfter(currentDay)) {
+                zukuenftigeReservierungen.add(res);
+            }
+        }
+        artikelReservierungen.removeAll(zukuenftigeReservierungen);
+
+        return artikelReservierungen
+                .stream()
+                .sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
+                .collect(Collectors.toList());
+    }
+
     public List<Reservierung> findCurrentReservierungByArtikelOrderedByDate(Artikel a){
         List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikel(a);
+        List<Reservierung> vergangeneReservierungen = new ArrayList<Reservierung>();
         LocalDate currentDay = LocalDate.now();
         for (Reservierung res : artikelReservierungen) {
             if (res.getEnde().isBefore(currentDay)) {
-                artikelReservierungen.remove(res);
+                vergangeneReservierungen.add(res);
             }
         }
-        return  artikelReservierungen
-        		.stream()
-        		.sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
-        		.collect(Collectors.toList());
+        artikelReservierungen.removeAll(vergangeneReservierungen);
+
+        return artikelReservierungen
+                .stream()
+                .sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
+                .collect(Collectors.toList());
     }
 
     public boolean isAllowedReservierungsDate(Artikel a, LocalDate startAntrag, LocalDate endeAntrag) {
@@ -69,13 +88,25 @@ public class ReservierungService {
         Reservierung testDate = Reservierung.builder().start(startAntrag).ende(endeAntrag).build();
         List<Reservierung> artikelReservierung = alleReservierungen.findByArtikel(a);
         for (Reservierung res : artikelReservierung) {
-            if (res.isBetween(startAntrag) || res.isBetween(endeAntrag)
-                    || testDate.isBetween(res.getStart())
-                    || testDate.isBetween(res.getEnde())) {
+            if (res.containsDate(startAntrag) || res.containsDate(endeAntrag)
+                    || testDate.containsDate(res.getStart())
+                    || testDate.containsDate(res.getEnde())) {
                 return false;
             }
         }
         return true;
+    }
+
+    public List<Reservierung> fristAbgelaufeneReservierungen(Benutzer b){
+        List<Reservierung> leihender_Reservierungen = alleReservierungen.findByLeihender(b);
+        List<Reservierung> abgelaufeneReservierungen = new ArrayList<Reservierung>();
+        LocalDate currentDay = LocalDate.now();
+        for (Reservierung res : leihender_Reservierungen) {
+            if (res.getEnde().isBefore(currentDay) & !res.getZurueckgegeben() & res.getAkzeptiert()) {
+                abgelaufeneReservierungen.add(res);
+            }
+        }
+        return abgelaufeneReservierungen;
     }
 
 }

@@ -35,9 +35,9 @@ public class ArtikelRepoTest {
 
     Benutzer tom = Benutzer.builder().name("Tom").email("tom@tomtom.com").build();
     Adresse ad1 = Adresse.builder().hausnummer("5e").strasse("Hauptstrasse").ort("koeln").plz(4000).build();
-    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(tom).standort(ad1).build();
-    Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).eigentuemer(tom).standort(ad1).build();
-    Artikel kochtopf =  Artikel.builder().titel("kochtopf").standort(ad1).aktiv(true).build();
+    Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(tom).standort(ad1).beschreibung("?").kaution(1).kostenTag(1).build();
+    Artikel hamster =  Artikel.builder().titel("gwendolin").aktiv(false).eigentuemer(tom).standort(ad1).beschreibung("?").kaution(1).kostenTag(1).build();
+    Artikel kochtopf =  Artikel.builder().titel("kochtopf").standort(ad1).aktiv(true).beschreibung("?").kaution(1).kostenTag(1).build();
 
     ////////////////////////////////////PREPARATIONS////////////////////////////////////////////////
 
