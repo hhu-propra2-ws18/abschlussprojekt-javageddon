@@ -68,9 +68,8 @@ public class ReservierungRepoTest {
 
     @Test
     public void retrievesReservierungCorrectly(){
-        Optional<Reservierung> retrievedReservierung = resRepo.findById(r1.getId());
-        assertThat(retrievedReservierung.isPresent());
-        assertThat(retrievedReservierung.get()).isEqualTo(r1);
+        Reservierung retrievedReservierung = resRepo.findById(r1.getId());
+        assertThat(retrievedReservierung).isEqualTo(r1);
     }
 
     @Test
@@ -104,10 +103,9 @@ public class ReservierungRepoTest {
         r1.setAkzeptiert(true);
         r1.setBearbeitet(true);
         resRepo.save(r1);
-        Optional<Reservierung> retrievedReservierung = resRepo.findById(r1.getId());
-        assertThat(retrievedReservierung.isPresent());
-        assertThat(retrievedReservierung.get().getBearbeitet()).isEqualTo(true);
-        assertThat(retrievedReservierung.get().getAkzeptiert()).isEqualTo(true);
+        Reservierung retrievedReservierung = resRepo.findById(r1.getId());
+        assertThat(retrievedReservierung.getBearbeitet()).isEqualTo(true);
+        assertThat(retrievedReservierung.getAkzeptiert()).isEqualTo(true);
     }
 
     @Test
