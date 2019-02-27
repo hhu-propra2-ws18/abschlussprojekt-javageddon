@@ -20,7 +20,8 @@ public class BenutzerController {
     @Autowired
     private ArtikelService alleArtikel;
     
-    @Autowired ReservierungService alleReservierungen;
+    @Autowired
+    ReservierungService alleReservierungen;
 
 
     @GetMapping("/registrieren")
