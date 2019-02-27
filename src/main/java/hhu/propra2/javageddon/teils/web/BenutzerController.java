@@ -13,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Controller
 public class BenutzerController {
 
@@ -24,10 +28,6 @@ public class BenutzerController {
     
     @Autowired
     private ReservierungService alleReservierungen;
-
-    @Autowired
-    private TransaktionService alleTransaktionen;
-
 
     @GetMapping("/registrieren")
     public String neuerBenutzer(Model m){
@@ -65,12 +65,18 @@ public class BenutzerController {
     
 
     @GetMapping("/profil_ansicht")
-    public String benutzerAnsicht(Model m){
+    public String benutzerAnsicht(Model m) throws IOException {
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
         Long id = alleBenutzer.getIdByName(username);
 
-        m.addAttribute("proPayUser",ProPay.getProPayUser(username));
+        Boolean proPayReachable = ProPayService.checkConnection();
+
+        if (proPayReachable){
+            m.addAttribute("proPayReachable", proPayReachable);
+            m.addAttribute("proPayUser",ProPay.getProPayUser(username));
+        }
+
         m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
         m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihenderAndSichtbar(alleBenutzer.findBenutzerById(id),true));
@@ -80,37 +86,5 @@ public class BenutzerController {
         return "profil_ansicht";
     }
 
-    @GetMapping("/proPay_details")
-    public String proPaySicht(Model m){
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)currentUser).getUsername();
-        Aufladung aufladung = new Aufladung();
 
-        m.addAttribute("aufladung", aufladung);
-        m.addAttribute("proPayUser",ProPay.getProPayUser(username));
-        m.addAttribute("alleTransaktionen",alleTransaktionen);
-        return "proPay_details";
-    }
-
-    @PostMapping("/proPay_Aufladen")
-    public String proPayAufladen(@ModelAttribute Aufladung aufladung){
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)currentUser).getUsername();
-        Long id = alleBenutzer.getIdByName(username);
-
-        ProPayUser proPayUser = ProPay.getProPayUser(username);
-        aufladung.setProPayUser(proPayUser);
-        ProPay.heresTheMoney(aufladung);
-
-        //Neue Transaktion für diese Aufladung erzeugen
-        Transaktion transaktion = new Transaktion();
-        transaktion.setBetrag((int) aufladung.getBetrag());
-        transaktion.setKontoinhaber(alleBenutzer.findBenutzerById(id));
-        transaktion.setVerwendungszweck("Aufladung über Teils!");
-
-        alleTransaktionen.addTransaktion(transaktion);
-
-        return "redirect:proPay_details";
-
-    }
 }
