@@ -76,4 +76,15 @@ public class Reservierung {
     public int calculateReservierungsLength(){
         return (int) DAYS.between(start, ende)+1;
     }
+
+    public int ermittleStatus(){
+        int status = -1;
+        if (bearbeitet)  status = 1;                                        // Anfrage in Bearbeitung
+        if (bearbeitet && !akzeptiert) status = 2;                          // Anfrage abgelehnt
+        if (bearbeitet && akzeptiert && !zurueckerhalten) status = 3;       // Anfrage akzeptiert
+        if (containsDate(LocalDate.now()) && !zurueckgegeben) status = 4;   // Ausleihe laeuft
+        if (bearbeitet && akzeptiert && zurueckerhalten) status = 5;        // Verleih abgeschlossen
+        if (ende.isBefore(LocalDate.now()) && !zurueckgegeben) status = 6;  // Ausleihfrist abgelaufen
+        return status;
+    }
 }
