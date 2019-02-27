@@ -25,10 +25,6 @@ public class BenutzerController {
     @Autowired
     private ReservierungService alleReservierungen;
 
-    @Autowired
-    private TransaktionService alleTransaktionen;
-
-
     @GetMapping("/registrieren")
     public String neuerBenutzer(Model m){
         m.addAttribute("benutzer", new Benutzer());
@@ -78,38 +74,5 @@ public class BenutzerController {
         return "profil_ansicht";
     }
 
-    @GetMapping("/proPay_details")
-    public String proPaySicht(Model m){
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)currentUser).getUsername();
-        Benutzer benutzer = alleBenutzer.findBenutzerById(alleBenutzer.getIdByName(username));
-        Aufladung aufladung = new Aufladung();
 
-        m.addAttribute("aufladung", aufladung);
-        m.addAttribute("proPayUser",ProPay.getProPayUser(username));
-        m.addAttribute("alleTransaktionen",alleTransaktionen.findTransaktionenByKontoinhaber(benutzer));
-        return "proPay_details";
-    }
-
-    @PostMapping("/proPay_Aufladen")
-    public String proPayAufladen(@ModelAttribute Aufladung aufladung){
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)currentUser).getUsername();
-        Long id = alleBenutzer.getIdByName(username);
-
-        ProPayUser proPayUser = ProPay.getProPayUser(username);
-        aufladung.setProPayUser(proPayUser);
-        ProPay.heresTheMoney(aufladung);
-
-        //Neue Transaktion für diese Aufladung erzeugen
-        Transaktion transaktion = new Transaktion();
-        transaktion.setBetrag((int) aufladung.getBetrag());
-        transaktion.setKontoinhaber(alleBenutzer.findBenutzerById(id));
-        transaktion.setVerwendungszweck("Aufladung über Teils!");
-
-        alleTransaktionen.addTransaktion(transaktion);
-
-        return "redirect:proPay_details";
-
-    }
 }
