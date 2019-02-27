@@ -124,28 +124,12 @@ public class ArtikelController {
             Reservations miete = new Reservations();
 
             proPayUser.addReservation(kaution);
-            List<Reservations> oldRes = ProPay.getProPayUser(username).getReservations();
-            ProPay.executeReservation(kaution,artikel.getEigentuemer(), reservierung.getLeihender());
-            List<Reservations> newRes = ProPay.getProPayUser(username).getReservations();
+            reservierung.setKautionsId(ProPay.executeReservation(kaution,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
 
-            newRes.removeAll(oldRes);
-            if(newRes.size() == 1){
-                reservierung.setKautionsId(newRes.get(0).getId());
-            } else {
-                //TODO ERROR
-            }
 
             proPayUser.addReservation(miete);
-            oldRes = ProPay.getProPayUser(username).getReservations();
-            ProPay.executeReservation(miete,artikel.getEigentuemer(), reservierung.getLeihender());
-            newRes = ProPay.getProPayUser(username).getReservations();
-
-            newRes.removeAll(oldRes);
-            if(newRes.size() == 1){
-                reservierung.setMieteId(newRes.get(0).getId());
-            } else {
-                //TODO ERROR
-            }
+            reservierung.setMieteId(ProPay.executeReservation(miete,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
+            
 
             return "redirect:/";
         }else {
