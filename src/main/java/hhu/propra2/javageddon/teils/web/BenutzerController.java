@@ -13,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 @Controller
 public class BenutzerController {
 
@@ -61,12 +65,18 @@ public class BenutzerController {
     
 
     @GetMapping("/profil_ansicht")
-    public String benutzerAnsicht(Model m){
+    public String benutzerAnsicht(Model m) throws IOException {
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
         Long id = alleBenutzer.getIdByName(username);
 
-        m.addAttribute("proPayUser",ProPay.getProPayUser(username));
+        Boolean proPayReachable = ProPayService.checkConnection();
+
+        if (proPayReachable){
+            m.addAttribute("proPayReachable", proPayReachable);
+            m.addAttribute("proPayUser",ProPay.getProPayUser(username));
+        }
+
         m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
         m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));

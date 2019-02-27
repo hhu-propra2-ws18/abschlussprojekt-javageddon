@@ -1,13 +1,22 @@
 package hhu.propra2.javageddon.teils.services;
 
-import hhu.propra2.javageddon.teils.model.Benutzer;
-import hhu.propra2.javageddon.teils.model.ProPayUser;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.net.InetAddress;
 
 @Controller
 public class ProPayService {
 
 
+    public static Boolean checkConnection() {
+
+        try {
+            return InetAddress.getByName("proPay").isReachable(500);
+        } catch (IOException e) {
+            return false;
+        }
+
+
+    }
 }
