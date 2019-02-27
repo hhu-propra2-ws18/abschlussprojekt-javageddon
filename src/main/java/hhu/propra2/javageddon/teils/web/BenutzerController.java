@@ -4,10 +4,8 @@ import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.ProPayUser;
-import hhu.propra2.javageddon.teils.services.ArtikelService;
-import hhu.propra2.javageddon.teils.services.BenutzerService;
-import hhu.propra2.javageddon.teils.services.ProPayService;
-import hhu.propra2.javageddon.teils.services.ReservierungService;
+import hhu.propra2.javageddon.teils.model.Transaktion;
+import hhu.propra2.javageddon.teils.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,6 +24,9 @@ public class BenutzerController {
     
     @Autowired
     private ReservierungService alleReservierungen;
+
+    @Autowired
+    private TransaktionService alleTransaktionen;
 
 
     @GetMapping("/registrieren")
@@ -85,6 +86,7 @@ public class BenutzerController {
 
         m.addAttribute("aufladung", aufladung);
         m.addAttribute("proPayUser",ProPay.getProPayUser(username));
+        m.addAttribute("alleTransaktionen",alleTransaktionen);
         return "proPay_details";
     }
 
@@ -92,9 +94,18 @@ public class BenutzerController {
     public String proPayAufladen(@ModelAttribute Aufladung aufladung){
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
+        Long id = alleBenutzer.getIdByName(username);
+
         ProPayUser proPayUser = ProPay.getProPayUser(username);
         aufladung.setProPayUser(proPayUser);
         ProPay.heresTheMoney(aufladung);
+
+        //Neue Transaktion für diese Aufladung erzeugen
+        Transaktion transaktion = new Transaktion();
+        transaktion.setBetrag((int) aufladung.getBetrag());
+        transaktion.setKontoinhaber(alleBenutzer.findBenutzerById(id));
+        transaktion.setVerwendungszweck("Aufladung über Teils!");
+
         return "redirect:proPay_details";
 
     }

@@ -2,6 +2,7 @@ package hhu.propra2.javageddon.teils.dataaccess;
 
 import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.ProPayUser;
+import hhu.propra2.javageddon.teils.model.Transaktion;
 import org.springframework.web.client.RestTemplate;
 
 public class ProPay {
