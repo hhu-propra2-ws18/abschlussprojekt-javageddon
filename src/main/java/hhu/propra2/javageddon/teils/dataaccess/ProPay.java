@@ -2,6 +2,8 @@ package hhu.propra2.javageddon.teils.dataaccess;
 
 import hhu.propra2.javageddon.teils.model.*;
 import org.springframework.http.HttpEntity;
+import hhu.propra2.javageddon.teils.model.Aufladung;
+import hhu.propra2.javageddon.teils.model.ProPayUser;
 import org.springframework.web.client.RestTemplate;
 
 public class ProPay {
@@ -39,5 +41,7 @@ public class ProPay {
                                         zielKonto.getName() + "?amount=" + reservations.getAmount(),
                                     "amount="+ (int)reservations.getAmount(),Reservations.class);
     }
+
+
 
 }
