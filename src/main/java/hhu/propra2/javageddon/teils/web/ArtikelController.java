@@ -59,8 +59,12 @@ public class ArtikelController {
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
         Artikel artikel = alleArtikel.findArtikelById(id);
-        List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
-        m.addAttribute("alleReservierungen", artikelReservierungen);
+        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiert(artikel);
+        List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findCurrentReservierungByArtikelAndBearbeitet(artikel);
+        List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
+        artikelReservierungen.addAll(akzeptierteReservierungen);
+        artikelReservierungen.addAll(reservierungenInBearbeitung);
+        m.addAttribute("alleReservierungen", alleReservierungen.orderByDate(artikelReservierungen));
         m.addAttribute("artikel", artikel);
         return "artikel_details";
     }
@@ -97,8 +101,12 @@ public class ArtikelController {
         reservierung.setEnde(LocalDate.now());
         m.addAttribute("artikel", artikel);
         m.addAttribute("reservierung",reservierung);
-        List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
-        m.addAttribute("alleReservierungen", artikelReservierungen);
+        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiert(artikel);
+        List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findCurrentReservierungByArtikelAndBearbeitet(artikel);
+        List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
+        artikelReservierungen.addAll(akzeptierteReservierungen);
+        artikelReservierungen.addAll(reservierungenInBearbeitung);
+        m.addAttribute("alleReservierungen", alleReservierungen.orderByDate(artikelReservierungen));
         m.addAttribute("error", error);
         return "artikel_reservieren";
     }

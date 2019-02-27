@@ -169,8 +169,8 @@
             <tr>
                 <th scope="col" width="400">Artikel</th>
                 <th scope="col" width="150">Start/Ende</th>
-                <th scope="col" width="200"></th>
-                <th scope="col" width="100"></th>
+                <th scope="col" width="200">Bearbeitet</th>
+                <th scope="col" width="100">Angefragt von</th>
                 <th scope="col" width="100"></th>
             </tr>
             </thead>
@@ -204,8 +204,8 @@
                     </div>
                 </td>
 
-                <td class="text-right">
-                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                <td>
+                    <p th:text="${reservierung.leihender.name}"></p>
                 </td>
                 <td class="text-right">
                     <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
@@ -257,7 +257,7 @@
                     </div>
                 </td>
 
-                <td class="text-right">
+                <td>
                     <p th:text="${reservierung.leihender.name}"></p>
                 </td>
 
