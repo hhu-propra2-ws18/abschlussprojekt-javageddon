@@ -27,6 +27,6 @@ public class Transaktion {
     private LocalDate datum;
 
     private String verwendungszweck;
-    
+
     private int betrag;
 }
