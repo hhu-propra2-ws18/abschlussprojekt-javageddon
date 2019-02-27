@@ -78,13 +78,13 @@ public class Reservierung {
     }
 
     public int ermittleStatus(){
-        int status = -1;
-        if (bearbeitet)  status = 1;                                        // Anfrage in Bearbeitung
-        if (bearbeitet && !akzeptiert) status = 2;                          // Anfrage abgelehnt
-        if (bearbeitet && akzeptiert && !zurueckerhalten) status = 3;       // Anfrage akzeptiert
-        if (containsDate(LocalDate.now()) && !zurueckgegeben) status = 4;   // Ausleihe laeuft
-        if (bearbeitet && akzeptiert && zurueckerhalten) status = 5;        // Verleih abgeschlossen
-        if (ende.isBefore(LocalDate.now()) && !zurueckgegeben) status = 6;  // Ausleihfrist abgelaufen
-        return status;
+        if (!bearbeitet && !start.isBefore(LocalDate.now())) return 1;           // Anfrage in Bearbeitung
+        if (bearbeitet && !akzeptiert) return 2;                              // Anfrage abgelehnt
+        if (akzeptiert && !zurueckerhalten && start.isAfter(LocalDate.now())) return 3;   // Anfrage akzeptiert
+        if (containsDate(LocalDate.now()) && !zurueckerhalten && akzeptiert) return 4;   // Ausleihe laeuft
+        if (akzeptiert && zurueckerhalten) return 5;                          // Verleih abgeschlossen
+        if (ende.isBefore(LocalDate.now()) && !zurueckgegeben && akzeptiert) return 6;      // Ausleihfrist abgelaufen
+        if (start.isBefore(LocalDate.now()) && !bearbeitet) return 7;     // Bearbeitungsfrist abgelaufen
+        return -1; // Zustand tritt nie ein
     }
 }

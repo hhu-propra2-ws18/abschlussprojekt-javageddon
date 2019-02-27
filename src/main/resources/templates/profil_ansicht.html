@@ -139,6 +139,8 @@
                     <p class="alert alert-success" role="alert" th:if="${reservierung.ermittleStatus() == 4}">Ausleihe läuft</p>
                     <p class="alert alert-secondary" role="alert" th:if="${reservierung.ermittleStatus() == 5}">Verleih abgeschlossen</p>
                     <p class="alert alert-danger" role="alert" th:if="${reservierung.ermittleStatus() == 6}">Ausleihfrist abgelaufen</p>
+                    <p class="alert alert-danger" role="alert" th:if="${reservierung.ermittleStatus() == 7}">Bearbeitungsfrist abgelaufen</p>
+
                 </td>
                 <td class="btn">
                     <a class="btn btn-danger" th:unless="${reservierung.zurueckgegeben}" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
@@ -167,7 +169,7 @@
             <tr>
                 <th scope="col" width="400">Artikel</th>
                 <th scope="col" width="150">Start/Ende</th>
-                <th scope="col" width="200">Bearbeitet</th>
+                <th scope="col" width="200"></th>
                 <th scope="col" width="100"></th>
                 <th scope="col" width="100"></th>
             </tr>
@@ -195,7 +197,8 @@
                     </div>
                 </td>
                 <td>
-                    <div class="btn-group" role="group" aria-label="...">
+                    <a th:if="${reservierung.ermittleStatus() == 7}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
+                    <div class="btn-group" role="group" aria-label="..." th:unless="${reservierung.ermittleStatus() == 7}">
                         <a class="btn btn-success" th:href="@{/reservierung_update/{id}/true (id=${reservierung.id})}">Akzeptieren</a>
                         <a class="btn btn-danger" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Ablehnen</a>
                     </div>
