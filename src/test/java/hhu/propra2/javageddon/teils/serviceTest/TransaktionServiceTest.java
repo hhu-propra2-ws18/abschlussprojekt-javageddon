@@ -31,8 +31,6 @@ public class TransaktionServiceTest {
     TransaktionRepository transRepo;
 
     @Autowired
-    BenutzerService bService = new BenutzerService(benRepo);
-
     TransaktionService tService = new TransaktionService(transRepo);
 
     Benutzer otto = Benutzer.builder().name("Otto").email("otto@otto.de").build();
