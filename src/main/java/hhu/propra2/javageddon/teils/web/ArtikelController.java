@@ -111,7 +111,8 @@ public class ArtikelController {
         Long id = alleBenutzer.getIdByName(username);
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
-        reservierung.setArtikel(alleArtikel.findArtikelById(artikel.getId()));
+        artikel = alleArtikel.findArtikelById(artikel.getId());
+        reservierung.setArtikel(artikel);
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
         ProPayUser proPayUser = ProPay.getProPayUser(username);
         if(!alleReservierungen.hasEnoughMoney(reservierung,(int) proPayUser.getVerfuegbaresGuthaben())) {
