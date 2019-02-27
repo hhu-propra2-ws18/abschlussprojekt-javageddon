@@ -1,6 +1,7 @@
 package hhu.propra2.javageddon.teils.dataaccess;
 
 import hhu.propra2.javageddon.teils.model.*;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.client.RestTemplate;
 
 public class ProPay {
@@ -33,11 +34,11 @@ public class ProPay {
 
 
     public static Reservations executeReservation(Reservations reservations, Benutzer zielKonto, Benutzer kontoinhaber){
-
+        HttpEntity<Reservations> request = new HttpEntity<>(new Reservations());
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(URL_RESERVATION + "reserve/" + kontoinhaber.getName()+ "/" +
                                         zielKonto.getName() + "?amount=" + reservations.getAmount(),
-                                    "amount="+ reservations.getAmount(),Reservations.class);
+                                    request,Reservations.class);
     }
 
 }
