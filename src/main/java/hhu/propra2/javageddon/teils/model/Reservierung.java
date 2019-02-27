@@ -40,9 +40,11 @@ public class Reservierung {
     @Builder.Default
     private Boolean bearbeitet = false;
 
-    private Boolean akzeptiert;
+    private Boolean akzeptiert = false;
 
-    private Boolean abgeschlossen = false;
+    private Boolean zurueckgegeben = false;
+
+    private Boolean zurueckerhalten = false;
 
     private Boolean sichtbar = true;
 
