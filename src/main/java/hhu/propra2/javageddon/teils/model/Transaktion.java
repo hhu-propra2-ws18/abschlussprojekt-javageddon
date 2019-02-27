@@ -29,5 +29,5 @@ public class Transaktion {
 
     private String verwendungszweck;
 
-    private int betrag;
+    private double betrag;
 }
