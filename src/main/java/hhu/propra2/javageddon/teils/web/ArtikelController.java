@@ -122,11 +122,11 @@ public class ArtikelController {
 
             Reservations kaution = new Reservations();
             Reservations miete = new Reservations();
-
+            kaution.setAmount(artikel.getKaution());
             proPayUser.addReservation(kaution);
             reservierung.setKautionsId(ProPay.executeReservation(kaution,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
 
-
+            miete.setAmount(artikel.getKostenTag()*reservierung.calculateReservierungsLength());
             proPayUser.addReservation(miete);
             reservierung.setMieteId(ProPay.executeReservation(miete,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
             
