@@ -115,6 +115,9 @@ public class ArtikelController {
         reservierung.setArtikel(artikel);
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
         ProPayUser proPayUser = ProPay.getProPayUser(username);
+        if(artikel.getEigentuemer().equals(reservierung.getLeihender())){
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
+        }
         if(!alleReservierungen.hasEnoughMoney(reservierung,(int) proPayUser.getVerfuegbaresGuthaben())) {
             return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
         }
