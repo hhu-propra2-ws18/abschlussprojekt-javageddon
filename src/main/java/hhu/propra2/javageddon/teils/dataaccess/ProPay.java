@@ -37,7 +37,7 @@ public class ProPay {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(URL_RESERVATION + "reserve/" + kontoinhaber.getName()+ "/" +
                                         zielKonto.getName() + "?amount=" + reservations.getAmount(),
-                                    "amount="+ (int)reservations.getAmount(),Reservations.class);
+                                    "amount="+ reservations.getAmount(),Reservations.class);
     }
 
 }
