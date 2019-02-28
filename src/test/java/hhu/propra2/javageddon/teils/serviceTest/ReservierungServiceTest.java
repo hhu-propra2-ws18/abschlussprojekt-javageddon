@@ -46,11 +46,14 @@ public class ReservierungServiceTest {
     Artikel hamster = Artikel.builder().titel("Hamster").eigentuemer(heidi).standort(ad).beschreibung("?").kaution(1).kostenTag(1).build();
     Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(heidi).standort(ad).beschreibung("?").kaution(1).kostenTag(1).build();
 
-    Reservierung currentRes = Reservierung.builder().start(currentDay).ende(currentDay).artikel(hamster).build();
-    Reservierung futureRes = Reservierung.builder().start(futureDay).ende(futureDay).artikel(hamster).build();
+    Reservierung currentRes = Reservierung.builder().start(currentDay).ende(currentDay).artikel(hamster).bearbeitet(false)
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
+    Reservierung futureRes = Reservierung.builder().start(futureDay).ende(futureDay).artikel(hamster).bearbeitet(false)
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
     Reservierung pastRes = Reservierung.builder().start(pastDay).ende(pastDay).artikel(hamster).build();
     Reservierung farFutureRes = Reservierung.builder().start(currentDay.plusYears(2))
-            .ende(currentDay.plusYears(2).plusDays(10)).artikel(hamster).build();
+            .ende(currentDay.plusYears(2).plusDays(10)).artikel(hamster).bearbeitet(false)
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
     @Before
     public void testInit() {
         heidi = benRepo.save(heidi);
@@ -135,6 +138,24 @@ public class ReservierungServiceTest {
                 currentDay.plusYears(2).minusDays(2),
                 currentDay.plusYears(2).plusDays(4))).isEqualTo(false);
     }
+
+    /*@Test
+    public void threeReservierungenOneVerfuegbar(){
+
+        //status code 4 for futureRes
+        futureRes.setZurueckerhalten(false);
+        futureRes.setBearbeitet(true);
+        futureRes.setAkzeptiert(true);
+        futureRes.setStart(start);
+
+        res3.setZurueckgegeben(false);
+            res3.setBearbeitet(true);
+            res3.setAkzeptiert(true);
+            res3.setEnde(ende);
+            assertThat(res3.ermittleStatus()).isEqualTo(6); }
+
+
+    }*/
 
 
 

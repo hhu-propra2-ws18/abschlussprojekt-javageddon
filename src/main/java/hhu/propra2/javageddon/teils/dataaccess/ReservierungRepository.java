@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface ReservierungRepository extends CrudRepository<Reservierung, Long> {
 
+    List<Reservierung> findAll();
     List<Reservierung> findByArtikel(Artikel a);
     List<Reservierung> findByLeihender(Benutzer b);
     List<Reservierung> findByLeihenderAndSichtbar(Benutzer b, boolean tf);

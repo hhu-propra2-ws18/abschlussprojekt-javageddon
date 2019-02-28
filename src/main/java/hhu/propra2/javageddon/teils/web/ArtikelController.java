@@ -42,6 +42,7 @@ public class ArtikelController {
 
     @GetMapping("/")
     public String artikelListe(Model m){
+        alleReservierungen.decideVerfuegbarkeit();
         m.addAttribute("alleArtikel", alleArtikel.findAllAktivArtikel());
         m.addAttribute("anzahlBeschwerden", alleBeschwerden.findAllByBearbeitet(false).size());
         return "start";
@@ -58,6 +59,7 @@ public class ArtikelController {
 
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
+        alleReservierungen.decideVerfuegbarkeit();
         Artikel artikel = alleArtikel.findArtikelById(id);
         List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiert(artikel);
         List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findCurrentReservierungByArtikelAndBearbeitet(artikel);
@@ -95,6 +97,7 @@ public class ArtikelController {
 
     @RequestMapping(value = "/reservieren", method = GET)
     public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "false", required = false) boolean error){
+        alleReservierungen.decideVerfuegbarkeit();
         Reservierung reservierung = new Reservierung();
         Artikel artikel = alleArtikel.findArtikelById(id);
         reservierung.setStart(LocalDate.now());
