@@ -96,7 +96,7 @@ public class BeschwerdeController {
             transaktionEigentuemer.setVerwendungszweck("Teils Clearing hat sich für Sie entschieden (" + aktuelleReservierung.getArtikel().getTitel() + ")");
             alleTransaktionen.addTransaktion(transaktionEigentuemer);
         }
-
+        alleBeschwerden.deleteBeschwerde(beschwerde);
         return "redirect:/admin_clearing";
     }
 }

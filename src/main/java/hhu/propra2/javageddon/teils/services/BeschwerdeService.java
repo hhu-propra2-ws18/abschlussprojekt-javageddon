@@ -30,4 +30,6 @@ public class BeschwerdeService {
         public Beschwerde addBeschwerde(Beschwerde beschwerde) {
             return alleBeschwerden.save(beschwerde);
         }
+
+        public void deleteBeschwerde(Beschwerde beschwerde){alleBeschwerden.delete(beschwerde);}
 }
