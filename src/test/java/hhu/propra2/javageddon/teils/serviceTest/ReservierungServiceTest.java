@@ -154,6 +154,9 @@ public class ReservierungServiceTest {
         pastRes.setBearbeitet(true);
         pastRes.setAkzeptiert(true);
 
+        //status code 1 and LocalDate = now for currentRes
+        currentRes.setBearbeitet(false);
+
         futureRes = rService.addReservierung(futureRes);
         pastRes = rService.addReservierung(pastRes);
         farFutureRes = rService.addReservierung(farFutureRes);
@@ -162,7 +165,7 @@ public class ReservierungServiceTest {
 
         assertThat(!(rService.findReservierungById(futureRes.getId()).getArtikel().isVerfuegbar()));
         assertThat(!(rService.findReservierungById(pastRes.getId()).getArtikel().isVerfuegbar()));
-        assertThat(rService.findReservierungById(currentRes.getId()).getArtikel().isVerfuegbar());
+        assertThat(!(rService.findReservierungById(currentRes.getId()).getArtikel().isVerfuegbar()));
         assertThat(rService.findReservierungById(farFutureRes.getId()).getArtikel().isVerfuegbar());
 
     }
