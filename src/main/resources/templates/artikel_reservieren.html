@@ -39,8 +39,14 @@
                             </ul>
                         </span></p>
 
-                    <div th:if="${error}" class="alert alert-danger">
-                        <strong>Fehler!</strong> Reseveriungszeitraum ungültig oder nicht genug Propay Guthaben oder du kannst dein eigenen Artikel nicht reservieren!
+                    <div th:if="${error == 1}" class="alert alert-danger">
+                        <strong>Fehler!</strong> Sie können Ihren eigenen Artikel nicht reservieren!
+                    </div>
+                    <div th:if="${error == 2}" class="alert alert-danger">
+                        <strong>Fehler!</strong> Nicht genug verfügbares Propay Guthaben!
+                    </div>
+                    <div th:if="${error == 3}" class="alert alert-danger">
+                        <strong>Fehler!</strong> Reseveriungszeitraum ungültig!
                     </div>
 
                 <form th:object="${reservierung}" th:action="@{/reservieren}" method="post">

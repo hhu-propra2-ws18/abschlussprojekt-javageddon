@@ -143,7 +143,7 @@ public class ArtikelController {
 
 
     @RequestMapping(value = "/reservieren", method = GET)
-    public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "false", required = false) boolean error){
+    public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "0", required = false) int error){
         alleReservierungen.decideVerfuegbarkeit();
         Reservierung reservierung = new Reservierung();
         Artikel artikel = alleArtikel.findArtikelById(id);
@@ -173,10 +173,10 @@ public class ArtikelController {
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
         ProPayUser proPayUser = ProPay.getProPayUser(username);
         if(artikel.getEigentuemer().equals(reservierung.getLeihender())){
-            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=1";
         }
         if(!alleReservierungen.hasEnoughMoney(reservierung,(int) proPayUser.getVerfuegbaresGuthaben())) {
-            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=2";
         }
         if(alleReservierungen.isAllowedReservierungsDate(reservierung.getArtikel(), reservierung.getStart(), reservierung.getEnde())){
 
@@ -195,7 +195,7 @@ public class ArtikelController {
             alleReservierungen.addReservierung(reservierung);
             return "redirect:/";
         }else {
-            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=3";
         }
     }
 
