@@ -67,7 +67,7 @@ public class BeschwerdeController {
             alleTransaktionen.addTransaktion(transaktionEigentuemer);
         } else if(benutzer == aktuelleReservierung.getArtikel().getEigentuemer()){
             ProPay.punishReservationMiete(aktuelleReservierung);
-            ProPay.punishReservationMiete(aktuelleReservierung);
+            ProPay.punishReservationKaution(aktuelleReservierung);
             Transaktion transaktion = new Transaktion();
             transaktion.setDatum(LocalDate.now());
             transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());
