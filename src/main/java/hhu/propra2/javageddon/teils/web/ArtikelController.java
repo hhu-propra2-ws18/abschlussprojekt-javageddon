@@ -87,9 +87,10 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/verkauf/details", method = GET)
-    public String getDetailsByArtikelIdVerkauf( Model m, @RequestParam("id") long id) {
+    public String getDetailsByArtikelIdVerkauf( Model m, @RequestParam("id") long id,  @RequestParam(value = "error", defaultValue = "0", required = false) int error) {
         VerkaufArtikel artikel = alleVerkaufArtikel.findArtikelById(id);
         m.addAttribute("artikel", artikel);
+        m.addAttribute("error", error);
         return "verkaufartikel_details";
     }
 
@@ -328,7 +329,7 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/kaufen", method = GET)
-    public String artikelKaufen(Model m, @RequestParam("id") long id,  @RequestParam(value = "error", defaultValue = "0", required = false) int error)  {
+    public String artikelKaufen(Model m, @RequestParam("id") long id)  {
         VerkaufArtikel aktuellerArtikel = alleVerkaufArtikel.findArtikelById(id);
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
@@ -338,7 +339,6 @@ public class ArtikelController {
         verkauf.setArtikel(aktuellerArtikel);
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
         m.addAttribute("artikel", aktuellerArtikel);
-        m.addAttribute("error", error);
         ProPayUser proPayUser = ProPay.getProPayUser(username);
         if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
             return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=1";
