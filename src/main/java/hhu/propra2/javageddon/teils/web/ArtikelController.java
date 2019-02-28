@@ -334,13 +334,16 @@ public class ArtikelController {
         String username = ((UserDetails)currentUser).getUsername();
         Long benutzerid = alleBenutzer.getIdByName(username);
         Verkauf verkauf = new Verkauf();
+        aktuellerArtikel.setVerfuegbar(false);
+        alleVerkaufArtikel.addArtikel(aktuellerArtikel);
+        verkauf.setArtikel(aktuellerArtikel);
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
         m.addAttribute("artikel", aktuellerArtikel);
         ProPayUser proPayUser = ProPay.getProPayUser(username);
         if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
             return "redirect:/reservieren?id=" + verkauf.getArtikel().getId() + "&error=true";
         }
-        if(!alleReservierungen.hasEnoughMoney(verkauf,(int) proPayUser.getVerfuegbaresGuthaben())) {
+        if(!alleVerkaeufe.hasEnoughMoney(verkauf,(int) proPayUser.getVerfuegbaresGuthaben())) {
             return "redirect:/reservieren?id=" + verkauf.getArtikel().getId() + "&error=true";
         }
 
@@ -350,9 +353,6 @@ public class ArtikelController {
         verkauf.setVerkaufsId(ProPay.executeReservation(verkaufsRes,verkauf.getArtikel().getEigentuemer(), verkauf.getKaeufer()).getId());
 
 
-        aktuellerArtikel.setVerfuegbar(false);
-        alleVerkaufArtikel.addArtikel(aktuellerArtikel);
-        verkauf.setArtikel(aktuellerArtikel);
         alleVerkaeufe.addVerkauf(verkauf);
         return "redirect:/profil_ansicht/";
     }

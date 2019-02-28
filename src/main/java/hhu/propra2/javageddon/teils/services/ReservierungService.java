@@ -93,15 +93,7 @@ public class ReservierungService {
         }
     }
 
-    public boolean hasEnoughMoney(Verkauf v, int guthaben){
-        int gesamtKosten = v.getArtikel().getVerkaufsPreis();
 
-        if(gesamtKosten <= guthaben){
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public boolean isAllowedReservierungsDate(Artikel a, LocalDate startAntrag, LocalDate endeAntrag) {
         if (startAntrag.isBefore(LocalDate.now())) {
