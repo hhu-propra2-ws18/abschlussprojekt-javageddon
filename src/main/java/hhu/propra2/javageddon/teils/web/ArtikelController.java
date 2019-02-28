@@ -225,7 +225,7 @@ public class ArtikelController {
         transaktionEigentuemer.setBetrag(aktuelleReservierung.calculateReservierungsCost());
         transaktionEigentuemer.setKontoinhaber(aktuelleReservierung.getArtikel().getEigentuemer());
         transaktionEigentuemer.setVerwendungszweck("Teils Leihe:" + aktuelleReservierung.getArtikel().getTitel());
-
+        alleTransaktionen.addTransaktion(transaktionEigentuemer);
 
         return "redirect:/profil_ansicht/";
     }
