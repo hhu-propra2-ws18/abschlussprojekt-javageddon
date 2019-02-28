@@ -146,4 +146,16 @@ public class ReservierungService {
                 .collect(Collectors.toList());
     }
 
+    public void decideVerfuegbarkeit(){
+        List<Reservierung> reservierungen = alleReservierungen.findAll();
+        for (Reservierung res : reservierungen) {
+            if (res.ermittleStatus() == 4 || res.ermittleStatus() == 6 || (res.ermittleStatus() == 1 && res.getStart().isEqual(LocalDate.now()))) {
+                res.getArtikel().setVerfuegbar(false);
+            } else {
+                res.getArtikel().setVerfuegbar(true);
+            }
+            alleReservierungen.save(res);
+        }
+    }
+
 }
