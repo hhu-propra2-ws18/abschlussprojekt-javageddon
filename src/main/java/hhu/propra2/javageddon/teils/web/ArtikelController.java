@@ -4,12 +4,14 @@ import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
 import hhu.propra2.javageddon.teils.dataaccess.VerkaufRepository;
+import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.*;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
 import hhu.propra2.javageddon.teils.services.VerkaufArtikelService;
 import hhu.propra2.javageddon.teils.services.VerkaufService;
+import hhu.propra2.javageddon.teils.services.TransaktionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -42,6 +44,9 @@ public class ArtikelController {
 
     @Autowired
     private BeschwerdeRepository alleBeschwerden;
+
+    @Autowired
+    private TransaktionService alleTransaktionen;
 
     @Autowired
     private VerkaufArtikelService alleVerkaufArtikel;
@@ -82,9 +87,10 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/verkauf/details", method = GET)
-    public String getDetailsByArtikelIdVerkauf( Model m, @RequestParam("id") long id) {
+    public String getDetailsByArtikelIdVerkauf( Model m, @RequestParam("id") long id,  @RequestParam(value = "error", defaultValue = "0", required = false) int error) {
         VerkaufArtikel artikel = alleVerkaufArtikel.findArtikelById(id);
         m.addAttribute("artikel", artikel);
+        m.addAttribute("error", error);
         return "verkaufartikel_details";
     }
 
@@ -138,7 +144,7 @@ public class ArtikelController {
 
 
     @RequestMapping(value = "/reservieren", method = GET)
-    public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "false", required = false) boolean error){
+    public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "0", required = false) int error){
         alleReservierungen.decideVerfuegbarkeit();
         Reservierung reservierung = new Reservierung();
         Artikel artikel = alleArtikel.findArtikelById(id);
@@ -163,13 +169,34 @@ public class ArtikelController {
         Long id = alleBenutzer.getIdByName(username);
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
-        reservierung.setArtikel(alleArtikel.findArtikelById(artikel.getId()));
+        artikel = alleArtikel.findArtikelById(artikel.getId());
+        reservierung.setArtikel(artikel);
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
+        ProPayUser proPayUser = ProPay.getProPayUser(username);
+        if(artikel.getEigentuemer().equals(reservierung.getLeihender())){
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=1";
+        }
+        if(!alleReservierungen.hasEnoughMoney(reservierung,(int) proPayUser.getVerfuegbaresGuthaben())) {
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=2";
+        }
         if(alleReservierungen.isAllowedReservierungsDate(reservierung.getArtikel(), reservierung.getStart(), reservierung.getEnde())){
+
+            Reservations kaution = new Reservations();
+            Reservations miete = new Reservations();
+            kaution.setAmount(artikel.getKaution());
+            kaution.setId(1);
+            proPayUser.addReservation(kaution);
+            reservierung.setKautionsId(ProPay.executeReservation(kaution,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
+
+            miete.setId(2);
+            miete.setAmount(artikel.getKostenTag()*reservierung.calculateReservierungsLength());
+            proPayUser.addReservation(miete);
+            reservierung.setMieteId(ProPay.executeReservation(miete,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
+
             alleReservierungen.addReservierung(reservierung);
             return "redirect:/profil_ansicht";
         }else {
-            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
+            return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=3";
         }
     }
 
@@ -211,6 +238,10 @@ public class ArtikelController {
         boolean accepted = Boolean.parseBoolean(akzeptiert);
         aktuelleReservierung.setBearbeitet(true);
         aktuelleReservierung.setAkzeptiert(accepted);
+        if (!accepted) {
+            ProPay.releaseReservationKaution(aktuelleReservierung);
+            ProPay.releaseReservationMiete(aktuelleReservierung);
+        }
         alleReservierungen.addReservierung(aktuelleReservierung);
         return "redirect:/profil_ansicht/";
     }
@@ -220,10 +251,30 @@ public class ArtikelController {
         Verkauf aktuellerVerkauf = alleVerkaeufe.findVerkaufById(id);
         model.addAttribute("verkauf", aktuellerVerkauf);
         boolean accepted = Boolean.parseBoolean(akzeptiert);
-        if(!accepted) aktuellerVerkauf.getArtikel().setVerfuegbar(true);
-        aktuellerVerkauf.setBearbeitet(true);
-        aktuellerVerkauf.setAkzeptiert(accepted);
-        alleVerkaeufe.addVerkauf(aktuellerVerkauf);
+        if(!accepted) {
+            aktuellerVerkauf.getArtikel().setVerfuegbar(true);
+            ProPay.releaseVerkaufsPreis(aktuellerVerkauf);
+
+        }else {
+            ProPay.punishVerkaufsPreis(aktuellerVerkauf);
+            Transaktion transaktion = new Transaktion();
+            transaktion.setDatum(LocalDate.now());
+            transaktion.setBetrag(-aktuellerVerkauf.getArtikel().getVerkaufsPreis());
+            transaktion.setKontoinhaber(aktuellerVerkauf.getKaeufer());
+            transaktion.setVerwendungszweck("Teils Kauf: " + aktuellerVerkauf.getArtikel().getTitel());
+            alleTransaktionen.addTransaktion(transaktion);
+
+            Transaktion transaktionEigentuemer = new Transaktion();
+            transaktionEigentuemer.setDatum(LocalDate.now());
+            transaktionEigentuemer.setBetrag(aktuellerVerkauf.getArtikel().getVerkaufsPreis());
+            transaktionEigentuemer.setKontoinhaber(aktuellerVerkauf.getArtikel().getEigentuemer());
+            transaktionEigentuemer.setVerwendungszweck("Teils Verkauf: " + aktuellerVerkauf.getArtikel().getTitel());
+            alleTransaktionen.addTransaktion(transaktionEigentuemer);
+        }
+            aktuellerVerkauf.setBearbeitet(true);
+            aktuellerVerkauf.setAkzeptiert(accepted);
+            alleVerkaeufe.addVerkauf(aktuellerVerkauf);
+
         return "redirect:/profil_ansicht/";
     }
 
@@ -234,6 +285,23 @@ public class ArtikelController {
         aktuelleReservierung.setZurueckerhalten(true);
         aktuelleReservierung.getArtikel().setVerfuegbar(true);
         alleReservierungen.addReservierung(aktuelleReservierung);
+
+        ProPay.releaseReservationKaution(aktuelleReservierung);
+        ProPay.punishReservationMiete(aktuelleReservierung);
+        Transaktion transaktion = new Transaktion();
+        transaktion.setDatum(LocalDate.now());
+        transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());
+        transaktion.setKontoinhaber(aktuelleReservierung.getLeihender());
+        transaktion.setVerwendungszweck("Teils Ausleihe: " + aktuelleReservierung.getArtikel().getTitel());
+        alleTransaktionen.addTransaktion(transaktion);
+
+        Transaktion transaktionEigentuemer = new Transaktion();
+        transaktionEigentuemer.setDatum(LocalDate.now());
+        transaktionEigentuemer.setBetrag(aktuelleReservierung.calculateReservierungsCost());
+        transaktionEigentuemer.setKontoinhaber(aktuelleReservierung.getArtikel().getEigentuemer());
+        transaktionEigentuemer.setVerwendungszweck("Teils Leihe: " + aktuelleReservierung.getArtikel().getTitel());
+        alleTransaktionen.addTransaktion(transaktionEigentuemer);
+
         return "redirect:/profil_ansicht/";
     }
 
@@ -261,17 +329,29 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/kaufen", method = GET)
-    public String artikelKaufen(Model m, @RequestParam("id") long id) {
+    public String artikelKaufen(Model m, @RequestParam("id") long id)  {
         VerkaufArtikel aktuellerArtikel = alleVerkaufArtikel.findArtikelById(id);
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
         Long benutzerid = alleBenutzer.getIdByName(username);
         Verkauf verkauf = new Verkauf();
-        verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
-        m.addAttribute("artikel", aktuellerArtikel);
-        aktuellerArtikel.setVerfuegbar(false);
         alleVerkaufArtikel.addArtikel(aktuellerArtikel);
         verkauf.setArtikel(aktuellerArtikel);
+        verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
+        m.addAttribute("artikel", aktuellerArtikel);
+        ProPayUser proPayUser = ProPay.getProPayUser(username);
+        if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
+            return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=1";
+        }
+        if(!alleVerkaeufe.hasEnoughMoney(verkauf,(int) proPayUser.getVerfuegbaresGuthaben())) {
+            return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=2";
+        }
+
+        Reservations verkaufsRes = new Reservations();
+        verkaufsRes.setAmount(verkauf.getArtikel().getVerkaufsPreis());
+        proPayUser.addReservation(verkaufsRes);
+        verkauf.setVerkaufsId(ProPay.executeReservation(verkaufsRes,verkauf.getArtikel().getEigentuemer(), verkauf.getKaeufer()).getId());
+        aktuellerArtikel.setVerfuegbar(false);
         alleVerkaeufe.addVerkauf(verkauf);
         return "redirect:/profil_ansicht/";
     }

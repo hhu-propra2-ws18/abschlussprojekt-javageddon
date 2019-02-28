@@ -29,8 +29,14 @@ services:
       # TODO Portfreigaben in Docker-Compose Konfiguration für Abgabe entfernen,
       - "5432:5432"
 
-      # TODO Volume Mapping für Abgabe aktivieren
-      #volumes:
-      #- ./data:/var/lib/postgresql/data
-  # ========================================
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  proPay:
+    image: propra/propay
+    ports:
+  # TODO Portfreigaben in Docker-Compose Konfiguration für Abgabe entfernen,
+      - "8888:8888"
+
+
 

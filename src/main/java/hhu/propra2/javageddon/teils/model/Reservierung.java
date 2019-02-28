@@ -23,6 +23,10 @@ public class Reservierung {
     @GeneratedValue
     private long id;
 
+    private int kautionsId;
+
+    private int mieteId;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate start;
 
@@ -76,6 +80,10 @@ public class Reservierung {
 
     public int calculateReservierungsLength(){
         return (int) DAYS.between(start, ende)+1;
+    }
+
+    public int calculateReservierungsCost() {
+        return calculateReservierungsLength()*artikel.getKostenTag();
     }
 
     public int ermittleStatus(){

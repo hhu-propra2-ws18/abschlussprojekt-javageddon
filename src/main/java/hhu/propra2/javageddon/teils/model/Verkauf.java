@@ -17,6 +17,8 @@ public class Verkauf {
     @GeneratedValue
     private long id;
 
+    private int verkaufsId;
+
     @ManyToOne
     @JoinColumn(name = "VERKAUF_BENUTZER_ID")
     private Benutzer kaeufer;

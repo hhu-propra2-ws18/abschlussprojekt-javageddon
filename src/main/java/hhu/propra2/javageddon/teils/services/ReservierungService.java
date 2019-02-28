@@ -4,6 +4,7 @@ import hhu.propra2.javageddon.teils.dataaccess.ReservierungRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Reservierung;
+import hhu.propra2.javageddon.teils.model.Verkauf;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -81,6 +82,18 @@ public class ReservierungService {
                 .sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
                 .collect(Collectors.toList());
     }
+
+    public boolean hasEnoughMoney(Reservierung r, int guthaben){
+        int gesamtKosten = r.getArtikel().getKaution() + (r.getArtikel().getKostenTag() * r.calculateReservierungsLength());
+
+        if(gesamtKosten <= guthaben){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
 
     public boolean isAllowedReservierungsDate(Artikel a, LocalDate startAntrag, LocalDate endeAntrag) {
         if (startAntrag.isBefore(LocalDate.now())) {

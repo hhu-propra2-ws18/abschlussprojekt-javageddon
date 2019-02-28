@@ -44,4 +44,14 @@ public class VerkaufService {
         return alleVerkaeufe.findByArtikelEigentuemerAndBearbeitet(b, false);
     }
 
+    public boolean hasEnoughMoney(Verkauf v, int guthaben){
+        int gesamtKosten = v.getArtikel().getVerkaufsPreis();
+
+        if(gesamtKosten <= guthaben){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

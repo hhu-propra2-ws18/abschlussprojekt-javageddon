@@ -26,6 +26,16 @@
     <div class="details col-md-6">
         <p><span style="font-weight: bold;">Name: </span><span th:text="${benutzer.name}">Jens Bendisposto</span></p>
         <p><span style="font-weight: bold;">E-mail: </span><span th:text="${benutzer.email}">email@gmail.com</span></p>
+        <p>
+            <a th:if="${proPayReachable}"
+               class="btn btn-outline-secondary btn-md" href="/proPay_details">ProPay
+                <span class="badge badge-secondary" th:text="|${proPayUser.amount} €|">7</span>
+            </a>
+            <a th:unless="${proPayReachable}"
+               class="btn btn-outline-danger btn-md">ProPay
+                <span class="badge badge-danger">Nicht Erreichbar</span>
+            </a>
+        </p>
     </div>
 
     <div th:each="warnung: ${alleWarnungen}">
