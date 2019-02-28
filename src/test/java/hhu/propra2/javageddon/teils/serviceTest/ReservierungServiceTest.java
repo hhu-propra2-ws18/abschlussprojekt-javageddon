@@ -141,7 +141,7 @@ public class ReservierungServiceTest {
     }
 
     @Test
-    public void fourReservierungenArticlesOfTwoReservierungenVerfuegbar(){
+    public void fourReservierungenArticlesOfOneReservierungVerfuegbar(){
 
         //status code 4 for futureRes
         futureRes.setZurueckerhalten(false);
