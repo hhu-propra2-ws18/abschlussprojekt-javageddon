@@ -15,10 +15,10 @@ public class ReservierungTest {
     LocalDate zukunftEnde = LocalDate.of(2019, 04, 11);
 
     Reservierung res = Reservierung.builder().start(start).ende(ende).bearbeitet(false)
-            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
     Reservierung res2 = Reservierung.builder().start(start).ende(start).build();
     Reservierung res3 = Reservierung.builder().start(start).ende(zukunftEnde).bearbeitet(false)
-            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
 
     @Test
     public void printsReservierungDateStringCorrectly(){

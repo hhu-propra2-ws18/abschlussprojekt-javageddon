@@ -3,6 +3,7 @@ package hhu.propra2.javageddon.teils.web;
 import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.Benutzer;
+import hhu.propra2.javageddon.teils.services.*;
 import hhu.propra2.javageddon.teils.model.Reservierung;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
@@ -30,6 +31,13 @@ public class BenutzerController {
     
     @Autowired
     private ReservierungService alleReservierungen;
+
+    @Autowired
+    private VerkaufArtikelService alleVerkaufArtikel;
+
+    @Autowired
+    private VerkaufService alleVerkaeufe;
+
 
     @GetMapping("/registrieren")
     public String neuerBenutzer(Model m){
@@ -82,8 +90,11 @@ public class BenutzerController {
         alleReservierungen.decideVerfuegbarkeit();
         m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
         m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
-        m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihenderAndSichtbar(alleBenutzer.findBenutzerById(id),true));
+        m.addAttribute("alleVerkaufArtikel", alleVerkaufArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
+        m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihender(alleBenutzer.findBenutzerById(id)));
+        m.addAttribute("alleVerkaeufe", alleVerkaeufe.findVerkaufByKaeufer(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("alleAnfragen", alleReservierungen.findReservierungByArtikelEigentuemerAndNichtBearbeitet(alleBenutzer.findBenutzerById(id)));
+        m.addAttribute("alleVerkaufAnfragen", alleVerkaeufe.findVerkaufByArtikelEigentuemerAndNichtBearbeitet(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("aktuelleAusleihen", alleReservierungen.findReservierungByArtikelEigentuemerAndNichtAbgeschlossen(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("alleWarnungen", alleReservierungen.fristAbgelaufeneReservierungen(alleBenutzer.findBenutzerById(id)));
         return "profil_ansicht";

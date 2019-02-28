@@ -13,11 +13,11 @@
         <div class="container-fluid">
             <div class="wrapper row">
                 <div class="preview col-md-4">
-                    <img th:if="${artikel.fotos.isEmpty()}" th:src="'../fotos/kein-bild-vorhanden'"
+                    <img th:if="${artikel.fotos.isEmpty()}" th:src="'../../fotos/kein-bild-vorhanden'"
                          class="img-thumbnail img-sm" style="width:100px; height:100px; margin-right:20px"/>
                     <div class="gallery" th:unless="${artikel.fotos.isEmpty()}" th:each = "foto: ${artikel.fotos}" >
-                        <a target="_blank" th:href= "@{'../fotos/' + ${foto}}">
-                            <img th:src="@{'../fotos/' + ${foto}}" alt="FOTO" width="300" height="200">
+                        <a target="_blank" th:href= "@{'../../fotos/' + ${foto}}">
+                            <img th:src="@{'../../fotos/' + ${foto}}" alt="FOTO" width="300" height="200">
                         </a>
                     </div>
                 </div>
@@ -26,21 +26,13 @@
                         <h3 class="product-title" th:text="${artikel.titel}">Akkuschrauber</h3>
                         <p></p>
                         <p class="product-description" th:text="${artikel.beschreibung}">Suspendisse quos? Tempus cras iure temporibus? Eu laudantium cubilia sem sem! Repudiandae et! Massa senectus enim minim sociosqu delectus posuere.</p>
-                        <p><b>Preis pro Tag: </b><span th:text="${artikel.kostenTag + '€'}">10 €</span></p>
-                        <p><b>Kaution: </b><span th:text="${artikel.kaution + '€'}">100 €</span></p>
+                        <p><b>Preis: </b><span th:text="${artikel.verkaufsPreis + '€'}">100 €</span></p>
                         <p><b>Eigentümer: </b><span th:text="${(artikel.eigentuemer != null) ? artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
                         <p><b>Standort: </b><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
-                        <p><b>Reservierungen: </b>
-                        <span th:if="${alleReservierungen.isEmpty()}">Keine Reservierung vorhanden</span>
-                        <span th:unless="${alleReservierungen.isEmpty()}">
-                            <ul th:each="reservierung: ${alleReservierungen}">
-                                <li th:text="${reservierung.printReservierungsDauer()}"></li>
-                            </ul>
-                        </span></p>
 
                         <div class="action">
-                            <a th:href="@{'/reservieren?id=' + ${artikel.id}}" class="btn btn-primary btn-md" >Anfrage abschicken</a>
-                            <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
+                            <a th:if="${artikel.verfuegbar}" th:href="@{'/kaufen?id=' + ${artikel.id}}" class="btn btn-primary btn-md" >Anfrage abschicken</a>
+                            <a href="/" class="btn btn-outside-primary">Zurück zur Übersicht</a>
                         </div>
                 </div>
                         <div class="details col-md-2">

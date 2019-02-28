@@ -20,39 +20,32 @@
                      <!--   <a href="/benutzer/?{id}" class="float-right btn btn-outline-primary">Zurück zur Übersicht</a> -->
                         <h4 class="card-title mb-4 mt-1">Artikel erstellen</h4>
 
-                        <form method="post" th:action="@{/artikel_erstellen}">
+                        <form method="post" th:action="@{/verkaufartikel_erstellen}">
 
-                            <input type="hidden" value="1" name="id" th:value="${artikel.id}"/>
-                            <input type="hidden" value="true" name="aktiv"/>
+                            <input type="hidden" value="1" name="id" th:value="${verkaufArtikel.id}"/>
                             <input type="hidden" value="true" name="verfuegbar"/>
 
 
                             <div class="form-group">
-                                <label for="titel">Titel</label>
-                                <input class="form-control" placeholder="Artikelbezeichnung" type="text" th:field="${artikel.titel}"/>
-                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('artikel.titel')}" th:errors="*{artikel.titel}"></p>
+                                <label>Titel</label>
+                                <input class="form-control" placeholder="Artikelbezeichnung" type="text" th:field="${verkaufArtikel.titel}"/>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('verkaufArtikel.titel')}" th:errors="*{verkaufArtikel.titel}"></p>
                             </div> <!-- form-group// -->
 
                             <div class="form-group">
-                                <label for="beschreibung">Beschreibung</label>
-                                <input class="form-control" placeholder="Artikelbeschreibung" type="text" th:field="${artikel.beschreibung}"/>
-                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('artikel.beschreibung')}" th:errors="*{artikel.beschreibung}"></p>
+                                <label>Beschreibung</label>
+                                <input class="form-control" placeholder="Artikelbeschreibung" type="text" th:field="${verkaufArtikel.beschreibung}"/>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('verkaufArtikel.beschreibung')}" th:errors="*{verkaufArtikel.beschreibung}"></p>
                             </div> <!-- form-group// -->
 
                             <div class="form-group">
-                                <label for="kostenTag">Preis pro Tag</label>
-                                <input class="form-control" placeholder="Preis pro Tag" type="text"  th:field="${artikel.kostenTag}"/>
-                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('artikel.kostenTag')}" th:errors="*{artikel.kostenTag}"></p>
+                                <label>Preis</label>
+                                <input class="form-control" placeholder="Verkaufspreis" type="text"  th:field="${verkaufArtikel.verkaufsPreis}"/>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('verkaufArtikel.verkaufsPreis')}" th:errors="*{verkaufArtikel.verkaufsPreis}"></p>
                             </div>
 
                             <div class="form-group">
-                                <label for="kaution">Kaution</label>
-                                <input class="form-control" placeholder="Kaution" type="text"  th:field="${artikel.kaution}"/>
-                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('artikel.kaution')}" th:errors="*{artikel.kaution}"></p>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="adresse">Standort</label>
+                                <label>Standort</label>
                                 <p><input class="form-control col-sm-8 float-left" placeholder="Strasse" type="text" th:field="${adresse.strasse}"/>
                                 <input class="form-control col-sm-4" placeholder="HausNr" type="text" th:field="${adresse.hausnummer}"/></p>
                                 <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('adresse.strasse')}" th:errors="*{adresse.strasse}"></p>

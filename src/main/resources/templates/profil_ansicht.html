@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Profil</title>
 </head>
 <body>
@@ -43,7 +45,7 @@
     <div class="container-fluid">
         <section class="row">
             <div class="col-md-8">
-                <h3>Deine Artikel</h3>
+                <h3>Deine Artikel zum Ausleihen</h3>
             </div>
         </section>
     </div>
@@ -98,9 +100,62 @@
                     <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${artikel.id}}"
                        href="/details?id=id" >Details</a>
                 </td>
+            </tr>
             </tbody>
         </table>
     </div>
+
+    <div class="container-fluid">
+        <section class="row">
+            <div class="col-md-8">
+                <h3>Deine Artikel zum Verkauf</h3>
+            </div>
+        </section>
+    </div>
+
+    <div class="card">
+        <table class="table table-hover shopping-cart-wrap">
+            <thead class="text-muted">
+            <tr>
+                <th scope="col" width="400">Artikel</th>
+                <th scope="col" width="100">Preis</th>
+                <th scope="col" width="200">Status</th>
+                <th scope="col" width="100"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="verkaufartikel: ${alleVerkaufArtikel}">
+                <td>
+                    <figure class="media">
+                        <div class="img-wrap">
+                            <img th:src="${(verkaufartikel.fotos.isEmpty() == false ) ? '../fotos/' + verkaufartikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
+                                 class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"
+                            />
+                        </div>
+
+                        <figcaption class="media-body">
+                            <h4 th:text="${verkaufartikel.titel}" class="title text-truncate">Akkuschrauber</h4>
+                        </figcaption>
+                    </figure>
+                </td>
+                <td>
+                    <div class="price-wrap">
+                        <var class="price" th:text="|${verkaufartikel.verkaufsPreis} €|">100€</var>
+                    </div>
+                </td>
+                <td>
+                    <p class="alert alert-success" role="alert" th:if="${verkaufartikel.verfuegbar}">Verfügbar</p>
+                    <p class="alert alert-danger" role="alert" th:unless="${verkaufartikel.verfuegbar}">Nicht Verfügbar</p>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkaufartikel.id}}">Details</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
 
     <div class="container-fluid" style="margin-top:50px">
         <section class="row">
@@ -152,14 +207,48 @@
                     <p class="alert alert-danger" role="alert" th:if="${reservierung.ermittleStatus() == 7}">Bearbeitungsfrist abgelaufen</p>
 
                 </td>
-                <td class="btn">
-                    <a class="btn btn-danger" th:unless="${reservierung.zurueckgegeben}" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                <td>
+                    <a class="btn btn-danger" th:unless="${reservierung.zurueckerhalten}" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
                     <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
                 <td>
-                    <a th:if="${reservierung.zurueckerhalten}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
+                    <a th:if="${reservierung.ermittleStatus() == 5}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
+                    <a th:if="${reservierung.ermittleStatus() == 2}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
+                    <a th:if="${reservierung.ermittleStatus() == 7}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
                     <a th:if="${reservierung.zurueckgegeben == false and reservierung.akzeptiert == true}" class="btn btn-secondary" th:href="@{/reservierung_zurueckgeben/{id} (id=${reservierung.id})}">Zurückgeben</a>
                 </td>
+            </tr>
+
+            <tr th:each="verkauf: ${alleVerkaeufe}">
+                <td>
+                    <figure class="media">
+                        <div class="img-wrap">
+                            <img th:src="${(verkauf.artikel.fotos.isEmpty() == false ) ? '../fotos/' + verkauf.artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
+                                 class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"
+                            />
+                        </div>
+                        <figcaption class="media-body">
+                            <h4 th:text="${verkauf.artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
+                        </figcaption>
+                    </figure>
+                </td>
+
+                <td>
+                   <p style="font-weight:bold">Verkauf</p>
+                </td>
+                <td>
+                    <p class="alert alert-warning" role="alert" th:if="${verkauf.ermittleStatus() == 1}">Anfrage in Bearbeitung</p>
+                    <p class="alert alert-danger" role="alert" th:if="${verkauf.ermittleStatus() == 2}">Anfrage abgelehnt</p>
+                    <p class="alert alert-success" role="alert" th:if="${verkauf.ermittleStatus() == 3}">Anfrage akzeptiert</p>
+                </td>
+                <td class="btn">
+                    <a class="btn btn-danger" th:if="${verkauf.akzeptiert}" th:href="@{'/loeschen?id=' + ${verkauf.id}}">Erhalten</a>
+                    <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
+                </td>
+                <td>
+                    <a th:if="${verkauf.ermittleStatus() == 2}" class="btn btn-secondary" th:href="@{/verkauf_sichtbar/{id} (id=${verkauf.id})}">Ausblenden</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -184,7 +273,7 @@
                 <th scope="col" width="100"></th>
             </tr>
             </thead>
-            <tbody>
+            <tr>
             <tr th:each="reservierung: ${alleAnfragen}">
                 <td>
                     <figure class="media">
@@ -220,6 +309,40 @@
                 <td class="text-right">
                     <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
+            </tr>
+
+            <tr th:each="verkauf: ${alleVerkaufAnfragen}">
+                <td>
+                    <figure class="media">
+                        <div class="img-wrap">
+                            <img th:src="${(verkauf.artikel.fotos.isEmpty() == false ) ? '../fotos/' + verkauf.artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
+                                 class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"
+                            />
+                        </div>
+
+                        <figcaption class="media-body">
+                            <h4 th:text="${verkauf.artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
+                        </figcaption>
+                    </figure>
+                </td>
+
+                <td>
+                    <p style="font-weight:bold">Verkauf</p>
+                </td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a class="btn btn-success" th:href="@{/verkauf_update/{id}/true (id=${verkauf.id})}">Akzeptieren</a>
+                        <a class="btn btn-danger" th:href="@{/verkauf_update/{id}/false (id=${verkauf.id})}">Ablehnen</a>
+                    </div>
+                </td>
+
+                <td>
+                    <p th:text="${verkauf.kaeufer.name}"></p>
+                </td>
+                <td class="text-right">
+                    <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>

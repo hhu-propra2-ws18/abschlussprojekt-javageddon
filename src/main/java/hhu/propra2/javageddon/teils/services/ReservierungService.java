@@ -24,12 +24,16 @@ public class ReservierungService {
         return alleReservierungen.save(r);
     }
 
+    public void deleteReservierung(Reservierung r){
+        alleReservierungen.delete(r);
+    }
+
     public List<Reservierung> findReservierungByArtikel(Artikel a){
         return alleReservierungen.findByArtikel(a);
     }
 
-    public List<Reservierung> findReservierungByLeihenderAndSichtbar(Benutzer b, Boolean tf){
-        return alleReservierungen.findByLeihenderAndSichtbar(b, tf);
+    public List<Reservierung> findReservierungByLeihender(Benutzer b){
+        return alleReservierungen.findByLeihender(b);
     }
 
     public List<Reservierung> findReservierungByArtikelAndLeihender(Artikel a, Benutzer b){
@@ -95,8 +99,10 @@ public class ReservierungService {
         if (endeAntrag.isBefore(startAntrag)) {
             return false;
         }
+
+        if(!a.isVerfuegbar() && startAntrag.isEqual(LocalDate.now())) return false;
         Reservierung testDate = Reservierung.builder().start(startAntrag).ende(endeAntrag).build();
-        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findByArtikelAndAkzeptiert(a, true);
+        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findByArtikelAndAkzeptiertAndZurueckerhalten(a, true, false);
         List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findByArtikelAndBearbeitet(a, false);
         List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
         artikelReservierungen.addAll(akzeptierteReservierungen);
@@ -123,16 +129,16 @@ public class ReservierungService {
         return abgelaufeneReservierungen;
     }
 
-    public List<Reservierung> findCurrentReservierungByArtikelAndAkzeptiert(Artikel a){
-        List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelAndAkzeptiert(a, true);
-        List<Reservierung> vergangeneReservierungen = new ArrayList<Reservierung>();
+    public List<Reservierung> findCurrentReservierungByArtikelAndAkzeptiertAndNichtZurueckerhalten(Artikel a){
+        List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelAndAkzeptiertAndZurueckerhalten(a, true, false);
+       /* List<Reservierung> vergangeneReservierungen = new ArrayList<Reservierung>();
         LocalDate currentDay = LocalDate.now();
         for (Reservierung res : artikelReservierungen) {
             if (res.getEnde().isBefore(currentDay)) {
                 vergangeneReservierungen.add(res);
             }
         }
-        artikelReservierungen.removeAll(vergangeneReservierungen);
+        artikelReservierungen.removeAll(vergangeneReservierungen);*/
         return artikelReservierungen;
     }
 
