@@ -250,10 +250,30 @@ public class ArtikelController {
         Verkauf aktuellerVerkauf = alleVerkaeufe.findVerkaufById(id);
         model.addAttribute("verkauf", aktuellerVerkauf);
         boolean accepted = Boolean.parseBoolean(akzeptiert);
-        if(!accepted) aktuellerVerkauf.getArtikel().setVerfuegbar(true);
-        aktuellerVerkauf.setBearbeitet(true);
-        aktuellerVerkauf.setAkzeptiert(accepted);
-        alleVerkaeufe.addVerkauf(aktuellerVerkauf);
+        if(!accepted) {
+            aktuellerVerkauf.getArtikel().setVerfuegbar(true);
+            ProPay.releaseVerkaufsPreis(aktuellerVerkauf);
+
+        }else {
+            ProPay.punishVerkaufsPreis(aktuellerVerkauf);
+            Transaktion transaktion = new Transaktion();
+            transaktion.setDatum(LocalDate.now());
+            transaktion.setBetrag(-aktuellerVerkauf.getArtikel().getVerkaufsPreis());
+            transaktion.setKontoinhaber(aktuellerVerkauf.getKaeufer());
+            transaktion.setVerwendungszweck("Teils Kauf: " + aktuellerVerkauf.getArtikel().getTitel());
+            alleTransaktionen.addTransaktion(transaktion);
+
+            Transaktion transaktionEigentuemer = new Transaktion();
+            transaktionEigentuemer.setDatum(LocalDate.now());
+            transaktionEigentuemer.setBetrag(aktuellerVerkauf.getArtikel().getVerkaufsPreis());
+            transaktionEigentuemer.setKontoinhaber(aktuellerVerkauf.getArtikel().getEigentuemer());
+            transaktionEigentuemer.setVerwendungszweck("Teils Verkauf: " + aktuellerVerkauf.getArtikel().getTitel());
+            alleTransaktionen.addTransaktion(transaktionEigentuemer);
+        }
+            aktuellerVerkauf.setBearbeitet(true);
+            aktuellerVerkauf.setAkzeptiert(accepted);
+            alleVerkaeufe.addVerkauf(aktuellerVerkauf);
+
         return "redirect:/profil_ansicht/";
     }
 
@@ -271,14 +291,14 @@ public class ArtikelController {
         transaktion.setDatum(LocalDate.now());
         transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());
         transaktion.setKontoinhaber(aktuelleReservierung.getLeihender());
-        transaktion.setVerwendungszweck("Teils Ausleihe:" + aktuelleReservierung.getArtikel().getTitel());
+        transaktion.setVerwendungszweck("Teils Ausleihe: " + aktuelleReservierung.getArtikel().getTitel());
         alleTransaktionen.addTransaktion(transaktion);
 
         Transaktion transaktionEigentuemer = new Transaktion();
         transaktionEigentuemer.setDatum(LocalDate.now());
         transaktionEigentuemer.setBetrag(aktuelleReservierung.calculateReservierungsCost());
         transaktionEigentuemer.setKontoinhaber(aktuelleReservierung.getArtikel().getEigentuemer());
-        transaktionEigentuemer.setVerwendungszweck("Teils Leihe:" + aktuelleReservierung.getArtikel().getTitel());
+        transaktionEigentuemer.setVerwendungszweck("Teils Leihe: " + aktuelleReservierung.getArtikel().getTitel());
         alleTransaktionen.addTransaktion(transaktionEigentuemer);
 
         return "redirect:/profil_ansicht/";
@@ -316,6 +336,20 @@ public class ArtikelController {
         Verkauf verkauf = new Verkauf();
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
         m.addAttribute("artikel", aktuellerArtikel);
+        ProPayUser proPayUser = ProPay.getProPayUser(username);
+        if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
+            return "redirect:/reservieren?id=" + verkauf.getArtikel().getId() + "&error=true";
+        }
+        if(!alleReservierungen.hasEnoughMoney(verkauf,(int) proPayUser.getVerfuegbaresGuthaben())) {
+            return "redirect:/reservieren?id=" + verkauf.getArtikel().getId() + "&error=true";
+        }
+
+        Reservations verkaufsRes = new Reservations();
+        verkaufsRes.setAmount(verkauf.getArtikel().getVerkaufsPreis());
+        proPayUser.addReservation(verkaufsRes);
+        verkauf.setVerkaufsId(ProPay.executeReservation(verkaufsRes,verkauf.getArtikel().getEigentuemer(), verkauf.getKaeufer()).getId());
+
+
         aktuellerArtikel.setVerfuegbar(false);
         alleVerkaufArtikel.addArtikel(aktuellerArtikel);
         verkauf.setArtikel(aktuellerArtikel);

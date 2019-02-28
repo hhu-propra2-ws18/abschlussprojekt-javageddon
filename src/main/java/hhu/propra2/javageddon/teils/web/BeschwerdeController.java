@@ -58,14 +58,14 @@ public class BeschwerdeController {
             transaktion.setDatum(LocalDate.now());
             transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());
             transaktion.setKontoinhaber(aktuelleReservierung.getLeihender());
-            transaktion.setVerwendungszweck("Teils Ausleihe:" + aktuelleReservierung.getArtikel().getTitel());
+            transaktion.setVerwendungszweck("Teils Ausleihe: " + aktuelleReservierung.getArtikel().getTitel());
             alleTransaktionen.addTransaktion(transaktion);
 
             Transaktion transaktionEigentuemer = new Transaktion();
             transaktionEigentuemer.setDatum(LocalDate.now());
             transaktionEigentuemer.setBetrag(aktuelleReservierung.calculateReservierungsCost());
             transaktionEigentuemer.setKontoinhaber(aktuelleReservierung.getArtikel().getEigentuemer());
-            transaktionEigentuemer.setVerwendungszweck("Teils Leihe:" + aktuelleReservierung.getArtikel().getTitel());
+            transaktionEigentuemer.setVerwendungszweck("Teils Leihe: " + aktuelleReservierung.getArtikel().getTitel());
             alleTransaktionen.addTransaktion(transaktionEigentuemer);
         } else if(benutzer == aktuelleReservierung.getArtikel().getEigentuemer()){
             ProPay.punishReservationMiete(aktuelleReservierung);
@@ -74,7 +74,7 @@ public class BeschwerdeController {
             transaktion.setDatum(LocalDate.now());
             transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());
             transaktion.setKontoinhaber(aktuelleReservierung.getLeihender());
-            transaktion.setVerwendungszweck("Teils Ausleihe:" + aktuelleReservierung.getArtikel().getTitel());
+            transaktion.setVerwendungszweck("Teils Ausleihe: " + aktuelleReservierung.getArtikel().getTitel());
             alleTransaktionen.addTransaktion(transaktion);
 
             transaktion.setDatum(LocalDate.now());
@@ -87,7 +87,7 @@ public class BeschwerdeController {
             transaktionEigentuemer.setDatum(LocalDate.now());
             transaktionEigentuemer.setBetrag(aktuelleReservierung.calculateReservierungsCost());
             transaktionEigentuemer.setKontoinhaber(aktuelleReservierung.getArtikel().getEigentuemer());
-            transaktionEigentuemer.setVerwendungszweck("Teils Leihe:" + aktuelleReservierung.getArtikel().getTitel());
+            transaktionEigentuemer.setVerwendungszweck("Teils Leihe: " + aktuelleReservierung.getArtikel().getTitel());
             alleTransaktionen.addTransaktion(transaktionEigentuemer);
 
             transaktionEigentuemer.setDatum(LocalDate.now());

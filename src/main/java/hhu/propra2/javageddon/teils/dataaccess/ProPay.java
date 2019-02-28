@@ -35,11 +35,27 @@ public class ProPay {
     }
 
 
+
+
     public static Reservations executeReservation(Reservations reservations, Benutzer zielKonto, Benutzer kontoinhaber){
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForObject(URL_RESERVATION + "reserve/" + kontoinhaber.getName()+ "/" +
                                         zielKonto.getName() + "?amount=" + reservations.getAmount(),
                                     "amount="+ (int)reservations.getAmount(),Reservations.class);
+    }
+
+    public static void releaseVerkaufsPreis(Verkauf verkauf){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(URL_RESERVATION + "release/" + verkauf.getKaeufer().getName()+
+                "?reservationId=" + verkauf.getVerkaufsId(), "?reservationId=" +
+                verkauf.getVerkaufsId(),ProPayUser.class);
+    }
+
+    public static void punishVerkaufsPreis(Verkauf verkauf){
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForObject(URL_RESERVATION + "punish/" + verkauf.getKaeufer().getName()+
+                "?reservationId=" + verkauf.getVerkaufsId(), "?reservationId=" +
+                verkauf.getVerkaufsId(),ProPayUser.class);
     }
 
 
