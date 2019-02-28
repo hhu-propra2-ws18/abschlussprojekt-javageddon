@@ -3,72 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>ProPay Übersicht</title>
 </head>
 <body>
 
 <div class="container" style="margin: 50px">
-
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col">
+            <div class="col-md-8" style="margin-bottom:30px">
                 <h2>Deine ProPay Übersicht</h2>
+                <p><b>Dein ProPay Name: </b><span th:text="${proPayUser.account}">Nervensäge</span></p>
+                <p><b>Aktuelles ProPay Guthaben: </b><span th:text="${proPayUser.amount + ' €'}">2342 €</span></p>
+                <p><b>Aktuell verfügbares ProPay Guthaben: </b> <span th:text="${proPayUser.getVerfuegbaresGuthaben() + ' €'}">2342 €</span></p>
             </div>
-            <div class="col">
-
-            </div>
-            <div class="col">
-                <a class="btn float-right" role="group">
+            <div class="col-md-4">
+                <div style="margin-bottom: 20px">
                     <a href="/profil_ansicht" class="btn btn-warning">Profilübersicht</a>
-                </a>
-            </div>
-        </div>
+                </div>
+                <div style="margin-bottom: 20px"><b>Lade hier dein ProPay Konto auf</b></div>
 
-        <div class="row">
-            <p></p>
-        </div>
-
-        <div class="row">
-            <div class="col">
-                <p><span style="font-weight: bold;">Dein ProPay Name: </span>
-                    <span th:text="${proPayUser.account}">Nervensäge</span></p>
-
-                <p><span style="font-weight: bold;">Aktuelles ProPay Guthaben: </span>
-                    <span th:text="${proPayUser.amount + ' €'}">2342 €</span></p>
-
-                <p><span style="font-weight: bold;">Aktuell verfügbares ProPay Guthaben: </span>
-                    <span th:text="${proPayUser.getVerfuegbaresGuthaben() + ' €'}">2342 €</span></p>
-            </div>
-            <div class="col">
-            </div>
-            <div class="col">
-                <p><span style="font-weight: bold;">Lade hier dein ProPay Konto auf</span>
-                <form class="form-inline" method="post" th:action="@{/proPay_Aufladen}" th:object="${aufladung}">
+                <form class="form-inline" style="margin-bottom: 20px" method="post" th:action="@{/proPay_Aufladen}" th:object="${aufladung}">
                     <div class="form-group">
                         <input th:field="*{betrag}" type="number" min="1" step="1" class="form-control" placeholder="Betrag in Euro">
+                        <button type="submit" class="btn btn-outline-primary">Aufladen</button>
                     </div>
-                <button type="submit" class="btn btn-outline-primary">Aufladen</button>
+
                 </form>
+
             </div>
         </div>
-
+    </div>
+    <div class="container-fluid">
         <div class="row">
-            <p></p>
-        </div>
-
-        <div class="row">
-            <div class="col">
-            </div>
-            <div class="col">
+            <div class="col-md-8">
                 <h4>Deine Transaktionen:</h4>
             </div>
-            <div class="col">
-            </div>
-        </div>
-
-        <div class="row">
             <table class="table table-hover shopping-cart-wrap">
                 <thead class="text-muted">
                 <tr>
@@ -79,7 +50,6 @@
                 </thead>
                 <tbody>
                 <tr th:each="transaktion: ${alleTransaktionen}">
-
                     <td>
                         <div class="price-wrap">
                             <var class="price" th:text="${transaktion.datum}">01.02.03</var>
@@ -95,16 +65,10 @@
                             <var class="price" th:text="${transaktion.verwendungszweck}">Test Test, dies ist ein Test!</var>
                         </div>
                     </td>
-
-
                 </tbody>
             </table>
         </div>
-
-
-
-        </div>
+    </div>
 </div>
-
 </body>
 </html>
