@@ -3,9 +3,11 @@ package hhu.propra2.javageddon.teils.web;
 import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.Benutzer;
-import hhu.propra2.javageddon.teils.model.ProPayUser;
-import hhu.propra2.javageddon.teils.model.Transaktion;
-import hhu.propra2.javageddon.teils.services.*;
+import hhu.propra2.javageddon.teils.model.Reservierung;
+import hhu.propra2.javageddon.teils.services.ArtikelService;
+import hhu.propra2.javageddon.teils.services.BenutzerService;
+import hhu.propra2.javageddon.teils.services.ProPayService;
+import hhu.propra2.javageddon.teils.services.ReservierungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -77,6 +79,7 @@ public class BenutzerController {
             m.addAttribute("proPayUser",ProPay.getProPayUser(username));
         }
 
+        alleReservierungen.decideVerfuegbarkeit();
         m.addAttribute("benutzer", alleBenutzer.findBenutzerById(id));
         m.addAttribute("alleArtikel", alleArtikel.findArtikelByEigentuemer(alleBenutzer.findBenutzerById(id)));
         m.addAttribute("alleReservierungen", alleReservierungen.findReservierungByLeihenderAndSichtbar(alleBenutzer.findBenutzerById(id),true));
@@ -85,6 +88,4 @@ public class BenutzerController {
         m.addAttribute("alleWarnungen", alleReservierungen.fristAbgelaufeneReservierungen(alleBenutzer.findBenutzerById(id)));
         return "profil_ansicht";
     }
-
-
 }

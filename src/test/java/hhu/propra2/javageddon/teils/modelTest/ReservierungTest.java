@@ -11,9 +11,14 @@ public class ReservierungTest {
 
     LocalDate start = LocalDate.of(2018, 11, 13);
     LocalDate ende = LocalDate.of(2018, 12, 24);
+    LocalDate zukunftStart = LocalDate.of(2019, 03, 11);
+    LocalDate zukunftEnde = LocalDate.of(2019, 04, 11);
 
-    Reservierung res = Reservierung.builder().start(start).ende(ende).build();
+    Reservierung res = Reservierung.builder().start(start).ende(ende).bearbeitet(false)
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
     Reservierung res2 = Reservierung.builder().start(start).ende(start).build();
+    Reservierung res3 = Reservierung.builder().start(start).ende(zukunftEnde).bearbeitet(false)
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
 
     @Test
     public void printsReservierungDateStringCorrectly(){
@@ -72,4 +77,76 @@ public class ReservierungTest {
     public void duration42Day() {
         assertThat(res.calculateReservierungsLength()).isEqualTo(42);
     }
+
+    @Test
+    public void expectsStatusOne(){
+
+        res3.setBearbeitet(false);
+        res3.setStart(zukunftStart);
+        assertThat(res3.ermittleStatus()).isEqualTo(1);
+    }
+
+    @Test
+    public void expectsStatusTwo(){
+
+        res3.setBearbeitet(true);
+        res3.setAkzeptiert(false);
+        assertThat(res3.ermittleStatus()).isEqualTo(2);
+    }
+
+    @Test
+    public void expectsStatusThree(){
+
+        res3.setZurueckerhalten(false);
+        res3.setBearbeitet(true);
+        res3.setAkzeptiert(true);
+        res3.setStart(zukunftStart);
+        assertThat(res3.ermittleStatus()).isEqualTo(3);
+    }
+
+    @Test
+    public void expectsStatusFour(){
+
+        res3.setZurueckerhalten(false);
+        res3.setBearbeitet(true);
+        res3.setAkzeptiert(true);
+        res3.setStart(start);
+        assertThat(res3.ermittleStatus()).isEqualTo(4);
+    }
+
+    @Test
+    public void expectsStatusFive(){
+
+        res3.setZurueckerhalten(true);
+        res3.setBearbeitet(true);
+        res3.setAkzeptiert(true);
+        assertThat(res3.ermittleStatus()).isEqualTo(5);
+    }
+
+    @Test
+    public void expectsStatusSix(){
+
+        res3.setZurueckgegeben(false);
+        res3.setBearbeitet(true);
+        res3.setAkzeptiert(true);
+        res3.setEnde(ende);
+        assertThat(res3.ermittleStatus()).isEqualTo(6);
+    }
+
+    @Test
+    public void expectsStatusSeven(){
+
+        res3.setBearbeitet(false);
+        res3.setEnde(ende);
+        res3.setStart(start);
+        assertThat(res3.ermittleStatus()).isEqualTo(7);
+    }
+
+
+
+
+
+
+
+
 }

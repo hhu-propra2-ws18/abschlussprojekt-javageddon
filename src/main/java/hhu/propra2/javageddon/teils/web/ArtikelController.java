@@ -43,6 +43,7 @@ public class ArtikelController {
 
     @GetMapping("/")
     public String artikelListe(Model m){
+        alleReservierungen.decideVerfuegbarkeit();
         m.addAttribute("alleArtikel", alleArtikel.findAllAktivArtikel());
         m.addAttribute("anzahlBeschwerden", alleBeschwerden.findAllByBearbeitet(false).size());
         return "start";
@@ -59,9 +60,14 @@ public class ArtikelController {
 
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
+        alleReservierungen.decideVerfuegbarkeit();
         Artikel artikel = alleArtikel.findArtikelById(id);
-        List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
-        m.addAttribute("alleReservierungen", artikelReservierungen);
+        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiert(artikel);
+        List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findCurrentReservierungByArtikelAndBearbeitet(artikel);
+        List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
+        artikelReservierungen.addAll(akzeptierteReservierungen);
+        artikelReservierungen.addAll(reservierungenInBearbeitung);
+        m.addAttribute("alleReservierungen", alleReservierungen.orderByDate(artikelReservierungen));
         m.addAttribute("artikel", artikel);
         return "artikel_details";
     }
@@ -92,14 +98,19 @@ public class ArtikelController {
 
     @RequestMapping(value = "/reservieren", method = GET)
     public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "false", required = false) boolean error){
+        alleReservierungen.decideVerfuegbarkeit();
         Reservierung reservierung = new Reservierung();
         Artikel artikel = alleArtikel.findArtikelById(id);
         reservierung.setStart(LocalDate.now());
         reservierung.setEnde(LocalDate.now());
         m.addAttribute("artikel", artikel);
         m.addAttribute("reservierung",reservierung);
-        List<Reservierung> artikelReservierungen = alleReservierungen.findCurrentReservierungByArtikelOrderedByDate(artikel);
-        m.addAttribute("alleReservierungen", artikelReservierungen);
+        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiert(artikel);
+        List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findCurrentReservierungByArtikelAndBearbeitet(artikel);
+        List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
+        artikelReservierungen.addAll(akzeptierteReservierungen);
+        artikelReservierungen.addAll(reservierungenInBearbeitung);
+        m.addAttribute("alleReservierungen", alleReservierungen.orderByDate(artikelReservierungen));
         m.addAttribute("error", error);
         return "artikel_reservieren";
     }

@@ -96,8 +96,12 @@ public class ReservierungService {
             return false;
         }
         Reservierung testDate = Reservierung.builder().start(startAntrag).ende(endeAntrag).build();
-        List<Reservierung> artikelReservierung = alleReservierungen.findByArtikel(a);
-        for (Reservierung res : artikelReservierung) {
+        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findByArtikelAndAkzeptiert(a, true);
+        List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findByArtikelAndBearbeitet(a, false);
+        List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
+        artikelReservierungen.addAll(akzeptierteReservierungen);
+        artikelReservierungen.addAll(reservierungenInBearbeitung);
+        for (Reservierung res : artikelReservierungen) {
             if (res.containsDate(startAntrag) || res.containsDate(endeAntrag)
                     || testDate.containsDate(res.getStart())
                     || testDate.containsDate(res.getEnde())) {
@@ -112,11 +116,56 @@ public class ReservierungService {
         List<Reservierung> abgelaufeneReservierungen = new ArrayList<Reservierung>();
         LocalDate currentDay = LocalDate.now();
         for (Reservierung res : leihender_Reservierungen) {
-            if (res.getEnde().isBefore(currentDay) & !res.getZurueckgegeben() & res.getAkzeptiert()) {
+            if (res.getEnde().isBefore(currentDay) && !res.getZurueckgegeben() && res.getAkzeptiert()) {
                 abgelaufeneReservierungen.add(res);
             }
         }
         return abgelaufeneReservierungen;
+    }
+
+    public List<Reservierung> findCurrentReservierungByArtikelAndAkzeptiert(Artikel a){
+        List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelAndAkzeptiert(a, true);
+        List<Reservierung> vergangeneReservierungen = new ArrayList<Reservierung>();
+        LocalDate currentDay = LocalDate.now();
+        for (Reservierung res : artikelReservierungen) {
+            if (res.getEnde().isBefore(currentDay)) {
+                vergangeneReservierungen.add(res);
+            }
+        }
+        artikelReservierungen.removeAll(vergangeneReservierungen);
+        return artikelReservierungen;
+    }
+
+    public List<Reservierung> findCurrentReservierungByArtikelAndBearbeitet(Artikel a){
+        List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelAndBearbeitet(a, false);
+        List<Reservierung> vergangeneReservierungen = new ArrayList<Reservierung>();
+        LocalDate currentDay = LocalDate.now();
+        for (Reservierung res : artikelReservierungen) {
+            if (res.getEnde().isBefore(currentDay)) {
+                vergangeneReservierungen.add(res);
+            }
+        }
+        artikelReservierungen.removeAll(vergangeneReservierungen);
+        return artikelReservierungen;
+    }
+
+    public List<Reservierung> orderByDate(List<Reservierung> reservierung){
+        return reservierung
+                .stream()
+                .sorted((r1,r2) -> r1.getEnde().compareTo(r2.getEnde()))
+                .collect(Collectors.toList());
+    }
+
+    public void decideVerfuegbarkeit(){
+        List<Reservierung> reservierungen = alleReservierungen.findAll();
+        for (Reservierung res : reservierungen) {
+            if (res.ermittleStatus() == 4 || res.ermittleStatus() == 6 || (res.ermittleStatus() == 1 && res.getStart().isEqual(LocalDate.now()))) {
+                res.getArtikel().setVerfuegbar(false);
+            } else {
+                res.getArtikel().setVerfuegbar(true);
+            }
+            alleReservierungen.save(res);
+        }
     }
 
 }
