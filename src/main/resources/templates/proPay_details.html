@@ -37,6 +37,9 @@
 
                 <p><span style="font-weight: bold;">Aktuelles ProPay Guthaben: </span>
                     <span th:text="${proPayUser.amount + ' €'}">2342 €</span></p>
+
+                <p><span style="font-weight: bold;">Aktuell verfügbares ProPay Guthaben: </span>
+                    <span th:text="${proPayUser.getVerfuegbaresGuthaben() + ' €'}">2342 €</span></p>
             </div>
             <div class="col">
             </div>

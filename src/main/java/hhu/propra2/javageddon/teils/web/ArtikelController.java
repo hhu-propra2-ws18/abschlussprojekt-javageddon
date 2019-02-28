@@ -192,6 +192,10 @@ public class ArtikelController {
         boolean accepted = Boolean.parseBoolean(akzeptiert);
         aktuelleReservierung.setBearbeitet(true);
         aktuelleReservierung.setAkzeptiert(accepted);
+        if (!accepted) {
+            ProPay.releaseReservationKaution(reservierung);
+            ProPay.releaseReservationMiete(reservierungs);
+        }
         alleReservierungen.addReservierung(aktuelleReservierung);
         return "redirect:/profil_ansicht/";
     }
