@@ -33,7 +33,8 @@
                class="btn btn-outline-danger btn-md">ProPay
                 <span class="badge badge-danger">Nicht Erreichbar</span>
             </a>
-
+        </p>
+    </div>
 
     <div th:each="warnung: ${alleWarnungen}">
         <p class="alert alert-danger" role="alert" style="font-size:22px">Die Leihfrist für den Artikel <span style="font-weight:bold" th:text="${warnung.artikel.titel}">Akkuschrauber</span> ist abgelaufen!</p>
