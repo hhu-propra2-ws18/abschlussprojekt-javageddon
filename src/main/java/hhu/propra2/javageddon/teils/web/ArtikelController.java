@@ -232,6 +232,7 @@ public class ArtikelController {
         Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
         model.addAttribute("reservierung", aktuelleReservierung);
         aktuelleReservierung.setZurueckerhalten(true);
+        aktuelleReservierung.getArtikel().setVerfuegbar(true);
         alleReservierungen.addReservierung(aktuelleReservierung);
         return "redirect:/profil_ansicht/";
     }
@@ -239,9 +240,7 @@ public class ArtikelController {
     @GetMapping("/reservierung_sichtbar/{id}")
     public String updateSichtbarkeit(Model model, @ModelAttribute Reservierung reservierung, @PathVariable long id){
         Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
-        model.addAttribute("reservierung", aktuelleReservierung);
-        aktuelleReservierung.setSichtbar(false);
-        alleReservierungen.addReservierung(aktuelleReservierung);
+        alleReservierungen.deleteReservierung(aktuelleReservierung);
         return "redirect:/profil_ansicht/";
     }
 

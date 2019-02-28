@@ -200,7 +200,9 @@
                     <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
                 <td>
-                    <a th:if="${reservierung.zurueckerhalten}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
+                    <a th:if="${reservierung.ermittleStatus() == 5}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
+                    <a th:if="${reservierung.ermittleStatus() == 2}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
+                    <a th:if="${reservierung.ermittleStatus() == 7}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
                     <a th:if="${reservierung.zurueckgegeben == false and reservierung.akzeptiert == true}" class="btn btn-secondary" th:href="@{/reservierung_zurueckgeben/{id} (id=${reservierung.id})}">Zurückgeben</a>
                 </td>
             </tr>
