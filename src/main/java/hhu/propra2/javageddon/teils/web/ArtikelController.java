@@ -167,7 +167,7 @@ public class ArtikelController {
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
         if(alleReservierungen.isAllowedReservierungsDate(reservierung.getArtikel(), reservierung.getStart(), reservierung.getEnde())){
             alleReservierungen.addReservierung(reservierung);
-            return "redirect:/";
+            return "redirect:/profil_ansicht";
         }else {
             return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=true";
         }

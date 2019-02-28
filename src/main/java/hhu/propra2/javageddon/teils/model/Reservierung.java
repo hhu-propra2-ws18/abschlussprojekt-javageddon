@@ -40,10 +40,13 @@ public class Reservierung {
     @Builder.Default
     private Boolean bearbeitet = false;
 
+    @Builder.Default
     private Boolean akzeptiert = false;
 
+    @Builder.Default
     private Boolean zurueckgegeben = false;
 
+    @Builder.Default
     private Boolean zurueckerhalten = false;
 
     public String printReservierungsDauer(){
@@ -77,7 +80,7 @@ public class Reservierung {
 
     public int ermittleStatus(){
         if (!bearbeitet && !start.isBefore(LocalDate.now())) return 1;           // Anfrage in Bearbeitung
-        if (bearbeitet && !akzeptiert) return 2;                              // Anfrage abgelehnt
+        if (bearbeitet && !akzeptiert) return 2;                              // Anfrage storniert
         if (akzeptiert && !zurueckerhalten && start.isAfter(LocalDate.now())) return 3;   // Anfrage akzeptiert
         if (containsDate(LocalDate.now()) && !zurueckerhalten && akzeptiert) return 4;   // Ausleihe laeuft
         if (akzeptiert && zurueckerhalten) return 5;                          // Verleih abgeschlossen

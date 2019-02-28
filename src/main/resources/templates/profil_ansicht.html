@@ -189,7 +189,7 @@
                 </td>
                 <td>
                     <p class="alert alert-warning" role="alert" th:if="${reservierung.ermittleStatus() == 1}">Anfrage in Bearbeitung</p>
-                    <p class="alert alert-danger" role="alert" th:if="${reservierung.ermittleStatus() == 2}">Anfrage abgelehnt</p>
+                    <p class="alert alert-danger" role="alert" th:if="${reservierung.ermittleStatus() == 2}">Anfrage storniert</p>
                     <p class="alert alert-success" role="alert" th:if="${reservierung.ermittleStatus() == 3}">Anfrage akzeptiert</p>
                     <p class="alert alert-success" role="alert" th:if="${reservierung.ermittleStatus() == 4}">Ausleihe läuft</p>
                     <p class="alert alert-secondary" role="alert" th:if="${reservierung.ermittleStatus() == 5}">Verleih abgeschlossen</p>
@@ -229,7 +229,7 @@
                 </td>
                 <td>
                     <p class="alert alert-warning" role="alert" th:if="${verkauf.ermittleStatus() == 1}">Anfrage in Bearbeitung</p>
-                    <p class="alert alert-danger" role="alert" th:if="${verkauf.ermittleStatus() == 2}">Anfrage abgelehnt</p>
+                    <p class="alert alert-danger" role="alert" th:if="${verkauf.ermittleStatus() == 2}">Anfrage storniert</p>
                     <p class="alert alert-success" role="alert" th:if="${verkauf.ermittleStatus() == 3}">Anfrage akzeptiert</p>
                 </td>
                 <td class="btn">
