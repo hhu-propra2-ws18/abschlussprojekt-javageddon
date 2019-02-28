@@ -97,7 +97,7 @@
                     <a class="btn btn-outline-success" th:unless="${artikel.aktiv}" th:href="@{/artikel_update/{id}/true (id=${artikel.id})}">Aktivieren</a>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${artikel.id}}"
+                    <a class="btn btn-outline-secondary" th:href="@{'/details?id=' + ${artikel.id}}"
                        href="/details?id=id" >Details</a>
                 </td>
             </tr>
@@ -152,14 +152,12 @@
                 </td>
                 <td></td>
                 <td class="text-right">
-                    <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkaufartikel.id}}">Details</a>
+                    <a class="btn btn-outline-secondary" th:href="@{'/verkauf/details?id=' + ${verkaufartikel.id}}">Details</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-
-
 
     <div class="container-fluid">
         <section class="row">
@@ -221,7 +219,7 @@
                     <a th:if="${reservierung.zurueckgegeben == false and reservierung.akzeptiert == true}" class="btn btn-secondary" th:href="@{/reservierung_zurueckgeben/{id} (id=${reservierung.id})}">Zurückgeben</a>
                 </td>
                 <td>
-                   <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
+                   <a class="btn btn-outline-secondary" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
             </tr>
             <tr th:each="verkauf: ${alleVerkaeufe}">
@@ -253,7 +251,7 @@
                     <a th:if="${verkauf.ermittleStatus() == 2}" class="btn btn-secondary" th:href="@{/verkauf_sichtbar/{id} (id=${verkauf.id})}">Ausblenden</a>
                 </td>
                 <td>
-                    <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
+                    <a class="btn btn-outline-secondary" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
                 </td>
             </tr>
             </tbody>
@@ -309,7 +307,7 @@
                     <p th:text="${reservierung.leihender.name}"></p>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
+                    <a class="btn btn-outline-secondary" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
             </tr>
 
@@ -339,7 +337,7 @@
                     <p th:text="${verkauf.kaeufer.name}"></p>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
+                    <a class="btn btn-outline-secondary" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
                 </td>
             </tr>
             </tbody>
@@ -393,7 +391,7 @@
                     <p th:text="${reservierung.leihender.name}"></p>
                 </td>
                 <td class="text-right">
-                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${artikel.id}}" href="/details?id=id" >Details</a>
+                    <a class="btn btn-outline-secondary" th:href="@{'/details?id=' + ${artikel.id}}" href="/details?id=id" >Details</a>
                 </td>
             </tbody>
         </table>
