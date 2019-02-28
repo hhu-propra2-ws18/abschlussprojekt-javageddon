@@ -8,6 +8,7 @@ import hhu.propra2.javageddon.teils.model.*;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
+import hhu.propra2.javageddon.teils.services.TransaktionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -40,6 +41,9 @@ public class ArtikelController {
 
     @Autowired
     private BeschwerdeRepository alleBeschwerden;
+
+    @Autowired
+    private TransaktionService alleTransaktionen;
 
     @GetMapping("/")
     public String artikelListe(Model m){
@@ -206,6 +210,23 @@ public class ArtikelController {
         model.addAttribute("reservierung", aktuelleReservierung);
         aktuelleReservierung.setZurueckerhalten(true);
         alleReservierungen.addReservierung(aktuelleReservierung);
+
+        ProPay.releaseReservationKaution(aktuelleReservierung);
+        ProPay.punishReservationMiete(aktuelleReservierung);
+        Transaktion transaktion = new Transaktion();
+        transaktion.setDatum(LocalDate.now());
+        transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());
+        transaktion.setKontoinhaber(aktuelleReservierung.getLeihender());
+        transaktion.setVerwendungszweck("Teils Ausleihe:" + aktuelleReservierung.getArtikel().getTitel());
+        alleTransaktionen.addTransaktion(transaktion);
+
+        Transaktion transaktionEigentuemer = new Transaktion();
+        transaktionEigentuemer.setDatum(LocalDate.now());
+        transaktionEigentuemer.setBetrag(aktuelleReservierung.calculateReservierungsCost());
+        transaktionEigentuemer.setKontoinhaber(aktuelleReservierung.getArtikel().getEigentuemer());
+        transaktionEigentuemer.setVerwendungszweck("Teils Leihe:" + aktuelleReservierung.getArtikel().getTitel());
+
+
         return "redirect:/profil_ansicht/";
     }
 

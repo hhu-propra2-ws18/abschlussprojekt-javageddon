@@ -81,6 +81,10 @@ public class Reservierung {
         return (int) DAYS.between(start, ende)+1;
     }
 
+    public int calculateReservierungsCost() {
+        return calculateReservierungsLength()*artikel.getKostenTag();
+    }
+
     public int ermittleStatus(){
         if (!bearbeitet && !start.isBefore(LocalDate.now())) return 1;           // Anfrage in Bearbeitung
         if (bearbeitet && !akzeptiert) return 2;                              // Anfrage abgelehnt
