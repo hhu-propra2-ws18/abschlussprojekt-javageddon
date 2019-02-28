@@ -30,13 +30,13 @@
                         <p><b>Kaution: </b><span th:text="${artikel.kaution + '€'}">100 €</span></p>
                         <p><b>Eigentümer: </b><span th:text="${(artikel.eigentuemer != null) ? artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
                         <p><b>Standort: </b><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
-                        <p><b>Reservierungen: </b>
+                        <p><b>Reservierungen: </b></p>
                         <span th:if="${alleReservierungen.isEmpty()}">Keine Reservierung vorhanden</span>
                         <span th:unless="${alleReservierungen.isEmpty()}">
                             <ul th:each="reservierung: ${alleReservierungen}">
                                 <li th:text="${reservierung.printReservierungsDauer()}"></li>
                             </ul>
-                        </span></p>
+                        </span>
 
                         <div class="action">
                             <a th:href="@{'/reservieren?id=' + ${artikel.id}}" class="btn btn-primary btn-md" >Anfrage abschicken</a>
