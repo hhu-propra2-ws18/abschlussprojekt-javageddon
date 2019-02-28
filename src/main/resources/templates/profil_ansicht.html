@@ -50,7 +50,7 @@
         </section>
     </div>
 
-    <div class="card">
+    <div class="card" style="margin-bottom:50px">
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
@@ -113,13 +113,15 @@
         </section>
     </div>
 
-    <div class="card">
+    <div class="card" style="margin-bottom:50px">
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
                 <th scope="col" width="400">Artikel</th>
                 <th scope="col" width="100">Preis</th>
+                <th scope="col" width="100"></th>
                 <th scope="col" width="200">Status</th>
+                <th scope="col" width="200"></th>
                 <th scope="col" width="100"></th>
             </tr>
             </thead>
@@ -143,10 +145,12 @@
                         <var class="price" th:text="|${verkaufartikel.verkaufsPreis} €|">100€</var>
                     </div>
                 </td>
+                <td></td>
                 <td>
                     <p class="alert alert-success" role="alert" th:if="${verkaufartikel.verfuegbar}">Verfügbar</p>
                     <p class="alert alert-danger" role="alert" th:unless="${verkaufartikel.verfuegbar}">Nicht Verfügbar</p>
                 </td>
+                <td></td>
                 <td class="text-right">
                     <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkaufartikel.id}}">Details</a>
                 </td>
@@ -157,7 +161,7 @@
 
 
 
-    <div class="container-fluid" style="margin-top:50px">
+    <div class="container-fluid">
         <section class="row">
             <div class="col-md-8">
                 <h3>Von dir angefragte Artikel</h3>
@@ -165,15 +169,16 @@
         </section>
     </div>
 
-    <div class="card">
+    <div class="card" style="margin-bottom:50px">
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
                 <th scope="col" width="400">Artikel</th>
-                <th scope="col" width="150">Start/Ende</th>
+                <th scope="col" width="100">Start</br>Ende</th>
                 <th scope="col" width="200">Status</th>
-                <th scope="col" width="300"></th>
-                <th scope="col" width="108"></th>
+                <th scope="col" width="150"></th>
+                <th scope="col" width="150"></th>
+                <th scope="col" width="100"></th>
             </tr>
             </thead>
             <tbody>
@@ -190,7 +195,6 @@
                         </figcaption>
                     </figure>
                 </td>
-
                 <td>
                     <div class="date-wrap">
                         <var class="date" th:text="|${reservierung.printFormattedStart()}|">1.1.2019</var></br>
@@ -205,12 +209,10 @@
                     <p class="alert alert-secondary" role="alert" th:if="${reservierung.ermittleStatus() == 5}">Verleih abgeschlossen</p>
                     <p class="alert alert-danger" role="alert" th:if="${reservierung.ermittleStatus() == 6}">Ausleihfrist abgelaufen</p>
                     <p class="alert alert-danger" role="alert" th:if="${reservierung.ermittleStatus() == 7}">Bearbeitungsfrist abgelaufen</p>
-
                 </td>
-                <td class="btn">
+                <td>
                     <a class="btn btn-danger" th:if="${reservierung.ermittleStatus() != 5 and reservierung.akzeptiert == true}" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
-                    <a class="btn btn-secondary" th:unless="${reservierung.bearbeitet}" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Reservierung zurückziehen</a>
-                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
+                    <a class="btn btn-secondary" th:unless="${reservierung.bearbeitet}" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Stornieren</a>
                 </td>
                 <td>
                     <a th:if="${reservierung.ermittleStatus() == 5}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
@@ -218,8 +220,10 @@
                     <a th:if="${reservierung.ermittleStatus() == 7}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
                     <a th:if="${reservierung.zurueckgegeben == false and reservierung.akzeptiert == true}" class="btn btn-secondary" th:href="@{/reservierung_zurueckgeben/{id} (id=${reservierung.id})}">Zurückgeben</a>
                 </td>
+                <td>
+                   <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
+                </td>
             </tr>
-
             <tr th:each="verkauf: ${alleVerkaeufe}">
                 <td>
                     <figure class="media">
@@ -233,7 +237,6 @@
                         </figcaption>
                     </figure>
                 </td>
-
                 <td>
                    <p style="font-weight:bold">Verkauf</p>
                 </td>
@@ -242,36 +245,36 @@
                     <p class="alert alert-danger" role="alert" th:if="${verkauf.ermittleStatus() == 2}">Anfrage storniert</p>
                     <p class="alert alert-success" role="alert" th:if="${verkauf.ermittleStatus() == 3}">Anfrage akzeptiert</p>
                 </td>
-                <td class="btn">
+                <td>
                     <a class="btn btn-danger" th:if="${verkauf.akzeptiert}" th:href="@{'/loeschen?id=' + ${verkauf.id}}">Erhalten</a>
-                    <a class="btn btn-secondary" th:unless="${verkauf.bearbeitet}" th:href="@{/verkauf_update/{id}/false (id=${verkauf.id})}">Kauf zurückziehen</a>
-                    <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
+                    <a class="btn btn-secondary" th:unless="${verkauf.bearbeitet}" th:href="@{/verkauf_update/{id}/false (id=${verkauf.id})}">Stornieren</a>
                 </td>
                 <td>
                     <a th:if="${verkauf.ermittleStatus() == 2}" class="btn btn-secondary" th:href="@{/verkauf_sichtbar/{id} (id=${verkauf.id})}">Ausblenden</a>
+                </td>
+                <td>
+                    <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    
-    
-    <div class="container-fluid" style="margin-top:50px">
+
+    <div class="container-fluid" >
         <section class="row">
             <div class="col-md-8">
                 <h3>Anfragen an dich</h3>
             </div>
         </section>
     </div>
-
-    <div class="card">
+    <div class="card" style="margin-bottom:50px">
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
                 <th scope="col" width="400">Artikel</th>
-                <th scope="col" width="150">Start/Ende</th>
-                <th scope="col" width="200">Bearbeitet</th>
-                <th scope="col" width="100">Angefragt von</th>
+                <th scope="col" width="100">Start</br>Ende</th>
+                <th scope="col" width="300">Bearbeiten</th>
+                <th scope="col" width="200">Angefragt von</th>
                 <th scope="col" width="100"></th>
             </tr>
             </thead>
@@ -284,13 +287,11 @@
                                  class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"
                             />
                         </div>
-
                         <figcaption class="media-body">
                             <h4 th:text="${reservierung.artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
                         </figcaption>
                     </figure>
                 </td>
-
                 <td>
                     <div class="date-wrap">
                         <var class="date" th:text="|${reservierung.printFormattedStart()}|">1.1.2019</var></br>
@@ -298,13 +299,12 @@
                     </div>
                 </td>
                 <td>
-                    <a th:if="${reservierung.ermittleStatus() == 7}" class="btn btn-secondary" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
                     <div class="btn-group" role="group" aria-label="..." th:unless="${reservierung.ermittleStatus() == 7}">
                         <a class="btn btn-success" th:href="@{/reservierung_update/{id}/true (id=${reservierung.id})}">Akzeptieren</a>
                         <a class="btn btn-danger" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Ablehnen</a>
                     </div>
+                    <a class="btn btn-secondary" th:if="${reservierung.ermittleStatus() == 7}" th:href="@{/reservierung_sichtbar/{id} (id=${reservierung.id})}">Ausblenden</a>
                 </td>
-
                 <td>
                     <p th:text="${reservierung.leihender.name}"></p>
                 </td>
@@ -321,23 +321,20 @@
                                  class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"
                             />
                         </div>
-
                         <figcaption class="media-body">
                             <h4 th:text="${verkauf.artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
                         </figcaption>
                     </figure>
                 </td>
-
                 <td>
                     <p style="font-weight:bold">Verkauf</p>
                 </td>
                 <td>
-                    <div class="btn-group" role="group" aria-label="...">
+                    <div class="btn-group">
                         <a class="btn btn-success" th:href="@{/verkauf_update/{id}/true (id=${verkauf.id})}">Akzeptieren</a>
                         <a class="btn btn-danger" th:href="@{/verkauf_update/{id}/false (id=${verkauf.id})}">Ablehnen</a>
                     </div>
                 </td>
-
                 <td>
                     <p th:text="${verkauf.kaeufer.name}"></p>
                 </td>
@@ -349,7 +346,7 @@
         </table>
     </div>
 
-    <div class="container-fluid" style="margin-top:50px">
+    <div class="container-fluid">
         <section class="row">
             <div class="col-md-8">
                 <h3>Aktuell verliehene Artikel</h3>
@@ -357,56 +354,50 @@
         </section>
     </div>
 
-    <div class="card">
+    <div class="card" style="margin-bottom:50px">
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
                 <th scope="col" width="400">Artikel</th>
-                <th scope="col" width="160">Start/Ende</th>
-                <th scope="col" width="100">Ausgeliehen von</th>
-                <th scope="col" width="200"></th>
-                <th scope="col" width="200"></th>
+                <th scope="col" width="100">Start</br>Ende</th>
+                <th scope="col" width="300">Bearbeiten</th>
+                <th scope="col" width="200">Ausgeliehen von</th>
+                <th scope="col" width="100"></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="reservierung: ${aktuelleAusleihen}">
                 <td>
                     <figure class="media">
-
                         <div class="img-wrap">
                             <img th:src="${(reservierung.artikel.fotos.isEmpty() == false ) ? '../fotos/' + reservierung.artikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
                                  class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"
                             />
                         </div>
-
                         <figcaption class="media-body">
                             <h4 th:text="${reservierung.artikel.titel}" class="title text-truncate">Akkuschrauber</h4>
                         </figcaption>
                     </figure>
                 </td>
-
                 <td>
                     <div class="date-wrap">
                         <var class="date" th:text="|${reservierung.printFormattedStart()}|">1.1.2019</var></br>
                         <var class="date" th:text="|${reservierung.printFormattedEnde()}|">31.12.2019</var>
                     </div>
                 </td>
-
+                <td>
+                    <a th:if="${reservierung.zurueckgegeben}" class="btn btn-success" th:href="@{/reservierung_update/{id} (id=${reservierung.id})}">Zurückerhalten</a>
+                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                </td>
                 <td>
                     <p th:text="${reservierung.leihender.name}"></p>
                 </td>
-
                 <td class="text-right">
-                    <a class="btn btn-danger" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
-                </td>
-
-                <td class="text-right" th:if="${reservierung.zurueckgegeben}">
-                    <a class="btn btn-success" th:href="@{/reservierung_update/{id} (id=${reservierung.id})}">Zurückerhalten</a>
+                    <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${artikel.id}}" href="/details?id=id" >Details</a>
                 </td>
             </tbody>
         </table>
     </div>
 </div>
-
 </body>
 </html>

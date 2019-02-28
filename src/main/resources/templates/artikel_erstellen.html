@@ -35,7 +35,7 @@
 
                             <div class="form-group">
                                 <label for="beschreibung">Beschreibung</label>
-                                <input class="form-control" placeholder="Artikelbeschreibung" type="text" th:field="${artikel.beschreibung}"/>
+                                <textarea class="form-control" placeholder="Artikelbeschreibung" type="text" rows="3" th:field="${artikel.beschreibung}"></textarea>
                                 <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('artikel.beschreibung')}" th:errors="*{artikel.beschreibung}"></p>
                             </div> <!-- form-group// -->
 
