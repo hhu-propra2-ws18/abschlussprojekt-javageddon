@@ -338,6 +338,7 @@ public class ArtikelController {
         verkauf.setArtikel(aktuellerArtikel);
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
         m.addAttribute("artikel", aktuellerArtikel);
+        m.addAttribute("error", error);
         ProPayUser proPayUser = ProPay.getProPayUser(username);
         if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
             return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=1";
@@ -351,7 +352,6 @@ public class ArtikelController {
         proPayUser.addReservation(verkaufsRes);
         verkauf.setVerkaufsId(ProPay.executeReservation(verkaufsRes,verkauf.getArtikel().getEigentuemer(), verkauf.getKaeufer()).getId());
         aktuellerArtikel.setVerfuegbar(false);
-        m.addAttribute("error", error);
         alleVerkaeufe.addVerkauf(verkauf);
         return "redirect:/profil_ansicht/";
     }
