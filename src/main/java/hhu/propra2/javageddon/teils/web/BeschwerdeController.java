@@ -47,8 +47,10 @@ public class BeschwerdeController {
         Beschwerde beschwerde = alleBeschwerden.findBeschwerdeById(id);
         beschwerde.setHatRecht(benutzer);
         beschwerde.setBearbeitet(true);
-        alleBeschwerden.addBeschwerde(beschwerde);
         Reservierung aktuelleReservierung = beschwerde.getReservierung();
+        aktuelleReservierung.setZurueckerhalten(true);
+        aktuelleReservierung.setZurueckgegeben(true);
+        alleBeschwerden.addBeschwerde(beschwerde);
         if(benutzer == aktuelleReservierung.getLeihender()){
             ProPay.releaseReservationKaution(aktuelleReservierung);
             ProPay.punishReservationMiete(aktuelleReservierung);
@@ -90,7 +92,7 @@ public class BeschwerdeController {
 
             transaktionEigentuemer.setDatum(LocalDate.now());
             transaktionEigentuemer.setBetrag(aktuelleReservierung.getArtikel().getKaution());
-            transaktionEigentuemer.setKontoinhaber(aktuelleReservierung.getLeihender());
+            transaktionEigentuemer.setKontoinhaber(aktuelleReservierung.getArtikel().getEigentuemer());
             transaktionEigentuemer.setVerwendungszweck("Teils Clearing hat sich für Sie entschieden (" + aktuelleReservierung.getArtikel().getTitel() + ")");
             alleTransaktionen.addTransaktion(transaktionEigentuemer);
         }
