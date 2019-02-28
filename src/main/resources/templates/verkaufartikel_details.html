@@ -30,15 +30,22 @@
                         <p><b>Eigentümer: </b><span th:text="${(artikel.eigentuemer != null) ? artikel.eigentuemer.name : 'NA'}">Jon Doe</span></p>
                         <p><b>Standort: </b><span th:text="${artikel.standort.adressAusgabe()}">Düsseldorf Uni</span></p>
 
+                        <div th:if="${error == 1}" class="alert alert-danger">
+                            <strong>Fehler!</strong> Sie können Ihren eigenen Artikel nicht reservieren!
+                        </div>
+                        <div th:if="${error == 2}" class="alert alert-danger">
+                            <strong>Fehler!</strong> Nicht genug verfügbares Propay Guthaben!
+                        </div>
+
                         <div class="action">
                             <a th:if="${artikel.verfuegbar}" th:href="@{'/kaufen?id=' + ${artikel.id}}" class="btn btn-primary btn-md" >Anfrage abschicken</a>
                             <a href="/" class="btn btn-outside-primary">Zurück zur Übersicht</a>
                         </div>
                 </div>
-                        <div class="details col-md-2">
-                            <div class="alert alert-success" role="alert" th:if="${artikel.verfuegbar}">Verfügbar</div>
-                            <div class="alert alert-danger" role="alert" th:unless="${artikel.verfuegbar}">Nicht Verfügbar</div>
-                        </div>
+                <div class="details col-md-2">
+                       <div class="alert alert-success" role="alert" th:if="${artikel.verfuegbar}">Verfügbar</div>
+                       <div class="alert alert-danger" role="alert" th:unless="${artikel.verfuegbar}">Nicht Verfügbar</div>
+                </div>
             </div>
         </div>
 </div>

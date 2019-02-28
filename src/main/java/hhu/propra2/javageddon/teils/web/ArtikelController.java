@@ -334,7 +334,6 @@ public class ArtikelController {
         String username = ((UserDetails)currentUser).getUsername();
         Long benutzerid = alleBenutzer.getIdByName(username);
         Verkauf verkauf = new Verkauf();
-        aktuellerArtikel.setVerfuegbar(false);
         alleVerkaufArtikel.addArtikel(aktuellerArtikel);
         verkauf.setArtikel(aktuellerArtikel);
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
@@ -351,7 +350,7 @@ public class ArtikelController {
         verkaufsRes.setAmount(verkauf.getArtikel().getVerkaufsPreis());
         proPayUser.addReservation(verkaufsRes);
         verkauf.setVerkaufsId(ProPay.executeReservation(verkaufsRes,verkauf.getArtikel().getEigentuemer(), verkauf.getKaeufer()).getId());
-
+        aktuellerArtikel.setVerfuegbar(false);
 
         alleVerkaeufe.addVerkauf(verkauf);
         return "redirect:/profil_ansicht/";
