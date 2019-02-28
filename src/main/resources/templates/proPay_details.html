@@ -47,7 +47,7 @@
                 <p><span style="font-weight: bold;">Lade hier dein ProPay Konto auf</span>
                 <form class="form-inline" method="post" th:action="@{/proPay_Aufladen}" th:object="${aufladung}">
                     <div class="form-group">
-                        <input th:field="*{betrag}" type="text" class="form-control" placeholder="Betrag in Euro">
+                        <input th:field="*{betrag}" type="number" min="1" step="1" class="form-control" placeholder="Betrag in Euro">
                     </div>
                 <button type="submit" class="btn btn-outline-primary">Aufladen</button>
                 </form>
