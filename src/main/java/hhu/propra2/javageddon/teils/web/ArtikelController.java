@@ -328,7 +328,7 @@ public class ArtikelController {
     }
 
     @RequestMapping(value = "/kaufen", method = GET)
-    public String artikelKaufen(Model m, @RequestParam("id") long id) {
+    public String artikelKaufen(Model m, @RequestParam("id") long id,  @RequestParam(value = "error", defaultValue = "0", required = false) int error)  {
         VerkaufArtikel aktuellerArtikel = alleVerkaufArtikel.findArtikelById(id);
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
@@ -341,10 +341,10 @@ public class ArtikelController {
         m.addAttribute("artikel", aktuellerArtikel);
         ProPayUser proPayUser = ProPay.getProPayUser(username);
         if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
-            return "redirect:/reservieren?id=" + verkauf.getArtikel().getId() + "&error=true";
+            return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=1";
         }
         if(!alleVerkaeufe.hasEnoughMoney(verkauf,(int) proPayUser.getVerfuegbaresGuthaben())) {
-            return "redirect:/reservieren?id=" + verkauf.getArtikel().getId() + "&error=true";
+            return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=2";
         }
 
         Reservations verkaufsRes = new Reservations();
