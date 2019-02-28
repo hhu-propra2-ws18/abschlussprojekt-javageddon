@@ -351,7 +351,7 @@ public class ArtikelController {
         proPayUser.addReservation(verkaufsRes);
         verkauf.setVerkaufsId(ProPay.executeReservation(verkaufsRes,verkauf.getArtikel().getEigentuemer(), verkauf.getKaeufer()).getId());
         aktuellerArtikel.setVerfuegbar(false);
-
+        m.addAttribute("error", error);
         alleVerkaeufe.addVerkauf(verkauf);
         return "redirect:/profil_ansicht/";
     }
