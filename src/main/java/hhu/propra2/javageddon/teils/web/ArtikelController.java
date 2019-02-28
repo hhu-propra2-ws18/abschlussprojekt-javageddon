@@ -3,10 +3,13 @@ package hhu.propra2.javageddon.teils.web;
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
+import hhu.propra2.javageddon.teils.dataaccess.VerkaufRepository;
 import hhu.propra2.javageddon.teils.model.*;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
+import hhu.propra2.javageddon.teils.services.VerkaufArtikelService;
+import hhu.propra2.javageddon.teils.services.VerkaufService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -40,9 +43,16 @@ public class ArtikelController {
     @Autowired
     private BeschwerdeRepository alleBeschwerden;
 
+    @Autowired
+    private VerkaufArtikelService alleVerkaufArtikel;
+
+    @Autowired
+    private VerkaufService alleVerkaeufe;
+
     @GetMapping("/")
     public String artikelListe(Model m){
         m.addAttribute("alleArtikel", alleArtikel.findAllAktivArtikel());
+        m.addAttribute("alleVerkaufArtikel", alleVerkaufArtikel.findAllArtikel());
         m.addAttribute("anzahlBeschwerden", alleBeschwerden.findAllByBearbeitet(false).size());
         return "start";
     }
@@ -59,7 +69,7 @@ public class ArtikelController {
     @RequestMapping(value = "/details", method = GET)
     public String getDetailsByArtikelId( Model m, @RequestParam("id") long id) {
         Artikel artikel = alleArtikel.findArtikelById(id);
-        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiert(artikel);
+        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiertAndNichtZurueckerhalten(artikel);
         List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findCurrentReservierungByArtikelAndBearbeitet(artikel);
         List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
         artikelReservierungen.addAll(akzeptierteReservierungen);
@@ -67,6 +77,13 @@ public class ArtikelController {
         m.addAttribute("alleReservierungen", alleReservierungen.orderByDate(artikelReservierungen));
         m.addAttribute("artikel", artikel);
         return "artikel_details";
+    }
+
+    @RequestMapping(value = "/verkauf/details", method = GET)
+    public String getDetailsByArtikelIdVerkauf( Model m, @RequestParam("id") long id) {
+        VerkaufArtikel artikel = alleVerkaufArtikel.findArtikelById(id);
+        m.addAttribute("artikel", artikel);
+        return "verkaufartikel_details";
     }
 
     @GetMapping("/artikel_erstellen")
@@ -93,6 +110,31 @@ public class ArtikelController {
         }
     }
 
+    @GetMapping("/verkaufartikel_erstellen")
+    public String verkaufartikelErstellen(Model m){
+        m.addAttribute("verkaufArtikel", new VerkaufArtikel());
+        m.addAttribute("adresse", new Adresse());
+        return "verkaufartikel_erstellen";
+    }
+
+    @PostMapping("/verkaufartikel_erstellen")
+    public String erstelleVerkaufArtikel(@Valid VerkaufArtikel verkaufArtikel, BindingResult verkaufArtikelBindingResult, @Valid Adresse adresse, BindingResult standortBindingResult){
+        if(verkaufArtikelBindingResult.hasErrors() || standortBindingResult.hasErrors()){
+            return "verkaufartikel_erstellen";
+        }else {
+            Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = ((UserDetails) currentUser).getUsername();
+            Long id = alleBenutzer.getIdByName(username);
+
+            verkaufArtikel.setStandort(adresse);
+            verkaufArtikel.setFotos(new ArrayList<String>());
+            verkaufArtikel.setEigentuemer(alleBenutzer.findBenutzerById(id));
+            alleVerkaufArtikel.addArtikel(verkaufArtikel);
+            return "redirect:/verkauf/fotoupload/" + verkaufArtikel.getId();
+        }
+    }
+
+
     @RequestMapping(value = "/reservieren", method = GET)
     public String artikelReservieren(Model m, @RequestParam("id") long id, @RequestParam(value = "error", defaultValue = "false", required = false) boolean error){
         Reservierung reservierung = new Reservierung();
@@ -101,7 +143,7 @@ public class ArtikelController {
         reservierung.setEnde(LocalDate.now());
         m.addAttribute("artikel", artikel);
         m.addAttribute("reservierung",reservierung);
-        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiert(artikel);
+        List<Reservierung> akzeptierteReservierungen = alleReservierungen.findCurrentReservierungByArtikelAndAkzeptiertAndNichtZurueckerhalten(artikel);
         List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findCurrentReservierungByArtikelAndBearbeitet(artikel);
         List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
         artikelReservierungen.addAll(akzeptierteReservierungen);
@@ -170,6 +212,18 @@ public class ArtikelController {
         return "redirect:/profil_ansicht/";
     }
 
+    @GetMapping("/verkauf_update/{id}/{akzeptiert}")
+    public String updateReservierung(Model model, @ModelAttribute Verkauf verkauf, @PathVariable long id, @PathVariable String akzeptiert) {
+        Verkauf aktuellerVerkauf = alleVerkaeufe.findVerkaufById(id);
+        model.addAttribute("verkauf", aktuellerVerkauf);
+        boolean accepted = Boolean.parseBoolean(akzeptiert);
+        if(!accepted) aktuellerVerkauf.getArtikel().setVerfuegbar(true);
+        aktuellerVerkauf.setBearbeitet(true);
+        aktuellerVerkauf.setAkzeptiert(accepted);
+        alleVerkaeufe.addVerkauf(aktuellerVerkauf);
+        return "redirect:/profil_ansicht/";
+    }
+
     @GetMapping("/reservierung_update/{id}")
     public String updateReservierung(Model model, @ModelAttribute Reservierung reservierung, @PathVariable long id) {
         Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
@@ -188,6 +242,13 @@ public class ArtikelController {
         return "redirect:/profil_ansicht/";
     }
 
+    @GetMapping("/verkauf_sichtbar/{id}")
+    public String updateSichtbarkeitVerkauf(Model model, @ModelAttribute Verkauf verkauf, @PathVariable long id){
+        Verkauf aktuellerVerkauf = alleVerkaeufe.findVerkaufById(id);
+        alleVerkaeufe.deleteVerkauf(aktuellerVerkauf);
+        return "redirect:/profil_ansicht/";
+    }
+
     @GetMapping("/reservierung_zurueckgeben/{id}")
     public String updateZurueckgeben(Model model, @ModelAttribute Reservierung reservierung, @PathVariable long id){
         Reservierung aktuelleReservierung = alleReservierungen.findReservierungById(id);
@@ -196,4 +257,31 @@ public class ArtikelController {
         alleReservierungen.addReservierung(aktuelleReservierung);
         return "redirect:/profil_ansicht/";
     }
+
+    @RequestMapping(value = "/kaufen", method = GET)
+    public String artikelKaufen(Model m, @RequestParam("id") long id) {
+        VerkaufArtikel aktuellerArtikel = alleVerkaufArtikel.findArtikelById(id);
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        Long benutzerid = alleBenutzer.getIdByName(username);
+        Verkauf verkauf = new Verkauf();
+        verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
+        m.addAttribute("artikel", aktuellerArtikel);
+        aktuellerArtikel.setVerfuegbar(false);
+        alleVerkaufArtikel.addArtikel(aktuellerArtikel);
+        verkauf.setArtikel(aktuellerArtikel);
+        alleVerkaeufe.addVerkauf(verkauf);
+        return "redirect:/profil_ansicht/";
+    }
+
+
+    @RequestMapping(value = "/loeschen", method = GET)
+    public String artikelLoeschen(@RequestParam("id") long id) {
+        Verkauf verkauf = alleVerkaeufe.findVerkaufById(id);
+        VerkaufArtikel aktuellerArtikel = alleVerkaufArtikel.findArtikelById(verkauf.getArtikel().getId());
+        alleVerkaeufe.deleteVerkauf(verkauf);
+        alleVerkaufArtikel.deleteArtikel(aktuellerArtikel);
+        return "redirect:/profil_ansicht/";
+    }
+
 }

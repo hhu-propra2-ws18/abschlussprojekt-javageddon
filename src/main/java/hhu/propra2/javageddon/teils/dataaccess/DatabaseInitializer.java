@@ -1,10 +1,7 @@
 package hhu.propra2.javageddon.teils.dataaccess;
 
 import com.github.javafaker.Faker;
-import hhu.propra2.javageddon.teils.model.Adresse;
-import hhu.propra2.javageddon.teils.model.Artikel;
-import hhu.propra2.javageddon.teils.model.Benutzer;
-import hhu.propra2.javageddon.teils.model.Reservierung;
+import hhu.propra2.javageddon.teils.model.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
@@ -34,6 +31,9 @@ public class DatabaseInitializer implements ServletContextInitializer {
 
     @Autowired
     BeschwerdeRepository beschwerden;
+
+    @Autowired
+    VerkaufArtikelRepository verkaufartikel;
 
     @Override
     public void onStartup(final ServletContext servletContext) throws ServletException {
@@ -106,6 +106,40 @@ public class DatabaseInitializer implements ServletContextInitializer {
         }).collect(Collectors.collectingAndThen(
                 Collectors.toList(),
                 this.artikel::saveAll));
+
+        IntStream.range(0,10).mapToObj(value -> {
+            final VerkaufArtikel va = new VerkaufArtikel();
+
+            List<Benutzer> alleBenutzer = benutzer.getAllByIdIsNotNull();
+
+            int anzahlBenutzer = alleBenutzer.size();
+            int zufaelligerBenutzer = (int) (Math.random()*anzahlBenutzer);
+
+            va.setEigentuemer(alleBenutzer.get(zufaelligerBenutzer));
+
+            ArrayList<String> fotos = new ArrayList<String>();
+            va.setFotos(fotos);
+
+            va.setTitel(faker.gameOfThrones().character());
+            va.setBeschreibung(faker.gameOfThrones().quote());
+            va.setVerkaufsPreis(faker.number().numberBetween(100,300));
+            if(Math.random() < 0.5) {
+                va.setVerfuegbar(true);
+            }else {
+                va.setVerfuegbar(false);
+            }
+
+            Adresse adtemp = new Adresse();
+            adtemp.setHausnummer("" + ((int)(Math.random() * 100)));
+            adtemp.setOrt(faker.gameOfThrones().city());
+            adtemp.setPlz((int)(Math.random() * 10000));
+            adtemp.setStrasse(faker.gameOfThrones().house());
+            va.setStandort(adtemp);
+
+            return va;
+        }).collect(Collectors.collectingAndThen(
+                Collectors.toList(),
+                this.verkaufartikel::saveAll));
     
 	    IntStream.range(0,30).mapToObj(value -> {
 	        final Reservierung r = new Reservierung();

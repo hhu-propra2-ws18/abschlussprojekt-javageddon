@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+    <title>Artikel erstellen</title>
+</head>
+<body>
+
+<div class="container" style="margin-top:50px">
+
+    <div class="container-fluid">
+
+        <div class="row justify-content-center">
+            <aside class="col-sm-6 ">
+                <div class="card">
+                    <article class="card-body">
+                     <!--   <a href="/benutzer/?{id}" class="float-right btn btn-outline-primary">Zurück zur Übersicht</a> -->
+                        <h4 class="card-title mb-4 mt-1">Artikel erstellen</h4>
+
+                        <form method="post" th:action="@{/verkaufartikel_erstellen}">
+
+                            <input type="hidden" value="1" name="id" th:value="${verkaufArtikel.id}"/>
+                            <input type="hidden" value="true" name="verfuegbar"/>
+
+
+                            <div class="form-group">
+                                <label>Titel</label>
+                                <input class="form-control" placeholder="Artikelbezeichnung" type="text" th:field="${verkaufArtikel.titel}"/>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('verkaufArtikel.titel')}" th:errors="*{verkaufArtikel.titel}"></p>
+                            </div> <!-- form-group// -->
+
+                            <div class="form-group">
+                                <label>Beschreibung</label>
+                                <input class="form-control" placeholder="Artikelbeschreibung" type="text" th:field="${verkaufArtikel.beschreibung}"/>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('verkaufArtikel.beschreibung')}" th:errors="*{verkaufArtikel.beschreibung}"></p>
+                            </div> <!-- form-group// -->
+
+                            <div class="form-group">
+                                <label>Preis</label>
+                                <input class="form-control" placeholder="Verkaufspreis" type="text"  th:field="${verkaufArtikel.verkaufsPreis}"/>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('verkaufArtikel.verkaufsPreis')}" th:errors="*{verkaufArtikel.verkaufsPreis}"></p>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Standort</label>
+                                <p><input class="form-control col-sm-8 float-left" placeholder="Strasse" type="text" th:field="${adresse.strasse}"/>
+                                <input class="form-control col-sm-4" placeholder="HausNr" type="text" th:field="${adresse.hausnummer}"/></p>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('adresse.strasse')}" th:errors="*{adresse.strasse}"></p>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('adresse.hausnummer')}" th:errors="*{adresse.hausnummer}"></p>
+                                <p><input class="form-control col-sm-4 float-left" placeholder="Plz" type="text" th:field="${adresse.plz}"/>
+                                <input class="form-control col-sm-8" placeholder="Ort" type="text" th:field="${adresse.ort}"/></p>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('adresse.plz')}" th:errors="*{adresse.plz}"></p>
+                                <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('adresse.ort')}" th:errors="*{adresse.ort}"></p>
+                            </div>
+
+                            <div class="form-group" style="margin-top:20px">
+                                <button type="submit" class="btn btn-primary btn-block"> Weiter </button>
+                            </div> <!-- form-group// -->
+
+                        </form>
+                    </article>
+                </div> <!-- card.// -->
+
+            </aside>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

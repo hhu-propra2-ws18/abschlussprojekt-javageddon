@@ -17,7 +17,9 @@
             </div>
             <div class="col-md-6 text-right">
                     <a th:if="${#httpServletRequest.isUserInRole('USER') || #httpServletRequest.isUserInRole('ADMIN')}"
-                       class="btn btn-success btn-md" href="/artikel_erstellen">Artikel anlegen</a>
+                       class="btn btn-success btn-md" href="/artikel_erstellen">Artikel zum Verleih anlegen</a>
+                    <a th:if="${#httpServletRequest.isUserInRole('USER') || #httpServletRequest.isUserInRole('ADMIN')}"
+                        class="btn btn-success btn-md" href="/verkaufartikel_erstellen">Artikel zum Verkauf anlegen</a>
                     <a th:if="${#httpServletRequest.isUserInRole('ADMIN')}"
                        class="btn btn-danger btn-md" href="/admin_clearing">Beschwerden:
                         <span class="badge" th:text="${anzahlBeschwerden}">7</span></a>
@@ -32,8 +34,9 @@
             </div>
         </section>
     </div>
-
-    <div class="card">
+    <div>
+        <h5>Artikel zum Ausleihen</h5>
+        <div class="card">
         <table class="table table-hover shopping-cart-wrap">
             <thead class="text-muted">
             <tr>
@@ -78,6 +81,50 @@
                 </td>
             </tbody>
         </table>
+        </div>
+    </div>
+
+    <div>
+        <h5>Artikel zum Verkauf</h5>
+        <div class="card">
+            <table class="table table-hover shopping-cart-wrap">
+                <thead class="text-muted">
+                <tr>
+                    <th scope="col" width="400">Artikel</th>
+                    <th scope="col" width="200">Preis</th>
+                    <th scope="col" width="200">Status</th>
+                    <th scope="col" width="200"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="verkaufartikel: ${alleVerkaufArtikel}">
+                    <td>
+                        <figure class="media">
+                            <div class="img-wrap">
+                                <img th:src="${(verkaufartikel.fotos.isEmpty() == false ) ? '../fotos/' + verkaufartikel.fotos.get(0) : '../fotos/kein-bild-vorhanden'}"
+                                     class="img-thumbnail img-sm" style="width:100px; height:100px; min-width:100px; margin-right:20px"/>
+                            </div>
+                            <figcaption class="media-body">
+                                <h4 th:text="${verkaufartikel.titel}" class="title text-truncate">Akkuschrauber</h4>
+                            </figcaption>
+                        </figure>
+                    </td>
+                    <td>
+                        <div class="price-wrap">
+                            <var class="price" th:text="|${verkaufartikel.verkaufsPreis} €|">10€</var>
+                        </div>
+                    </td>
+                    <td>
+                        <p class="alert alert-success" role="alert" th:if="${verkaufartikel.verfuegbar}">Verfügbar</p>
+                        <p class="alert alert-danger" role="alert" th:unless="${verkaufartikel.verfuegbar}">Nicht Verfügbar</p>
+                    </td>
+                    <td class="text-right">
+                        <a th:href="@{'/verkauf/details?id=' + ${verkaufartikel.id}}"
+                           href="/details?id=id" class="btn btn-outline-secondary">Details</a>
+                    </td>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
