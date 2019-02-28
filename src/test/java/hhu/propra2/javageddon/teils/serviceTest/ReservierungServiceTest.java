@@ -47,14 +47,14 @@ public class ReservierungServiceTest {
     Artikel fahrrad = Artikel.builder().titel("fahrrad").aktiv(true).eigentuemer(heidi).standort(ad).beschreibung("?").kaution(1).kostenTag(1).build();
 
     Reservierung currentRes = Reservierung.builder().start(currentDay).ende(currentDay).artikel(hamster).bearbeitet(true)
-            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
     Reservierung futureRes = Reservierung.builder().start(futureDay).ende(futureDay).artikel(hamster).bearbeitet(false)
-            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
     Reservierung pastRes = Reservierung.builder().start(pastDay).ende(pastDay).artikel(hamster).bearbeitet(false)
-            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
     Reservierung farFutureRes = Reservierung.builder().start(currentDay.plusYears(2))
             .ende(currentDay.plusYears(2).plusDays(10)).artikel(hamster).bearbeitet(false)
-            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).sichtbar(true).build();
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
     @Before
     public void testInit() {
         heidi = benRepo.save(heidi);
