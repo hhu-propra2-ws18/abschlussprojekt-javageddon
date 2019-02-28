@@ -196,7 +196,8 @@
 
                 </td>
                 <td class="btn">
-                    <a class="btn btn-danger" th:unless="${reservierung.zurueckerhalten}" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                    <a class="btn btn-danger" th:if="${reservierung.ermittleStatus() != 5 and reservierung.akzeptiert == true}" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
+                    <a class="btn btn-secondary" th:unless="${reservierung.bearbeitet}" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Reservierung zurückziehen</a>
                     <a class="btn btn-outline-danger" th:href="@{'/details?id=' + ${reservierung.artikel.id}}">Details</a>
                 </td>
                 <td>
@@ -231,6 +232,7 @@
                 </td>
                 <td class="btn">
                     <a class="btn btn-danger" th:if="${verkauf.akzeptiert}" th:href="@{'/loeschen?id=' + ${verkauf.id}}">Erhalten</a>
+                    <a class="btn btn-secondary" th:unless="${verkauf.bearbeitet}" th:href="@{/verkauf_update/{id}/false (id=${verkauf.id})}">Kauf zurückziehen</a>
                     <a class="btn btn-outline-danger" th:href="@{'/verkauf/details?id=' + ${verkauf.artikel.id}}">Details</a>
                 </td>
                 <td>
