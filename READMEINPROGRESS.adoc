@@ -26,6 +26,9 @@ Die Startseite unter `http://localhost:8080/` listet für alle Besucher die mome
 Kein Databaseinitializer::
 Wir haben anfangs mit einem Faker gearbeitet zum generieren von Testdaten, da aber öfters überschneidende Reserviungen erstellt wurden haben wir uns entschieden alle finalen Daten per Hand anzulegen (durch Benutzung der Anwendung selbst).
 
+Commitanzahl Erklärung::
+Viele Commits vom Teammitglied Florian (flfis102) haben keine Message und sind teilweise nur minimale Änderungen. Der Grund dafür ist, dass die Anwendung auf seinem Windows 10 Laptop nicht einwandfrei funktioniert und er deswegen mit einem Ubuntu Server arbeitet. Die Einfachste möglichkeit Updates auf den Server zu bringen ist durch Git Commits. Deswegen musste er selbst kleine Änderungen pushen, um so testen zu können.
+
 
 == BenutzerKonten
 
