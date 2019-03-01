@@ -63,7 +63,6 @@ public class BenutzerController {
         	return "benutzer_registrieren";
         }else {
             alleBenutzer.addBenutzer(benutzer);
-            //return "redirect:benutzer?=" + benutzer.getId();
             return "redirect:profil_ansicht";
         }
     }
@@ -75,7 +74,7 @@ public class BenutzerController {
     
 
     @GetMapping("/profil_ansicht")
-    public String benutzerAnsicht(Model m) throws IOException {
+    public String benutzerAnsicht(Model m) {
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails)currentUser).getUsername();
         Long id = alleBenutzer.getIdByName(username);
