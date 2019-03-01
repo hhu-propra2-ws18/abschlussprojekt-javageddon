@@ -84,6 +84,7 @@ public class ArtikelController {
     @RequestMapping(value = "/verkauf/details", method = GET)
     public String getDetailsByArtikelIdVerkauf( Model m, @RequestParam("id") long id,  @RequestParam(value = "error", defaultValue = "0", required = false) int error) {
         VerkaufArtikel artikel = alleVerkaufArtikel.findArtikelById(id);
+        m.addAttribute("proPayReachable", ProPayService.checkConnection());
         m.addAttribute("artikel", artikel);
         m.addAttribute("error", error);
         return "verkaufartikel_details";
@@ -334,6 +335,7 @@ public class ArtikelController {
         alleVerkaufArtikel.addArtikel(aktuellerArtikel);
         verkauf.setArtikel(aktuellerArtikel);
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
+        m.addAttribute("proPayReachable", ProPayService.checkConnection());
         m.addAttribute("artikel", aktuellerArtikel);
         ProPayUser proPayUser = ProPay.getProPayUser(username);
         if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
