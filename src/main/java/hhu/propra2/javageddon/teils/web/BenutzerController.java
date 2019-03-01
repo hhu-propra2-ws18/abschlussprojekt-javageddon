@@ -1,6 +1,5 @@
 package hhu.propra2.javageddon.teils.web;
 
-import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.services.*;
@@ -81,7 +80,7 @@ public class BenutzerController {
 
         m.addAttribute("proPayReachable", proPayReachable);
         if (proPayReachable){
-            m.addAttribute("proPayUser",ProPay.getProPayUser(username));
+            m.addAttribute("proPayUser",ProPayService.getProPayUser(username));
         }
 
         alleReservierungen.decideVerfuegbarkeit();
