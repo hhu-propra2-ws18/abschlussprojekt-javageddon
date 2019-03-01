@@ -1,0 +1,39 @@
+== Kritische Entscheidungen
+
+Spring Security::
+Wir haben uns entschieden Spring Security zu benutzen, da wir uns das Umgehen mit Cookies sparen wollten und Spring Security uns auch direkt den eingeloggten Benutzer zurückgeben kann. Dadurch wird auch die Eindeutigkeit und Validität des Benutzernames gewährleistet. Passwörter werden in der Datenbank im Klartext gespeichert, um den Entwicklungsprozess zu erleichtern. Leider hatten wir nicht genug Zeit am Ende um die Passwörter zu hashen.
+
+Interaktion mit Propay::
+Wir haben uns entschieden direkt bei Antragsstellung (Verkauf oder Leih) die benötigten Beträge (Kautinon + Gesamtmiete / Verkaufspreis) auf Propay zu blockieren. Der einzige Nachteil bei dieser Vorgehensweise ist, dass ein Artikeleigentümer durch enthaltung der Entscheidung, ob er akzeptiert oder nicht, dem Antragssteller unbefristet blockiert. Das haben wir mit einem Antrag stornieren Button gelöst, der bis zum Akzeptieren des Antrags vom Antragssteller gedrückt werden kann. Demnach werden die Geldbeträge mit release bzw. punish dem richtigen Benutzer zugewiesen. +
+Falls Propay nicht erreichbar ist werden sämtliche Links (Propayübersicht, Reservierungserstellen, kaufen, Akzeptieren, Ablehnen, etc.) durch Propay-Error-Buttons mit eine kurzen Fehlermeldung ersetzt.
+
+Ganztägige Reservierungen::
+Um den Prozess leichter zu machen, haben wir uns entschieden nur ganztägige Reserveriungen zuzulassen und verlangen immer den vollen Tagespreis. Das reservierte Artikel steht somit genau zum Startdatum zu Verfügung und muss auch am Enddatum zurückgegeben werden (Eintagige Reservierungen müssen am selben Tag zurückgegeben werden, an dem sie abgeholt wurden).
+
+Reservierungsmiete immer für den Gesamten Zeitraum bezahlen::
+Wir erlauben zwar, dass ein Leihender seinen Artikel frühzeitig zurückgeben kann, aber verlangen immernoch die volle Miete. Abgesehen davon, dass es für uns leichter zu implementieren ist, ist es auch Sinnvoll, da der Eigentümer durch nicht vollständig benutzten Reservierungszeitraum an potenziellen neuen Leihenden verliert. Somit wollen wir verhindern, dass Leihende unüberlegt zu lange reservieren.
+
+Verkaufsartikel einbauen::
+
+
+
+5. Nicht mehr als 10 JPG Bilder
+6. Nur Startseite für alle sichtbar
+8. Kein Databaseinitializer
+
+== BenutzerKonten
+
+.Benutzerkonten mit Zugangsdaten
+[width="100%",options="header,footer"]
+|====================
+
+|Benutzername| Email| Passwort| Rolle
+
+|Florian  |florian@teils.de  |1  |User  
+|Marvin  |marvin@teils.de  |2  |User    
+|Philipp  |philipp@teils.de  |3  |User    
+|Kurt  |kurt@teils.de  |4  |User    
+|Jana  |jana@teils.de  |5  |User    
+|Fred  |fred@teils.de  |6  |User    
+|Admin  |admin@teils.de  |admin  |Admin
+|====================
