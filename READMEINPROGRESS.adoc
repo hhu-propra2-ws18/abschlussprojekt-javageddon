@@ -14,12 +14,18 @@ Reservierungsmiete immer für den Gesamten Zeitraum bezahlen::
 Wir erlauben zwar, dass ein Leihender seinen Artikel frühzeitig zurückgeben kann, aber verlangen immernoch die volle Miete. Abgesehen davon, dass es für uns leichter zu implementieren ist, ist es auch Sinnvoll, da der Eigentümer durch nicht vollständig benutzten Reservierungszeitraum an potenziellen neuen Leihenden verliert. Somit wollen wir verhindern, dass Leihende unüberlegt zu lange reservieren.
 
 Verkaufsartikel einbauen::
+Wir haben einfach eine neue Klasse (Entität) mit eigener Repo erstellt die anstelle von Kaution und Miete, den Verkaufspreis hat. Ein Benutzer kann auf der Startseite entweder einen Artikel zum Verleih oder Verkauf anlegen. Danach werden seperate HTML Sichten erzeugt. Zusätzlich wurden die Controller auch erweitert um mit den Verkaufsartikeln analog umzugehen. Unsere Lösung ist sicher nicht die Eleganteste, aber es fehlte uns an Zeit so etwas wie eine Abstrakte Artikel Oberklasse zu implementieren. 
 
 
+Nicht mehr als 10 JPG Bilder::
+Es können Bilder beim Artikel erstellen hochgeladen werden. Diese sind aber durch Anzahl (max. 10), Größe (insgesamt 10MB) und Format (nur JPG) beschränkt. Da Bilder hochladen optional ist, wird falls keins hochgeladen wird, ein Default-Kein-Bild-Vorhanden Bild gezeigt. 
 
-5. Nicht mehr als 10 JPG Bilder
-6. Nur Startseite für alle sichtbar
-8. Kein Databaseinitializer
+Benutzerrollen::
+Die Startseite unter `http://localhost:8080/` listet für alle Besucher die momentan aktiven Artikel und enthält Links zum Einloggen und Registrieren. Weiter interaktion, wie Artikeldetails ansehen, verlangt einen eingeloggten User. Jeder eingeloggte User kann auf alles zugreifen, bis auf die Admin-Clearingstelle für Beschwerden (durch Spring Security gesichert).
+
+Kein Databaseinitializer::
+Wir haben anfangs mit einem Faker gearbeitet zum generieren von Testdaten, da aber öfters überschneidende Reserviungen erstellt wurden haben wir uns entschieden alle finalen Daten per Hand anzulegen (durch Benutzung der Anwendung selbst).
+
 
 == BenutzerKonten
 
