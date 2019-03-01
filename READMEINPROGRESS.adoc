@@ -1,3 +1,8 @@
+= Grundlegende Information
+
+* Siehe `doku/AufbauUndTesting.adoc` für eine Strukturbeschreibung
+* Siehe `doku/Walkthrough.adoc` für eine Anleitung
+
 == Kritische Entscheidungen
 
 Spring Security::
