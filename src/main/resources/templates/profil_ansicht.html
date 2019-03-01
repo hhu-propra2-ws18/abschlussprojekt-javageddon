@@ -402,7 +402,7 @@
                 </td>
                 <td>
                     <a th:if="${reservierung.zurueckgegeben and proPayReachable}" class="btn btn-success" th:href="@{/reservierung_update/{id} (id=${reservierung.id})}">Zurückerhalten</a>
-                    <a th:unless="${!reservierung.zurueckgegeben and proPayReachable}"
+                    <a th:if="${reservierung.zurueckgegeben} == false and ${proPayReachable} == false"
                        class="btn btn-outline-danger btn-md">ProPay
                         <span class="badge badge-danger">ERROR! Keine Bearbeitung möglich</span>
                     </a>
