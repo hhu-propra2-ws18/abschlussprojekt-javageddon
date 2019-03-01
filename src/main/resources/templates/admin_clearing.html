@@ -78,28 +78,25 @@
                        href="/details?id=id" class="btn btn-outline-warning btn-sm">Artikel Details</a>
                 </td>
 
-
                 <td>
-                    <!--
-                    <div class="form-group" style="margin-top:20px">
-                        <button type="submit" class="btn btn-primary btn-block"> Senden </button>
-                    </div>
-                    -->
-                    <a th:href="@{'/clearing/' + ${beschwerde.id} +'/'+ ${beschwerde.reservierung.artikel.eigentuemer.id}}"
+                    <a th:if="${proPayReachable}" th:href="@{'/clearing/' + ${beschwerde.id} +'/'+ ${beschwerde.reservierung.artikel.eigentuemer.id}}"
                        href="/clearing?id=id" class="btn btn-outline-danger btn-sm"
-                       th:text="${beschwerde.reservierung.artikel.eigentuemer.name}">Nutzer A</a>
+                       th:text="${beschwerde.reservierung.artikel.eigentuemer.name}">Nutzer A
+                    </a>
 
-                    <a th:href="@{'/clearing/' + ${beschwerde.id} + '/'+ ${beschwerde.reservierung.leihender.id}}"
+                    <a th:if="${proPayReachable}" th:href="@{'/clearing/' + ${beschwerde.id} + '/'+ ${beschwerde.reservierung.leihender.id}}"
                        href="/clearing?id=id" class="btn btn-outline-danger btn-sm"
-                       th:text="${beschwerde.reservierung.leihender.name}">Nutzer B</a>
-
+                       th:text="${beschwerde.reservierung.leihender.name}">Nutzer B
+                    </a>
+                    <a th:unless="${proPayReachable}"
+                       class="btn btn-outline-danger btn-md">ProPay
+                        <span class="badge badge-danger">ERROR! Keine Bearbeitung möglich</span>
+                    </a>
                 </td>
-
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-
 </body>
 </html>

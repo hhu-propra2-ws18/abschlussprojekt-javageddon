@@ -7,6 +7,7 @@ import hhu.propra2.javageddon.teils.model.Reservierung;
 import hhu.propra2.javageddon.teils.model.Transaktion;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
 import hhu.propra2.javageddon.teils.services.BeschwerdeService;
+import hhu.propra2.javageddon.teils.services.ProPayService;
 import hhu.propra2.javageddon.teils.services.TransaktionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +35,7 @@ public class BeschwerdeController {
     @GetMapping("/admin_clearing")
     public String adminClearing(Model m) {
         m.addAttribute("alleBeschwerden", alleBeschwerden.findAllUnbearbeitetBeschwerden());
+        m.addAttribute("proPayReachable", ProPayService.checkConnection());
         return "admin_clearing";
     }
 
