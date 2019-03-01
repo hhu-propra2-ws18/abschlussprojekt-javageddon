@@ -38,11 +38,11 @@ Viele Commits vom Teammitglied Florian (flfis102) haben keine Message und sind t
 
 |Benutzername| Email| Passwort| Rolle
 
-|Florian  |florian@teils.de  |1  |User  
-|Marvin  |marvin@teils.de  |2  |User    
-|Philipp  |philipp@teils.de  |3  |User    
-|Kurt  |kurt@teils.de  |4  |User    
-|Jana  |jana@teils.de  |5  |User    
-|Fred  |fred@teils.de  |6  |User    
+|Florian  |florian@teils.de  |f  |User
+|Marvin  |marvin@teils.de  |m  |User    
+|Philipp  |philipp@teils.de  |p  |User    
+|Kurt  |kurt@teils.de  |k  |User    
+|Jana  |jana@teils.de  |j  |User    
+|Fred  |fred@teils.de  |f  |User    
 |Admin  |admin@teils.de  |admin  |Admin
 |====================
