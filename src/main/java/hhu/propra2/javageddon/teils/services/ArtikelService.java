@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
-import hhu.propra2.javageddon.teils.model.Adresse;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 

@@ -1,13 +1,9 @@
 package hhu.propra2.javageddon.teils.services;
 
-import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
-import hhu.propra2.javageddon.teils.model.Artikel;
-import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Beschwerde;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
