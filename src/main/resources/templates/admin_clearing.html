@@ -40,6 +40,8 @@
                 <th scope="col" width="100">Artikel</th>
                 <th scope="col" width="100">Beschwerde von:</th>
                 <th scope="col" width="100">Beschwerde</th>
+                <th scope="col" width="100">Eigentümer</th>
+                <th scope="col" width="100">Leihender</th>
                 <th scope="col" width="200">Optionen</th>
                 <th scope="col" width="200">Entscheidung</th>
 
@@ -64,11 +66,18 @@
                 </td>
 
                 <td>
-
+                    <a th:href="@{'mailto:' + ${beschwerde.reservierung.artikel.eigentuemer.email} + '?subject=Teils! Clearing'}"
+                       href="mailto:deine@email.de" class="btn btn-primary btn-sm">Kontakt Eigentümer</a>
+                </td>
+                <td>
+                    <a th:href="@{'mailto:' + ${beschwerde.reservierung.leihender.email} + '?subject=Teils! Clearing'}"
+                       href="mailto:deine@email.de" class="btn btn-primary btn-sm">Kontakt Leihender</a>
+                </td>
+                <td>
                     <a th:href="@{'/details?id=' + ${beschwerde.reservierung.artikel.id}}"
                        href="/details?id=id" class="btn btn-outline-warning btn-sm">Artikel Details</a>
-
                 </td>
+
 
                 <td>
                     <!--
