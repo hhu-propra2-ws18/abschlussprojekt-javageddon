@@ -324,7 +324,7 @@ public class ArtikelController {
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
         m.addAttribute("proPayReachable", ProPayService.checkConnection());
         m.addAttribute("artikel", aktuellerArtikel);
-        ProPayUser proPayUser = ProPayService.getProPayUser(alleBenutzer.findBenutzerById(id).getName());
+        ProPayUser proPayUser = ProPayService.getProPayUser(verkauf.getKaeufer().getName());
         if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
             return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=1";
         }
