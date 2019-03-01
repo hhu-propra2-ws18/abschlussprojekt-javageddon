@@ -99,10 +99,14 @@ public class ReservierungService {
             return false;
         }
 
-        if(!a.isVerfuegbar() && startAntrag.isEqual(LocalDate.now())) return false;
         Reservierung testDate = Reservierung.builder().start(startAntrag).ende(endeAntrag).build();
         List<Reservierung> akzeptierteReservierungen = alleReservierungen.findByArtikelAndAkzeptiertAndZurueckerhalten(a, true, false);
         List<Reservierung> reservierungenInBearbeitung = alleReservierungen.findByArtikelAndBearbeitet(a, false);
+        List<Reservierung> toDelete = new ArrayList<Reservierung>();
+        for(Reservierung res : reservierungenInBearbeitung){
+            if(res.ermittleStatus() == 7) toDelete.add(res);
+        }
+        reservierungenInBearbeitung.removeAll(toDelete);
         List<Reservierung> artikelReservierungen = new ArrayList<Reservierung>();
         artikelReservierungen.addAll(akzeptierteReservierungen);
         artikelReservierungen.addAll(reservierungenInBearbeitung);
@@ -112,6 +116,7 @@ public class ReservierungService {
                     || testDate.containsDate(res.getEnde())) {
                 return false;
             }
+            if(res.getEnde().isBefore(LocalDate.now())) return false;
         }
         return true;
     }
@@ -130,14 +135,6 @@ public class ReservierungService {
 
     public List<Reservierung> findCurrentReservierungByArtikelAndAkzeptiertAndNichtZurueckerhalten(Artikel a){
         List<Reservierung> artikelReservierungen = alleReservierungen.findByArtikelAndAkzeptiertAndZurueckerhalten(a, true, false);
-       /* List<Reservierung> vergangeneReservierungen = new ArrayList<Reservierung>();
-        LocalDate currentDay = LocalDate.now();
-        for (Reservierung res : artikelReservierungen) {
-            if (res.getEnde().isBefore(currentDay)) {
-                vergangeneReservierungen.add(res);
-            }
-        }
-        artikelReservierungen.removeAll(vergangeneReservierungen);*/
         return artikelReservierungen;
     }
 

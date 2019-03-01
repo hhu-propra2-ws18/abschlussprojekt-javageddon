@@ -25,18 +25,6 @@ public class BenutzerServiceTest {
     Benutzer richtigeEingabe = Benutzer.builder().name("Otto").email("otto@otto.de").build();
     Benutzer duplikatName = Benutzer.builder().name("Otto").email("otto1@otto.de").build();
     Benutzer duplikatEmail = Benutzer.builder().name("Heido").email("otto@otto.de").build();
-    Benutzer leererName = Benutzer.builder().name("").email("1@1.de").build();
-    Benutzer leereEmail = Benutzer.builder().name("Anna").email("").build();
-
-    @Test
-    public void checkEmptyName() {
-        assertThat(bService.isEmptyName(leererName)).isEqualTo(true);
-    }
-
-    @Test
-    public void checkEmptyEmail() {
-        assertThat(bService.isEmptyEmail(leereEmail)).isEqualTo(true);
-    }
 
     @Test
     public void checkDuplikatNameButNotEmail() {
@@ -71,8 +59,6 @@ public class BenutzerServiceTest {
         bService.addBenutzer(richtigeEingabe);
         assertThat(bService.hasIncorrectInput(duplikatName)).isEqualTo(true);
         assertThat(bService.hasIncorrectInput(duplikatEmail)).isEqualTo(true);
-        assertThat(bService.hasIncorrectInput(leererName)).isEqualTo(true);
-        assertThat(bService.hasIncorrectInput(leereEmail)).isEqualTo(true);
     }
 
     @Test

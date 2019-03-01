@@ -18,6 +18,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,6 +56,23 @@ public class ReservierungServiceTest {
     Reservierung farFutureRes = Reservierung.builder().start(currentDay.plusYears(2))
             .ende(currentDay.plusYears(2).plusDays(10)).artikel(hamster).bearbeitet(false)
             .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
+
+    Reservierung currentRes2 = Reservierung.builder().start(currentDay).ende(futureDay).artikel(hamster).bearbeitet(true)
+            .akzeptiert(true).zurueckerhalten(false).zurueckgegeben(false).build();
+    Reservierung currentRes3 = Reservierung.builder().start(pastDay).ende(currentDay).artikel(hamster).bearbeitet(true)
+            .akzeptiert(true).zurueckerhalten(false).zurueckgegeben(false).build();
+    Reservierung currentRes4 = Reservierung.builder().start(pastDay).ende(futureDay.plusDays(3)).artikel(hamster).bearbeitet(true)
+            .akzeptiert(true).zurueckerhalten(false).zurueckgegeben(false).build();
+    Reservierung currentRes5 = Reservierung.builder().start(pastDay).ende(pastDay).artikel(hamster).bearbeitet(true)
+            .akzeptiert(true).zurueckerhalten(false).zurueckgegeben(false).build();
+    Reservierung pastRes2 = Reservierung.builder().start(pastDay).ende(currentDay).artikel(hamster).bearbeitet(false)
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
+    Reservierung pastRes3 = Reservierung.builder().start(pastDay).ende(futureDay).artikel(hamster).bearbeitet(false)
+            .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
+
+
+
+
     @Before
     public void testInit() {
         heidi = benRepo.save(heidi);
@@ -62,6 +80,7 @@ public class ReservierungServiceTest {
         currentRes = rService.addReservierung(currentRes);
         pastRes = rService.addReservierung(pastRes);
         futureRes = rService.addReservierung(futureRes);
+
     }
 
     @After
@@ -69,6 +88,18 @@ public class ReservierungServiceTest {
         resRepo.deleteAll();
         artRepo.deleteAll();
         benRepo.deleteAll();
+    }
+
+    @Test
+    public void findsCurrentLendings(){
+        currentRes2 = rService.addReservierung(currentRes2);
+        currentRes3 = rService.addReservierung(currentRes3);
+        currentRes4 = rService.addReservierung(currentRes4);
+        currentRes5 = rService.addReservierung(currentRes5);
+
+
+        List<Reservierung> result = rService.findReservierungByArtikelEigentuemerAndNichtAbgeschlossen(heidi);
+        assertThat(result).containsExactly(currentRes5,currentRes3,currentRes2,currentRes4);
     }
 
     @Test
@@ -138,6 +169,51 @@ public class ReservierungServiceTest {
         assertThat(rService.isAllowedReservierungsDate(hamster,
                 currentDay.plusYears(2).minusDays(2),
                 currentDay.plusYears(2).plusDays(4))).isEqualTo(false);
+    }
+
+    @Test
+    public void reservierungBlockedByOldReservation(){
+        currentRes5 = rService.addReservierung(currentRes5);
+        assertThat(rService.isAllowedReservierungsDate(hamster,
+                currentDay,
+                currentDay.plusYears(2).plusDays(4))).isEqualTo(false);
+    }
+
+    @Test
+    public void reservierungNotBlockedByReservationWithStatus7(){
+        pastRes2 = rService.addReservierung(pastRes2);
+        pastRes3 = rService.addReservierung(pastRes3);
+        rService.deleteReservierung(currentRes);
+        assertThat(rService.isAllowedReservierungsDate(hamster,
+                currentDay,
+                currentDay.plusDays(4))).isEqualTo(true);
+    }
+
+    @Test
+    public void findReservierungByAbgelaufenerFrist(){
+        Benutzer hans = Benutzer.builder().name("Hans").email("hans@hans.de").build();
+        benRepo.save(hans);
+        currentRes5.setLeihender(hans);
+        rService.addReservierung(currentRes5);
+        assertThat(rService.fristAbgelaufeneReservierungen(hans)).containsExactly(currentRes5);
+    }
+
+    @Test
+    public void findsReservierungByArtikelAndNichtBearbeitet(){
+        rService.deleteReservierung(currentRes);
+        Reservierung currentRes6 = Reservierung.builder().start(currentDay).ende(currentDay).artikel(hamster).bearbeitet(false)
+                .akzeptiert(false).zurueckerhalten(false).zurueckgegeben(false).build();
+        rService.addReservierung(currentRes6);
+        assertThat(rService.findCurrentReservierungByArtikelAndBearbeitet(hamster)).containsExactlyInAnyOrder(currentRes6,futureRes);
+    }
+
+    @Test
+    public void checksReservationOrder(){
+        List<Reservierung> reservierungen = new ArrayList<Reservierung>();
+        reservierungen.add(futureRes);
+        reservierungen.add(pastRes);
+        reservierungen.add(currentRes);
+        assertThat(rService.orderByDate(reservierungen)).containsExactly(pastRes,currentRes,futureRes);
     }
 
     @Test
