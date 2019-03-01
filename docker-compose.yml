@@ -1,4 +1,4 @@
-version: '3.1'
+﻿version: '3.1'
 services:
 
   teils:
@@ -33,11 +33,9 @@ services:
 
   proPay:
     image: propra/propay
-    ports:
-  # TODO Portfreigaben in Docker-Compose Konfiguration für Abgabe entfernen,und Volume Mapping aktivieren!
-      - "8888:8888"
-    #volumes:
-      #- ./data:/code/data
+    
+    volumes:
+      - ./data:/code/data
 
 
 
