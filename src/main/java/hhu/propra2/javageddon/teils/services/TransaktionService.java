@@ -1,7 +1,6 @@
 package hhu.propra2.javageddon.teils.services;
 
 import hhu.propra2.javageddon.teils.dataaccess.TransaktionRepository;
-import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Transaktion;
 import org.springframework.stereotype.Service;

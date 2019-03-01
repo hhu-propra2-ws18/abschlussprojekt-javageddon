@@ -5,7 +5,6 @@ import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.VerkaufArtikel;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,8 +35,4 @@ public class VerkaufArtikelService {
         alleVerkaufArtikel.delete(a);
     }
 
-    public VerkaufArtikel updateFotosArtikel(VerkaufArtikel artikel, ArrayList<String> fotos) {
-        artikel.setFotos(fotos);
-        return alleVerkaufArtikel.save(artikel);
-    }
 }
