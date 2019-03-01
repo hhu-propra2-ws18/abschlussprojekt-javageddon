@@ -1,9 +1,6 @@
 package hhu.propra2.javageddon.teils.web;
 
-import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
-import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
 import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
-import hhu.propra2.javageddon.teils.dataaccess.VerkaufRepository;
 import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.*;
 import hhu.propra2.javageddon.teils.services.*;
@@ -102,9 +99,7 @@ public class ArtikelController {
         if(artikelBindingResult.hasErrors() || standortBindingResult.hasErrors()){
             return "artikel_erstellen";
         }else {
-            Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String username = ((UserDetails) currentUser).getUsername();
-            Long id = alleBenutzer.getIdByName(username);
+            Long id = getBenutzerID();
 
             artikel.setStandort(adresse);
             artikel.setFotos(new ArrayList<String>());
@@ -126,9 +121,7 @@ public class ArtikelController {
         if(verkaufArtikelBindingResult.hasErrors() || standortBindingResult.hasErrors()){
             return "verkaufartikel_erstellen";
         }else {
-            Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            String username = ((UserDetails) currentUser).getUsername();
-            Long id = alleBenutzer.getIdByName(username);
+            Long id = getBenutzerID();
 
             verkaufArtikel.setStandort(adresse);
             verkaufArtikel.setFotos(new ArrayList<String>());
@@ -161,15 +154,13 @@ public class ArtikelController {
 
     @PostMapping("/reservieren")
     public String reserviereArtikel(@ModelAttribute Reservierung reservierung, @ModelAttribute Artikel artikel){
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)currentUser).getUsername();
-        Long id = alleBenutzer.getIdByName(username);
+        Long id = getBenutzerID();
         reservierung.setBearbeitet(false);
         reservierung.setAkzeptiert(false);
         artikel = alleArtikel.findArtikelById(artikel.getId());
         reservierung.setArtikel(artikel);
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
-        ProPayUser proPayUser = ProPay.getProPayUser(username);
+        ProPayUser proPayUser = ProPay.getProPayUser(alleBenutzer.findBenutzerById(id).getName());
         if(artikel.getEigentuemer().equals(reservierung.getLeihender())){
             return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=1";
         }
@@ -218,9 +209,7 @@ public class ArtikelController {
 
     @PostMapping("/beschwerde")
     public String beschwereArtikel(@ModelAttribute Reservierung reservierung, @ModelAttribute Beschwerde beschwerde){
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)currentUser).getUsername();
-        Long id = alleBenutzer.getIdByName(username);
+        Long id = getBenutzerID();
         beschwerde.setReservierung(reservierung);
         beschwerde.setBearbeitet(false);
         beschwerde.setNutzer(alleBenutzer.findBenutzerById(id));
@@ -328,16 +317,14 @@ public class ArtikelController {
     @RequestMapping(value = "/kaufen", method = GET)
     public String artikelKaufen(Model m, @RequestParam("id") long id)  {
         VerkaufArtikel aktuellerArtikel = alleVerkaufArtikel.findArtikelById(id);
-        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails)currentUser).getUsername();
-        Long benutzerid = alleBenutzer.getIdByName(username);
+        Long benutzerid = getBenutzerID();
         Verkauf verkauf = new Verkauf();
         alleVerkaufArtikel.addArtikel(aktuellerArtikel);
         verkauf.setArtikel(aktuellerArtikel);
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
         m.addAttribute("proPayReachable", ProPayService.checkConnection());
         m.addAttribute("artikel", aktuellerArtikel);
-        ProPayUser proPayUser = ProPay.getProPayUser(username);
+        ProPayUser proPayUser = ProPay.getProPayUser(alleBenutzer.findBenutzerById(id).getName());
         if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
             return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=1";
         }
@@ -362,6 +349,12 @@ public class ArtikelController {
         alleVerkaeufe.deleteVerkauf(verkauf);
         alleVerkaufArtikel.deleteArtikel(aktuellerArtikel);
         return "redirect:/profil_ansicht/";
+    }
+
+    private Long getBenutzerID(){
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails)currentUser).getUsername();
+        return alleBenutzer.getIdByName(username);
     }
 
 }
