@@ -5,7 +5,6 @@ import hhu.propra2.javageddon.teils.dataaccess.ReservierungRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Reservierung;
-import hhu.propra2.javageddon.teils.model.Verkauf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,16 +33,8 @@ public class ReservierungService {
         alleReservierungen.delete(r);
     }
 
-    public List<Reservierung> findReservierungByArtikel(Artikel a){
-        return alleReservierungen.findByArtikel(a);
-    }
-
     public List<Reservierung> findReservierungByLeihender(Benutzer b){
         return alleReservierungen.findByLeihender(b);
-    }
-
-    public List<Reservierung> findReservierungByArtikelAndLeihender(Artikel a, Benutzer b){
-        return alleReservierungen.findByArtikelAndLeihender(a,b);
     }
 
     public Reservierung findReservierungById(long id) {
