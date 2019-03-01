@@ -210,8 +210,8 @@
                 </td>
                 <td>
                     <a class="btn btn-danger" th:if="${reservierung.ermittleStatus() != 5 and reservierung.akzeptiert == true}" th:href="@{'/beschwerde?id=' + ${reservierung.id}}">Beschweren</a>
-                    <a class="btn btn-secondary" th:if="${!reservierung.bearbeitet and proPayReachable}" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Stornieren</a></a>
-                    <a th:if="${!reservierung.bearbeitet and !proPayReachable}"
+                    <a class="btn btn-secondary" th:if="${reservierung.bearbeitet} == false and ${proPayReachable}" th:href="@{/reservierung_update/{id}/false (id=${reservierung.id})}">Stornieren</a></a>
+                    <a th:if="${reservierung.bearbeitet} == false and (${proPayReachable} == false)"
                        class="btn btn-outline-danger btn-md">ProPay
                         <span class="badge badge-danger">ERROR! Stornierung momentan nicht möglich</span>
                     </a>
@@ -249,8 +249,8 @@
                 </td>
                 <td>
                     <a class="btn btn-danger" th:if="${verkauf.akzeptiert}" th:href="@{'/loeschen?id=' + ${verkauf.id}}">Erhalten</a>
-                    <a class="btn btn-secondary" th:if="${!verkauf.bearbeitet and proPayReachable}" th:href="@{/verkauf_update/{id}/false (id=${verkauf.id})}">Stornieren</a>
-                    <a th:if="${!verkauf.bearbeitet and !proPayReachable}"
+                    <a class="btn btn-secondary" th:if="${verkauf.bearbeitet} == false and ${proPayReachable} == true" th:href="@{/verkauf_update/{id}/false (id=${verkauf.id})}">Stornieren</a>
+                    <a th:if="${verkauf.bearbeitet} == false and ${proPayReachable} == false"
                        class="btn btn-outline-danger btn-md">ProPay
                         <span class="badge badge-danger">ERROR! Stornierung momentan nicht möglich</span>
                     </a>
@@ -402,7 +402,7 @@
                 </td>
                 <td>
                     <a th:if="${reservierung.zurueckgegeben and proPayReachable}" class="btn btn-success" th:href="@{/reservierung_update/{id} (id=${reservierung.id})}">Zurückerhalten</a>
-                    <a th:unless="${!reservierung.zurueckgegeben and proPayReachable}"
+                    <a th:if="${reservierung.zurueckgegeben} == false and ${proPayReachable} == false"
                        class="btn btn-outline-danger btn-md">ProPay
                         <span class="badge badge-danger">ERROR! Keine Bearbeitung möglich</span>
                     </a>
