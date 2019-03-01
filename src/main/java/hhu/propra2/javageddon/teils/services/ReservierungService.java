@@ -80,7 +80,7 @@ public class ReservierungService {
     }
 
     public boolean hasEnoughMoney(Reservierung r, int guthaben){
-        int gesamtKosten = r.getArtikel().getKaution() + (r.getArtikel().getKostenTag() * r.calculateReservierungsLength());
+        int gesamtKosten = r.getArtikel().getKaution() + (r.calculateReservierungsCost());
 
         if(gesamtKosten <= guthaben){
             return true;

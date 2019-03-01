@@ -1,5 +1,6 @@
 package hhu.propra2.javageddon.teils.modelTest;
 
+import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Reservierung;
 import org.junit.Test;
 
@@ -76,6 +77,20 @@ public class ReservierungTest {
     @Test
     public void duration42Day() {
         assertThat(res.calculateReservierungsLength()).isEqualTo(42);
+    }
+
+    @Test
+    public void cost1Day() {
+        Artikel artikel = new Artikel().builder().kaution(15).kostenTag(10).build();
+        res2.setArtikel(artikel);
+        assertThat(res2.calculateReservierungsCost()).isEqualTo(10);
+    }
+
+    @Test
+    public void cost42Day() {
+        Artikel artikel = new Artikel().builder().kaution(15).kostenTag(1).build();
+        res.setArtikel(artikel);
+        assertThat(res.calculateReservierungsCost()).isEqualTo(42);
     }
 
     @Test
