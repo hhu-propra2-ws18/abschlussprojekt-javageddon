@@ -82,8 +82,8 @@ public class BenutzerController {
 
         Boolean proPayReachable = ProPayService.checkConnection();
 
+        m.addAttribute("proPayReachable", proPayReachable);
         if (proPayReachable){
-            m.addAttribute("proPayReachable", proPayReachable);
             m.addAttribute("proPayUser",ProPay.getProPayUser(username));
         }
 
