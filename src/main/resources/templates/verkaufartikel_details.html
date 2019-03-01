@@ -38,7 +38,17 @@
                         </div>
 
                         <div class="action">
-                            <a th:if="${artikel.verfuegbar}" th:href="@{'/kaufen?id=' + ${artikel.id}}" class="btn btn-primary btn-md" >Anfrage abschicken</a>
+
+                            <p>
+                                <a th:if="${proPayReachable and artikel.verfuegbar}"th:href="@{'/kaufen?id=' + ${artikel.id}}" class="btn btn-primary btn-md" >Anfrage abschicken</a>
+                                <a th:unless="${proPayReachable}"
+                                   class="btn btn-outline-danger btn-md">ProPay
+                                    <span class="badge badge-danger">ERROR!</span>
+                                </a>
+                            </p>
+
+
+
                             <a href="/" class="btn btn-outline-primary">Zurück zur Übersicht</a>
                         </div>
                 </div>
