@@ -3,7 +3,6 @@ package hhu.propra2.javageddon.teils.services;
 import hhu.propra2.javageddon.teils.dataaccess.VerkaufRepository;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Verkauf;
-import hhu.propra2.javageddon.teils.model.VerkaufArtikel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,16 +23,8 @@ public class VerkaufService {
         alleVerkaeufe.delete(v);
     }
 
-    public List<Verkauf> findVerkaufByArtikel(VerkaufArtikel a){
-        return alleVerkaeufe.findByArtikel(a);
-    }
-
     public List<Verkauf> findVerkaufByKaeufer(Benutzer b){
         return alleVerkaeufe.findByKaeufer(b);
-    }
-
-    public List<Verkauf> findVerkaufByArtikelAndKaeufer(VerkaufArtikel a, Benutzer b){
-        return alleVerkaeufe.findByArtikelAndKaeufer(a,b);
     }
 
     public Verkauf findVerkaufById(long id) {
