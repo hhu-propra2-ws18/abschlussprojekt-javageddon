@@ -61,8 +61,6 @@ public class BenutzerServiceTest {
         bService.addBenutzer(richtigeEingabe);
         assertThat(bService.hasIncorrectInput(duplikatName)).isEqualTo(true);
         assertThat(bService.hasIncorrectInput(duplikatEmail)).isEqualTo(true);
-        assertThat(bService.hasIncorrectInput(leererName)).isEqualTo(true);
-        assertThat(bService.hasIncorrectInput(leereEmail)).isEqualTo(true);
     }
 
     @Test
