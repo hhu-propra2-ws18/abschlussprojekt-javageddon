@@ -1,13 +1,10 @@
 package hhu.propra2.javageddon.teils.web;
 
-import hhu.propra2.javageddon.teils.dataaccess.ProPay;
-import hhu.propra2.javageddon.teils.model.Aufladung;
+import hhu.propra2.javageddon.teils.services.ProPayService;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.services.*;
-import hhu.propra2.javageddon.teils.model.Reservierung;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
-import hhu.propra2.javageddon.teils.services.ProPayService;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,10 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 @Controller
 public class BenutzerController {
@@ -83,7 +76,7 @@ public class BenutzerController {
 
         m.addAttribute("proPayReachable", proPayReachable);
         if (proPayReachable){
-            m.addAttribute("proPayUser",ProPay.getProPayUser(username));
+            m.addAttribute("proPayUser", ProPayService.getProPayUser(username));
         }
 
         alleReservierungen.decideVerfuegbarkeit();

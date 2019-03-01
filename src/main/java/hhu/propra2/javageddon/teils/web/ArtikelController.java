@@ -1,7 +1,7 @@
 package hhu.propra2.javageddon.teils.web;
 
 import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
-import hhu.propra2.javageddon.teils.dataaccess.ProPay;
+import hhu.propra2.javageddon.teils.services.ProPayService;
 import hhu.propra2.javageddon.teils.model.*;
 import hhu.propra2.javageddon.teils.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,7 +160,7 @@ public class ArtikelController {
         artikel = alleArtikel.findArtikelById(artikel.getId());
         reservierung.setArtikel(artikel);
         reservierung.setLeihender(alleBenutzer.findBenutzerById(id));
-        ProPayUser proPayUser = ProPay.getProPayUser(alleBenutzer.findBenutzerById(id).getName());
+        ProPayUser proPayUser = ProPayService.getProPayUser(alleBenutzer.findBenutzerById(id).getName());
         if(artikel.getEigentuemer().equals(reservierung.getLeihender())){
             return "redirect:/reservieren?id=" + reservierung.getArtikel().getId() + "&error=1";
         }
@@ -174,12 +174,12 @@ public class ArtikelController {
             kaution.setAmount(artikel.getKaution());
             kaution.setId(1);
             proPayUser.addReservation(kaution);
-            reservierung.setKautionsId(ProPay.executeReservation(kaution,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
+            reservierung.setKautionsId(ProPayService.executeReservation(kaution,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
 
             miete.setId(2);
             miete.setAmount(artikel.getKostenTag()*reservierung.calculateReservierungsLength());
             proPayUser.addReservation(miete);
-            reservierung.setMieteId(ProPay.executeReservation(miete,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
+            reservierung.setMieteId(ProPayService.executeReservation(miete,artikel.getEigentuemer(), reservierung.getLeihender()).getId());
 
             alleReservierungen.addReservierung(reservierung);
             return "redirect:/profil_ansicht";
@@ -225,8 +225,8 @@ public class ArtikelController {
         aktuelleReservierung.setBearbeitet(true);
         aktuelleReservierung.setAkzeptiert(accepted);
         if (!accepted) {
-            ProPay.releaseReservationKaution(aktuelleReservierung);
-            ProPay.releaseReservationMiete(aktuelleReservierung);
+            ProPayService.releaseReservationKaution(aktuelleReservierung);
+            ProPayService.releaseReservationMiete(aktuelleReservierung);
         }
         alleReservierungen.addReservierung(aktuelleReservierung);
         return "redirect:/profil_ansicht/";
@@ -239,10 +239,10 @@ public class ArtikelController {
         boolean accepted = Boolean.parseBoolean(akzeptiert);
         if(!accepted) {
             aktuellerVerkauf.getArtikel().setVerfuegbar(true);
-            ProPay.releaseVerkaufsPreis(aktuellerVerkauf);
+            ProPayService.releaseVerkaufsPreis(aktuellerVerkauf);
 
         }else {
-            ProPay.punishVerkaufsPreis(aktuellerVerkauf);
+            ProPayService.punishVerkaufsPreis(aktuellerVerkauf);
             Transaktion transaktion = new Transaktion();
             transaktion.setDatum(LocalDate.now());
             transaktion.setBetrag(-aktuellerVerkauf.getArtikel().getVerkaufsPreis());
@@ -272,8 +272,8 @@ public class ArtikelController {
         aktuelleReservierung.getArtikel().setVerfuegbar(true);
         alleReservierungen.addReservierung(aktuelleReservierung);
 
-        ProPay.releaseReservationKaution(aktuelleReservierung);
-        ProPay.punishReservationMiete(aktuelleReservierung);
+        ProPayService.releaseReservationKaution(aktuelleReservierung);
+        ProPayService.punishReservationMiete(aktuelleReservierung);
         Transaktion transaktion = new Transaktion();
         transaktion.setDatum(LocalDate.now());
         transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());
@@ -324,7 +324,7 @@ public class ArtikelController {
         verkauf.setKaeufer(alleBenutzer.findBenutzerById(benutzerid));
         m.addAttribute("proPayReachable", ProPayService.checkConnection());
         m.addAttribute("artikel", aktuellerArtikel);
-        ProPayUser proPayUser = ProPay.getProPayUser(alleBenutzer.findBenutzerById(id).getName());
+        ProPayUser proPayUser = ProPayService.getProPayUser(alleBenutzer.findBenutzerById(id).getName());
         if(aktuellerArtikel.getEigentuemer().equals(verkauf.getKaeufer())){
             return "redirect:/verkauf/details?id=" + verkauf.getArtikel().getId() + "&error=1";
         }
@@ -335,7 +335,7 @@ public class ArtikelController {
         Reservations verkaufsRes = new Reservations();
         verkaufsRes.setAmount(verkauf.getArtikel().getVerkaufsPreis());
         proPayUser.addReservation(verkaufsRes);
-        verkauf.setVerkaufsId(ProPay.executeReservation(verkaufsRes,verkauf.getArtikel().getEigentuemer(), verkauf.getKaeufer()).getId());
+        verkauf.setVerkaufsId(ProPayService.executeReservation(verkaufsRes,verkauf.getArtikel().getEigentuemer(), verkauf.getKaeufer()).getId());
         aktuellerArtikel.setVerfuegbar(false);
         alleVerkaeufe.addVerkauf(verkauf);
         return "redirect:/profil_ansicht/";

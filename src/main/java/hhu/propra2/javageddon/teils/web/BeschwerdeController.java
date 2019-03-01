@@ -1,6 +1,6 @@
 package hhu.propra2.javageddon.teils.web;
 
-import hhu.propra2.javageddon.teils.dataaccess.ProPay;
+import hhu.propra2.javageddon.teils.services.ProPayService;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Beschwerde;
 import hhu.propra2.javageddon.teils.model.Reservierung;
@@ -52,8 +52,8 @@ public class BeschwerdeController {
         aktuelleReservierung.setZurueckgegeben(true);
         alleBeschwerden.addBeschwerde(beschwerde);
         if(benutzer == aktuelleReservierung.getLeihender()){
-            ProPay.releaseReservationKaution(aktuelleReservierung);
-            ProPay.punishReservationMiete(aktuelleReservierung);
+            ProPayService.releaseReservationKaution(aktuelleReservierung);
+            ProPayService.punishReservationMiete(aktuelleReservierung);
             Transaktion transaktion = new Transaktion();
             transaktion.setDatum(LocalDate.now());
             transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());
@@ -68,8 +68,8 @@ public class BeschwerdeController {
             transaktionEigentuemer.setVerwendungszweck("Teils Leihe: " + aktuelleReservierung.getArtikel().getTitel());
             alleTransaktionen.addTransaktion(transaktionEigentuemer);
         } else if(benutzer == aktuelleReservierung.getArtikel().getEigentuemer()){
-            ProPay.punishReservationMiete(aktuelleReservierung);
-            ProPay.punishReservationKaution(aktuelleReservierung);
+            ProPayService.punishReservationMiete(aktuelleReservierung);
+            ProPayService.punishReservationKaution(aktuelleReservierung);
             Transaktion transaktion = new Transaktion();
             transaktion.setDatum(LocalDate.now());
             transaktion.setBetrag(-aktuelleReservierung.calculateReservierungsCost());

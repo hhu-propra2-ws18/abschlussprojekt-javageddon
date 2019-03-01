@@ -1,13 +1,11 @@
 package hhu.propra2.javageddon.teils.web;
 
-import hhu.propra2.javageddon.teils.dataaccess.ProPay;
+import hhu.propra2.javageddon.teils.services.ProPayService;
 import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.ProPayUser;
 import hhu.propra2.javageddon.teils.model.Transaktion;
-import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
-import hhu.propra2.javageddon.teils.services.ReservierungService;
 import hhu.propra2.javageddon.teils.services.TransaktionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +33,7 @@ public class ProPayController {
         Aufladung aufladung = new Aufladung();
 
         m.addAttribute("aufladung", aufladung);
-        m.addAttribute("proPayUser", ProPay.getProPayUser(username));
+        m.addAttribute("proPayUser", ProPayService.getProPayUser(username));
         m.addAttribute("alleTransaktionen",alleTransaktionen.findTransaktionenByKontoinhaber(benutzer));
         return "proPay_details";
     }
@@ -46,9 +44,9 @@ public class ProPayController {
         String username = ((UserDetails)currentUser).getUsername();
         Long id = alleBenutzer.getIdByName(username);
 
-        ProPayUser proPayUser = ProPay.getProPayUser(username);
+        ProPayUser proPayUser = ProPayService.getProPayUser(username);
         aufladung.setProPayUser(proPayUser);
-        ProPay.heresTheMoney(aufladung);
+        ProPayService.heresTheMoney(aufladung);
 
         //Neue Transaktion für diese Aufladung erzeugen
         Transaktion transaktion = new Transaktion();
