@@ -1,7 +1,5 @@
 package hhu.propra2.javageddon.teils.web;
 
-import hhu.propra2.javageddon.teils.dataaccess.BenutzerRepository;
-import hhu.propra2.javageddon.teils.dataaccess.BeschwerdeRepository;
 import hhu.propra2.javageddon.teils.dataaccess.ProPay;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Beschwerde;
