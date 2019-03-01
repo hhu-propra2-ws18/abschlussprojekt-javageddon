@@ -1,10 +1,12 @@
 package hhu.propra2.javageddon.teils.services;
 
+import hhu.propra2.javageddon.teils.dataaccess.ArtikelRepository;
 import hhu.propra2.javageddon.teils.dataaccess.ReservierungRepository;
 import hhu.propra2.javageddon.teils.model.Artikel;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.model.Reservierung;
 import hhu.propra2.javageddon.teils.model.Verkauf;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -16,6 +18,9 @@ import java.util.stream.Collectors;
 public class ReservierungService {
 
     private ReservierungRepository alleReservierungen;
+
+    @Autowired
+    private ArtikelRepository alleArtikel;
 
     public ReservierungService(ReservierungRepository reservierungen){
         this.alleReservierungen = reservierungen;
@@ -170,10 +175,8 @@ public class ReservierungService {
         for (Reservierung res : reservierungen) {
             if (res.ermittleStatus() == 4 || res.ermittleStatus() == 6 || (res.ermittleStatus() == 1 && res.getStart().isEqual(LocalDate.now()))) {
                 res.getArtikel().setVerfuegbar(false);
-            } else {
-                res.getArtikel().setVerfuegbar(true);
+                alleArtikel.save(res.getArtikel());
             }
-            alleReservierungen.save(res);
         }
     }
 

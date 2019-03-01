@@ -157,20 +157,17 @@ public class ReservierungServiceTest {
         //status code 1 and LocalDate = now for currentRes
         currentRes.setBearbeitet(false);
 
+        farFutureRes = rService.addReservierung(farFutureRes);
+        currentRes = rService.addReservierung(currentRes);
         futureRes = rService.addReservierung(futureRes);
         pastRes = rService.addReservierung(pastRes);
-        farFutureRes = rService.addReservierung(farFutureRes);
 
         rService.decideVerfuegbarkeit();
 
-        assertThat(!(rService.findReservierungById(futureRes.getId()).getArtikel().isVerfuegbar()));
-        assertThat(!(rService.findReservierungById(pastRes.getId()).getArtikel().isVerfuegbar()));
-        assertThat(!(rService.findReservierungById(currentRes.getId()).getArtikel().isVerfuegbar()));
-        assertThat(rService.findReservierungById(farFutureRes.getId()).getArtikel().isVerfuegbar());
+        assertThat(rService.findReservierungById(futureRes.getId()).getArtikel().isVerfuegbar()).isEqualTo(false);
+        assertThat(rService.findReservierungById(pastRes.getId()).getArtikel().isVerfuegbar()).isEqualTo(false);
+        assertThat(rService.findReservierungById(currentRes.getId()).getArtikel().isVerfuegbar()).isEqualTo(false);
+        assertThat(rService.findReservierungById(farFutureRes.getId()).getArtikel().isVerfuegbar()).isEqualTo(false);
 
     }
-
-
-
-
 }
