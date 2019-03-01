@@ -1,17 +1,26 @@
 package hhu.propra2.javageddon.teils.web;
 
-import hhu.propra2.javageddon.teils.services.ProPayService;
+import hhu.propra2.javageddon.teils.dataaccess.ProPay;
+import hhu.propra2.javageddon.teils.model.Aufladung;
 import hhu.propra2.javageddon.teils.model.Benutzer;
 import hhu.propra2.javageddon.teils.services.*;
+import hhu.propra2.javageddon.teils.model.Reservierung;
 import hhu.propra2.javageddon.teils.services.ArtikelService;
 import hhu.propra2.javageddon.teils.services.BenutzerService;
+import hhu.propra2.javageddon.teils.services.ProPayService;
 import hhu.propra2.javageddon.teils.services.ReservierungService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 @Controller
 public class BenutzerController {
@@ -39,24 +48,20 @@ public class BenutzerController {
     }
 
     @PostMapping("/registrieren")
-    public String benutzerSubmit(@ModelAttribute Benutzer benutzer, Model m){
-
-        System.out.println("Enters");
-        m.addAttribute("existingEmailError", alleBenutzer.isDuplicateEmail(benutzer));
-        m.addAttribute("existingNameError", alleBenutzer.isDuplicateName(benutzer));
-        System.out.println("Exists");
-        m.addAttribute("nameRequired", alleBenutzer.isEmptyName(benutzer));
-        m.addAttribute("emailRequired", alleBenutzer.isEmptyEmail(benutzer));
-        System.out.println("required");
-        m.addAttribute("passwordRequired", alleBenutzer.isEmptyPassword(benutzer));
-        System.out.println("password");
-        m.addAttribute("benutzer",benutzer);
-        System.out.println("benutzer");
-        if(alleBenutzer.hasIncorrectInput(benutzer)) {
-        	return "benutzer_registrieren";
+    public String benutzerSubmit(@Valid Benutzer benutzer, BindingResult bindingResult, Model m){
+        if(bindingResult.hasErrors()){
+            return "benutzer_registrieren";
         }else {
-            alleBenutzer.addBenutzer(benutzer);
-            return "redirect:profil_ansicht";
+            m.addAttribute("existingEmailError", alleBenutzer.isDuplicateEmail(benutzer));
+            m.addAttribute("existingNameError", alleBenutzer.isDuplicateName(benutzer));
+            m.addAttribute("benutzer", benutzer);
+            System.out.println("benutzer");
+            if (alleBenutzer.hasIncorrectInput(benutzer)) {
+                return "benutzer_registrieren";
+            } else {
+                alleBenutzer.addBenutzer(benutzer);
+                return "redirect:profil_ansicht";
+            }
         }
     }
 
@@ -76,7 +81,7 @@ public class BenutzerController {
 
         m.addAttribute("proPayReachable", proPayReachable);
         if (proPayReachable){
-            m.addAttribute("proPayUser", ProPayService.getProPayUser(username));
+            m.addAttribute("proPayUser",ProPay.getProPayUser(username));
         }
 
         alleReservierungen.decideVerfuegbarkeit();

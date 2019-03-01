@@ -30,20 +30,9 @@ public class BenutzerService {
 	public boolean isDuplicateEmail(Benutzer b) {
 		return alleBenutzer.existsByEmail(b.getEmail());
 	}
-	
-	public boolean isEmptyName(Benutzer b) {
-		return b.getName().equals("");
-	}
 
-	public boolean isEmptyPassword(Benutzer b) { return b.getPassword().equals("");	}
-
-	public boolean isEmptyEmail(Benutzer b) {
-		return b.getEmail().equals("");
-	}
-	
 	public boolean hasIncorrectInput(Benutzer b) {
-        return isDuplicateEmail(b) || isDuplicateName(b) ||
-                isEmptyEmail(b) || isEmptyName(b);
+        return isDuplicateEmail(b) || isDuplicateName(b);
     }
 
     public Long getIdByName(String username) {

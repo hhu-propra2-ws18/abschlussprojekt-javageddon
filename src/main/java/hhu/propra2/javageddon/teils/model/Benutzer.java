@@ -22,11 +22,11 @@ public class Benutzer {
     private long id;
 
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Sie müssen einen Benutzernamen angeben")
     private String name;
     
     @NotNull
-    @NotEmpty
+    @NotEmpty(message = "Sie müssen eine Email-Adresse angeben")
     private String email;
     private String password;
 
