@@ -54,9 +54,9 @@ public class VerkaufServiceTest {
 
     @After
     public void testDelete(){
+        verRepo.deleteAll();
         artRepo.deleteAll();
         benRepo.deleteAll();
-        verRepo.deleteAll();
     }
     
     @Test
