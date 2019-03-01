@@ -41,13 +41,13 @@
 
                             <div class="form-group">
                                 <label for="kostenTag">Preis pro Tag</label>
-                                <input class="form-control" placeholder="Preis pro Tag" type="text"  th:field="${artikel.kostenTag}"/>
+                                <input type="number" min="1" step="1" class="form-control" placeholder="Preis pro Tag"  th:field="${artikel.kostenTag}"/>
                                 <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('artikel.kostenTag')}" th:errors="*{artikel.kostenTag}"></p>
                             </div>
 
                             <div class="form-group">
                                 <label for="kaution">Kaution</label>
-                                <input class="form-control" placeholder="Kaution" type="text"  th:field="${artikel.kaution}"/>
+                                <input type="number" min="1" step="1" class="form-control" placeholder="Kaution"  th:field="${artikel.kaution}"/>
                                 <p class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('artikel.kaution')}" th:errors="*{artikel.kaution}"></p>
                             </div>
 
