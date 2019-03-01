@@ -1,3 +1,8 @@
+= Grundlegende Information
+
+* Siehe `doku/AufbauUndTesting.adoc` für eine Strukturbeschreibung
+* Siehe `doku/Walkthrough.adoc` für eine Anleitung
+
 == Kritische Entscheidungen
 
 Spring Security::
@@ -28,6 +33,12 @@ Wir haben anfangs mit einem Faker gearbeitet zum generieren von Testdaten, da ab
 
 Commitanzahl Erklärung::
 Viele Commits vom Teammitglied Florian (flfis102) haben keine Message und sind teilweise nur minimale Änderungen. Der Grund dafür ist, dass die Anwendung auf seinem Windows 10 Laptop nicht einwandfrei funktioniert und er deswegen mit einem Ubuntu Server arbeitet. Die Einfachste möglichkeit Updates auf den Server zu bringen ist durch Git Commits. Deswegen musste er selbst kleine Änderungen pushen, um so testen zu können.
+
+Kein Editieren::
+Wir haben uns entschieden, dass man Artikel nur erstellen kann (Verkaufsartikel können aber auch gelöscht werden). Dies verhindert, dass änderungen an Artikeln zukünfitge Reservierungen auch beeinflussen. Falls ein Eigentümer was ändern möchten, muss er den Artikel deaktivieren und einen Neuen mit eventuell geänderten Angaben erstellen. Dabei sind zukünfitge Reservierungen von dem deaktivierten Artikel immernoch gültig und müssen vom Eigentümer durchgeführt werden (ansonsten an die Clearingstelle wenden).
+
+Clearingstelle::
+Da der Admin in seiner Entscheidung nur die Kaution einem der beiden Benutzer zuordnen kann, wird die Miete trotzdem dem Artikeleigentümer bezahlt. Nachdem der Admin per Knopfdruck (nach Email verkehr) seine Entscheidung getroffen hat, gilt die Reservierung als abgeschlossen, d.h. es wird angenommen, der Artikel befindet sich wieder beim Eigentümer.
 
 
 == BenutzerKonten

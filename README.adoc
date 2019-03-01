@@ -1,117 +1,54 @@
-= Softwareentwicklung im Team: Blockpraktikum
-WS18/19
-:icons: font
-:icon-set: octicon
+== Kritische Entscheidungen
 
-== Änderung an der `gruppe.json`-Datei
+Spring Security::
+Wir haben uns entschieden Spring Security zu benutzen, da wir uns das Umgehen mit Cookies sparen wollten und Spring Security uns auch direkt den eingeloggten Benutzer zurückgeben kann. Dadurch wird auch die Eindeutigkeit und Validität des Benutzernames gewährleistet. Passwörter werden in der Datenbank im Klartext gespeichert, um den Entwicklungsprozess zu erleichtern. Leider hatten wir nicht genug Zeit am Ende um die Passwörter zu hashen.
 
-Wir haben nur beschränkt Plätze zur Verfügung. Daher ist es notwendig, dass
-einige Gruppen mit ihren eigenen Notebooks arbeiten und so keine Plätze in den
-Praktikumsräumen der HHU benötigen. Sie bekommen dann einen Seminarraum als
-Arbeitsraum zur Verfügung gestellt.
+Interaktion mit Propay::
+Wir haben uns entschieden direkt bei Antragsstellung (Verkauf oder Leih) die benötigten Beträge (Kautinon + Gesamtmiete / Verkaufspreis) auf Propay zu blockieren. Der einzige Nachteil bei dieser Vorgehensweise ist, dass ein Artikeleigentümer durch enthaltung der Entscheidung, ob er akzeptiert oder nicht, dem Antragssteller unbefristet blockiert. Das haben wir mit einem Antrag stornieren Button gelöst, der bis zum Akzeptieren des Antrags vom Antragssteller gedrückt werden kann. Demnach werden die Geldbeträge mit release bzw. punish dem richtigen Benutzer zugewiesen. +
+Falls Propay nicht erreichbar ist werden sämtliche Links (Propayübersicht, Reservierungserstellen, kaufen, Akzeptieren, Ablehnen, etc.) durch Propay-Error-Buttons mit eine kurzen Fehlermeldung ersetzt.
 
-[IMPORTANT]
-====
-Bitte fügen Sie zur `gruppe.json` folgenden Key mit hinzu und setzen
-Sie den Wert auf `true`, wenn Ihre Gruppe vollständig mit eigenen Geräten
-auskommt. Andernfalls setzen Sie bitte `false`.
+Ganztägige Reservierungen::
+Um den Prozess leichter zu machen, haben wir uns entschieden nur ganztägige Reserveriungen zuzulassen und verlangen immer den vollen Tagespreis. Das reservierte Artikel steht somit genau zum Startdatum zu Verfügung und muss auch am Enddatum zurückgegeben werden (Eintagige Reservierungen müssen am selben Tag zurückgegeben werden, an dem sie abgeholt wurden).
 
-Beispiel:
+Reservierungsmiete immer für den Gesamten Zeitraum bezahlen::
+Wir erlauben zwar, dass ein Leihender seinen Artikel frühzeitig zurückgeben kann, aber verlangen immernoch die volle Miete. Abgesehen davon, dass es für uns leichter zu implementieren ist, ist es auch Sinnvoll, da der Eigentümer durch nicht vollständig benutzten Reservierungszeitraum an potenziellen neuen Leihenden verliert. Somit wollen wir verhindern, dass Leihende unüberlegt zu lange reservieren.
 
-[source,json]
-----
-{
-    // ...
-    "isNotebookGroup": true,
-    // ...
-}
-----
-====
+Verkaufsartikel einbauen::
+Wir haben einfach eine neue Klasse (Entität) mit eigener Repo erstellt die anstelle von Kaution und Miete, den Verkaufspreis hat. Ein Benutzer kann auf der Startseite entweder einen Artikel zum Verleih oder Verkauf anlegen. Danach werden seperate HTML Sichten erzeugt. Zusätzlich wurden die Controller auch erweitert um mit den Verkaufsartikeln analog umzugehen. Unsere Lösung ist sicher nicht die Eleganteste, aber es fehlte uns an Zeit so etwas wie eine Abstrakte Artikel Oberklasse zu implementieren. 
 
-== Termine
 
-Das Praktikum findet in der Zeit vom 11.02.2019 bis 01.03.2019 statt. In dieser
-Zeit werden Sie täglich in der Zeit von 9:30 Uhr bis 15:30 Uhr in Gruppen an
-einer Webanwendung mit Datenbankanbindung arbeiten. Es besteht
-Anwesenheitspflicht für *alle* Tage.
+Nicht mehr als 10 JPG Bilder::
+Es können Bilder beim Artikel erstellen hochgeladen werden. Diese sind aber durch Anzahl (max. 10), Größe (insgesamt 10MB) und Format (nur JPG) beschränkt. Da Bilder hochladen optional ist, wird falls keins hochgeladen wird, ein Default-Kein-Bild-Vorhanden Bild gezeigt. 
 
-== Verhaltenscodex
+Benutzerrollen::
+Die Startseite unter `http://localhost:8080/` listet für alle Besucher die momentan aktiven Artikel und enthält Links zum Einloggen und Registrieren. Weiter interaktion, wie Artikeldetails ansehen, verlangt einen eingeloggten User. Jeder eingeloggte User kann auf alles zugreifen, bis auf die Admin-Clearingstelle für Beschwerden (durch Spring Security gesichert).
 
-=== Umgang miteinander
+Kein Databaseinitializer::
+Wir haben anfangs mit einem Faker gearbeitet zum generieren von Testdaten, da aber öfters überschneidende Reserviungen erstellt wurden haben wir uns entschieden alle finalen Daten per Hand anzulegen (durch Benutzung der Anwendung selbst).
 
-Wir erwarten von Ihnen, dass Sie einen höflichen und respektvollen Umgang
-miteinander pflegen. Meinungsverschiedenheiten (besonders in einem Team) können
-vorkommen, sollten aber nicht in einen Streit ausufern, sondern konstruktiv
-gelöst werden.
+Commitanzahl Erklärung::
+Viele Commits vom Teammitglied Florian (flfis102) haben keine Message und sind teilweise nur minimale Änderungen. Der Grund dafür ist, dass die Anwendung auf seinem Windows 10 Laptop nicht einwandfrei funktioniert und er deswegen mit einem Ubuntu Server arbeitet. Die Einfachste möglichkeit Updates auf den Server zu bringen ist durch Git Commits. Deswegen musste er selbst kleine Änderungen pushen, um so testen zu können.
 
-Das Praktikum soll eine freundliche, sichere und einladende Umgebung sein,
-unabhängig von Geschlecht, Aussehen, sexueller Orientierung, Herkunft, Religion
-oder gesellschaftlichem und wirtschaftlichem Status.
+Kein Editieren::
+Wir haben uns entschieden, dass man Artikel nur erstellen kann (Verkaufsartikel können aber auch gelöscht werden). Dies verhindert, dass änderungen an Artikeln zukünfitge Reservierungen auch beeinflussen. Falls ein Eigentümer was ändern möchten, muss er den Artikel deaktivieren und einen Neuen mit eventuell geänderten Angaben erstellen. Dabei sind zukünfitge Reservierungen von dem deaktivierten Artikel immernoch gültig und müssen vom Eigentümer durchgeführt werden (ansonsten an die Clearingstelle wenden).
 
-Wir erwarten von Ihnen,
+Clearingstelle::
+Da der Admin in seiner Entscheidung nur die Kaution einem der beiden Benutzer zuordnen kann, wird die Miete trotzdem dem Artikeleigentümer bezahlt. Nachdem der Admin per Knopfdruck (nach Email verkehr) seine Entscheidung getroffen hat, gilt die Reservierung als abgeschlossen, d.h. es wird angenommen, der Artikel befindet sich wieder beim Eigentümer.
 
-* dass Sie ein respektvolles Verhalten an den Tag legen und respektvoll
-  miteinander kommunizieren. Insbesondere erniedrigendes, diskriminierendes oder
-  belästigendes Verhalten oder Sprache wird nicht geduldet.
-* dass Sie Rücksicht auf Andere nehmen.
-* dass Sie auf Andere aufpassen. Machen Sie uns darauf aufmerksam, wenn Sie
-  Verletzungen dieses Verhaltenskodexes bemerken, selbst wenn sie zunächst
-  belanglos erscheinen.
 
-=== Verhalten in den Räumlichkeiten
+== BenutzerKonten
 
-Während des Praktikums müssen Sie (sowohl innerhalb der Gruppe als auch zwischen
-Gruppen) aufeinander Rücksicht nehmen und niemanden bei der Arbeit stören. Neben
-der
-https://www.uni-duesseldorf.de/home/fileadmin/redaktion/Oeffentliche_Medien/ZUV/Dezernat_6/Hausordnung/16-12-06_Hausordnung_HHU_A4.pdf[Hausordnung
-der Universität] gelten insbesondere folgende Regeln:
+.Benutzerkonten mit Zugangsdaten
+[width="100%",options="header,footer"]
+|====================
 
-* In den Praktikumsräumen ist das Essen verboten.
-* Sie dürfen Getränke zu sich nehmen, aber nicht in der Nähe von Computern.
-* Musik darf nur leise per Kopfhörer gehört werden, sofern niemand belästigt 
-  wird.
-* Den Anweisungen der Aufsicht ist Folge zu leisten.
+|Benutzername| Email| Passwort| Rolle
 
-IMPORTANT: Verstöße gegen die Verhaltens- oder Praktikumsregeln können zum
-Ausschluss von der Veranstaltung führen. Sie können dann den Schein in diesem
-Semester nicht mehr bekommen.
-
-== Regeln für Fehlzeiten
-
-=== Urlaub
-
-Für die Teilnahme an den Umfragen während des Semesters können Sie Urlaub
-bekommen. Insgesamt haben Sie einen Urlaubstag. Sie können den Urlaub
-stundenweise (mind. eine Stunde) nehmen oder auch am Stück einen Tag frei
-machen. Sie müssen den Urlaub mit Ihrem Team absprechen und bei der Aufsicht
-vorher anmelden.
-
-=== Krankheit
-
-Bei krankheitsbedingtem Fehlen müssen Sie ein ärztliches Attest vorlegen.
-Sollten Sie länger als 3 Tage in der gesamten Zeit fehlen, ist ein Bestehen des
-Praktikums nur noch in sehr gut begründbaren Ausnahmen möglich. Ein Beispiel:
-Sie fehlen in der letzten Woche, das Projekt hat Ihre Gruppe aber schon nach der
-Woche praktisch fertiggestellt und es fehlt nur noch der Feinschliff.
-
-Wenn Sie sichtbar krank zum Praktikum erscheinen, behalten wir uns vor, Sie zu
-Ihrem eigenen und dem Schutz der anderen TeilnehmerInnen auszuschließen.
-
-=== Prüfungstermine
-
-Wenn Sie Prüfungstermine in den Praktikumszeiten haben, sind Sie bei vorheriger
-Ankündigung (mind. ein Tag vor der Prüfung) für die Dauer der Prüfung Entschuldigt.
-
-=== Pünktlichkeit
-
-Wir erwarten von Ihnen, dass Sie pünktlich um 9:30 Uhr da sind. Wir werden
-Verspätungen dokumentieren. Falls Sie sich deutlich verspäten oder häufig
-fehlen, werden wir die Verspätungen von Ihrem Urlaub abziehen. Falls Sie keinen
-Urlaub mehr haben, kann es passieren, dass wir Sie vom Praktikum ausschließen.
-
-== Gruppenbildung
-
-Am Praktikum dürfen nur Studierende teilnehmen, die alle Projekte im Semester
-bestanden haben. Die Gruppengröße soll 6 nicht unterschreiten und darf 8 nicht
-überschreiten. Die Bildung der Gruppen erfolgt durch die Studierenden selbst, es
-gibt keine Zuweisungen. Das Ilias Forum kann zur Gruppenfindung benutzt werden.
+|Florian  |florian@teils.de  |f  |User
+|Marvin  |marvin@teils.de  |m  |User    
+|Philipp  |philipp@teils.de  |p  |User    
+|Kurt  |kurt@teils.de  |k  |User    
+|Jana  |jana@teils.de  |j  |User    
+|Fred  |fred@teils.de  |f  |User    
+|Admin  |admin@teils.de  |admin  |Admin
+|====================
