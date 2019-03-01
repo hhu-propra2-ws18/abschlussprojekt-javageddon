@@ -14,12 +14,21 @@ Reservierungsmiete immer für den Gesamten Zeitraum bezahlen::
 Wir erlauben zwar, dass ein Leihender seinen Artikel frühzeitig zurückgeben kann, aber verlangen immernoch die volle Miete. Abgesehen davon, dass es für uns leichter zu implementieren ist, ist es auch Sinnvoll, da der Eigentümer durch nicht vollständig benutzten Reservierungszeitraum an potenziellen neuen Leihenden verliert. Somit wollen wir verhindern, dass Leihende unüberlegt zu lange reservieren.
 
 Verkaufsartikel einbauen::
+Wir haben einfach eine neue Klasse (Entität) mit eigener Repo erstellt die anstelle von Kaution und Miete, den Verkaufspreis hat. Ein Benutzer kann auf der Startseite entweder einen Artikel zum Verleih oder Verkauf anlegen. Danach werden seperate HTML Sichten erzeugt. Zusätzlich wurden die Controller auch erweitert um mit den Verkaufsartikeln analog umzugehen. Unsere Lösung ist sicher nicht die Eleganteste, aber es fehlte uns an Zeit so etwas wie eine Abstrakte Artikel Oberklasse zu implementieren. 
 
 
+Nicht mehr als 10 JPG Bilder::
+Es können Bilder beim Artikel erstellen hochgeladen werden. Diese sind aber durch Anzahl (max. 10), Größe (insgesamt 10MB) und Format (nur JPG) beschränkt. Da Bilder hochladen optional ist, wird falls keins hochgeladen wird, ein Default-Kein-Bild-Vorhanden Bild gezeigt. 
 
-5. Nicht mehr als 10 JPG Bilder
-6. Nur Startseite für alle sichtbar
-8. Kein Databaseinitializer
+Benutzerrollen::
+Die Startseite unter `http://localhost:8080/` listet für alle Besucher die momentan aktiven Artikel und enthält Links zum Einloggen und Registrieren. Weiter interaktion, wie Artikeldetails ansehen, verlangt einen eingeloggten User. Jeder eingeloggte User kann auf alles zugreifen, bis auf die Admin-Clearingstelle für Beschwerden (durch Spring Security gesichert).
+
+Kein Databaseinitializer::
+Wir haben anfangs mit einem Faker gearbeitet zum generieren von Testdaten, da aber öfters überschneidende Reserviungen erstellt wurden haben wir uns entschieden alle finalen Daten per Hand anzulegen (durch Benutzung der Anwendung selbst).
+
+Commitanzahl Erklärung::
+Viele Commits vom Teammitglied Florian (flfis102) haben keine Message und sind teilweise nur minimale Änderungen. Der Grund dafür ist, dass die Anwendung auf seinem Windows 10 Laptop nicht einwandfrei funktioniert und er deswegen mit einem Ubuntu Server arbeitet. Die Einfachste möglichkeit Updates auf den Server zu bringen ist durch Git Commits. Deswegen musste er selbst kleine Änderungen pushen, um so testen zu können.
+
 
 == BenutzerKonten
 
@@ -29,11 +38,11 @@ Verkaufsartikel einbauen::
 
 |Benutzername| Email| Passwort| Rolle
 
-|Florian  |florian@teils.de  |1  |User  
-|Marvin  |marvin@teils.de  |2  |User    
-|Philipp  |philipp@teils.de  |3  |User    
-|Kurt  |kurt@teils.de  |4  |User    
-|Jana  |jana@teils.de  |5  |User    
-|Fred  |fred@teils.de  |6  |User    
+|Florian  |florian@teils.de  |f  |User
+|Marvin  |marvin@teils.de  |m  |User    
+|Philipp  |philipp@teils.de  |p  |User    
+|Kurt  |kurt@teils.de  |k  |User    
+|Jana  |jana@teils.de  |j  |User    
+|Fred  |fred@teils.de  |f  |User    
 |Admin  |admin@teils.de  |admin  |Admin
 |====================
